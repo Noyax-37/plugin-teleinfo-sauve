@@ -58,6 +58,54 @@ def mqtt_on_message(client, userdata, message):
     logging.debug( "MQTT------Topic : %s" % message.topic )
     logging.debug( "MQTT------Data  : " + y )
     trouveTIC = False
+    if 'wifiTIC' in message.topic:
+        try:
+            if trouveTIC == False:
+                device = 'ADCO'
+            trouveTIC = True
+            x = json.loads(str(y))
+            data['ADCO'] = str(x['counter']['id'])
+            if x['counter']['contract']== 1:
+                data['NGTF'] = 'BASE'
+            elif x['counter']['contract']==2:
+                data['NGTF'] = 'HP/HC'
+            elif x['counter']['contract']==3:
+                data['NGTF'] = 'EJP'
+            elif x['counter']['contract']==4:
+                data['NGTF'] = 'TEMPO'
+            elif x['counter']['contract']==5:
+                data['NGTF'] = 'PRODUCTION'
+                data['EAIT'] = (x['consumption']['counters'][0]['value'])
+            elif x['counter']['contract']==6:
+                data['NGTF'] = 'ZEN'
+            elif x['counter']['contract']==7:
+                data['NGTF'] = 'ZEN+'
+            elif x['counter']['contract']==8:
+                data['NGTF'] = 'Super Creuses'
+            elif x['counter']['contract']==9:
+                data['NGTF'] = 'Week-End'
+            elif x['counter']['contract']==10:
+                data['NGTF'] = 'Beaux Jours'
+            else:
+                data['NGTF'] = 'Inconnu'
+            data['EAST'] = 0
+            for i in range(len(x['consumption']['counters'])):
+                data['EASF0' + str(i+1)] = x['consumption']['counters'][i]['value']
+                data['EAST'] += x['consumption']['counters'][i]['value']
+            if len(x['consumption']['phases']) == 1:
+                data['SINSTS'] = x['consumption']['phases'][0]['app']
+                data['IRMS1'] = x['consumption']['phases'][0]['iinst']
+            else:
+                data['SINSTS1'] = x['consumption']['phases'][0]['app']
+                data['IRMS1'] = x['consumption']['phases'][0]['iinst']
+                data['SINSTS2'] = x['consumption']['phases'][1]['app']
+                data['IRMS2'] = x['consumption']['phases'][1]['iinst']
+                data['SINST3'] = x['consumption']['phases'][2]['app']
+                data['IRMS3'] = x['consumption']['phases'][2]['iinst']
+            logging.debug("MQTT------message wifiTIC. ADCO: " + data['ADCO'])
+        except:
+            logging.debug("MQTT------message non wifiTIC")
+
     try:
         x = json.loads(str(y))
         for key in x:

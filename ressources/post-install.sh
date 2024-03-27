@@ -7,14 +7,16 @@ fi
 date
 touch ${PROGRESS_FILE}
 echo 0 > ${PROGRESS_FILE}
-echo "**********************************"
-echo "*  Installation des dépendances  *"
-echo "**********************************"
-BASEDIR=/var/www/html/plugins/teleinfo/ressources
+echo "********************************************************************"
+echo "*  Installation des dépendances depuis le fichier post-install.sh  *"
+echo "********************************************************************"
+BASEDIR=$(dirname $(readlink -f $0))
+
+pyv="$(python3 -V 2>&1)"
+echo "Version de python installée : $pyv"
 
 echo 5 > ${PROGRESS_FILE}
 sudo apt-get update
-sudo apt-get upgrade
 date
 #echo 10 > ${PROGRESS_FILE}
 #sudo apt remove -y python3-serial
@@ -27,26 +29,31 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get install -y python3
 date
 
 echo 20 > ${PROGRESS_FILE}
-sudo DEBIAN_FRONTEND=noninteractive apt-get install -y python3-venv python3-pip python3-dev
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y python3-venv python3-pip python3-dev python3-ftdi1
 date
 
 echo 25 > ${PROGRESS_FILE}
 sudo -u www-data python3 -m venv $BASEDIR/venv --without-pip --system-site-packages
 date
+
+pyv="$($BASEDIR/venv/bin/python3 -V 2>&1)"
+echo "Version de python installée en environnement virtuel : $pyv"
+
+
 sudo -u www-data $BASEDIR/venv/bin/python3 -m pip install --upgrade pip wheel
 
 echo 30 > ${PROGRESS_FILE}
-sudo -u www-data $BASEDIR/venv/bin/pip3 install --no-cache-dir pylibftdi
+sudo -u www-data $BASEDIR/venv/bin/pip3 install --upgrade --no-cache-dir pylibftdi
 echo 35 > ${PROGRESS_FILE}
-sudo -u www-data $BASEDIR/venv/bin/pip3 install --no-cache-dir six
+sudo -u www-data $BASEDIR/venv/bin/pip3 install --upgrade --no-cache-dir six
 echo 40 > ${PROGRESS_FILE}
-sudo -u www-data $BASEDIR/venv/bin/pip3 install --no-cache-dir pyserial
+sudo -u www-data $BASEDIR/venv/bin/pip3 install --upgrade --no-cache-dir pyserial
 echo 45 > ${PROGRESS_FILE}
-sudo -u www-data $BASEDIR/venv/bin/pip3 install --no-cache-dir setuptools
+sudo -u www-data $BASEDIR/venv/bin/pip3 install --upgrade --no-cache-dir setuptools
 echo 50 > ${PROGRESS_FILE}
-sudo -u www-data $BASEDIR/venv/bin/pip3 install --no-cache-dir requests
+sudo -u www-data $BASEDIR/venv/bin/pip3 install --upgrade --no-cache-dir requests
 echo 55 > ${PROGRESS_FILE}
-sudo -u www-data $BASEDIR/venv/bin/pip3 install --no-cache-dir pyudev
+sudo -u www-data $BASEDIR/venv/bin/pip3 install --upgrade --no-cache-dir pyudev
 echo 60 > ${PROGRESS_FILE}
 sudo -u www-data $BASEDIR/venv/bin/pip3 install --no-cache-dir paho-mqtt==1.6.1
 

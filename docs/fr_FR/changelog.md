@@ -12,6 +12,11 @@ Pour toutes demandes :
  - [Changelog version stable](https://nextdom.github.io/plugin-teleinfo/fr_FR/changelog.md)
  - [Changelog version bêta](https://noyax.github.io/plugin-teleinfo/fr_FR/changelog.md)
 
+## 4.8.4 (27-03-2024) => version stable ET bêta
+- intégration de la PR de @jlayec (github) alias @ceyal14 (jeedom community) : fix python 3.10 and better exception connection
+- modification du démon MQTT pour accepter le MQTT issu directement du modem WIFITIC de Cartelectronic. Le topic doit obligatoirement être sous la forme /wifiTICxxx/teleinfo où xxx est libre
+- prise en compte du répertoire réel d'installation du plugin lors de la mise à jour des dépendances
+
 ## 4.8.3a (02-03-2024) => version stable ET bêta
 - correction d'un problème qui pouvait se produire lors de l'install de l'environnement virtuel
 
