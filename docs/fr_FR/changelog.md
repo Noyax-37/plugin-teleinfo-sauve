@@ -12,7 +12,7 @@ Pour toutes demandes :
  - [Changelog version stable](https://nextdom.github.io/plugin-teleinfo/fr_FR/changelog.md)
  - [Changelog version bêta](https://noyax.github.io/plugin-teleinfo/fr_FR/changelog.md)
 
-## 4.8. (-05-2024) => version bêta
+## 4.8.5 (28-04-2024) => version bêta
 - compatibilité Debian 12, merci @
 - en cas de changement de jeedom sans tout réinstaller possibilité d'exporter et d'importer les données, merci @mjeanne d'avoir demandé cet ajout
 - déplacement de l'info température extérieure dans la configuration générale du plugin
