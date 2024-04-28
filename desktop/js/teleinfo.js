@@ -254,6 +254,83 @@ $.hideLoading();
 
 });
 
+
+$('#btSauve').on('click', function() {
+    $.ajax({
+        type: 'POST',
+        url: 'plugins/teleinfo/core/ajax/teleinfo.ajax.php',
+        data: {
+            action:'sauveCmd',
+            compteur: $('.eqLogicAttr[data-l1key=id]').value(),
+            },
+        dataType: 'json',
+        error: function(error) {
+            domUtils.hideLoading()
+            jeedomUtils.showAlert({
+              message: error.message,
+              level: 'danger'
+            })
+          },
+          success: function (data) { 			
+
+			if (data.state != 'ok') {
+				$('#div_alert').showAlert({message: '{{Erreur}}', level: 'danger'});
+				return;
+			}
+			else  {
+				if (data.result['erreur'] == 'ok'){
+					$('#div_alert').showAlert({message: '{{Sauvegarde terminée avec succès}}', level: 'success'});
+				} else {
+					$('#div_alert').showAlert({message: '{{Problème rencontré lors de la sauvegarde}}', level: 'danger'});
+				}
+			}
+		}
+
+    });
+
+
+});
+
+
+$('#btRestaure').on('click', function() {
+    $.ajax({
+        type: 'POST',
+        url: 'plugins/teleinfo/core/ajax/teleinfo.ajax.php',
+        data: {
+            action:'restaureCmd',
+            compteur: $('.eqLogicAttr[data-l1key=id]').value(),
+            fichierRestaure: $('#idFichierRestaure').value(),
+            idRestaure: $('#idRestaure').value(),
+            },
+        dataType: 'json',
+        error: function(error) {
+            domUtils.hideLoading()
+            jeedomUtils.showAlert({
+              message: error.message,
+              level: 'danger'
+            })
+          },
+          success: function (data) { 			
+
+			if (data.state != 'ok') {
+				$('#div_alert').showAlert({message: '{{Erreur}}', level: 'danger'});
+				return;
+			}
+			else  {
+				if (data.result['erreur'] == 'ok'){
+					$('#div_alert').showAlert({message: '{{Restauration terminée avec succès, pensez à (ré)générer les statistiques}}', level: 'success'});
+				} else {
+					$('#div_alert').showAlert({message: '{{Problème rencontré lors de la restauration}}', level: 'danger'});
+				}
+			}
+		}
+
+    });
+
+
+});
+
+
 $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 
 function addCmdToTable(_cmd) {
@@ -476,4 +553,27 @@ $('#addDataToTable').on('click', function() {
     var _cmd = {type: 'info'};
     _cmd.configuration = {'type':'data'};
     addCmdToTable(_cmd);
+});
+
+$('.eqLogicAction[data-action=createCommunityPost]').on('click', function (event) {
+    jeedom.plugin.createCommunityPost({
+      type: eqType,
+      error: function(error) {
+        domUtils.hideLoading()
+        jeedomUtils.showAlert({
+          message: error.message,
+          level: 'danger'
+        })
+      },
+      success: function(data) {
+        let element = document.createElement('a');
+        element.setAttribute('href', data.url);
+        element.setAttribute('target', '_blank');
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+      }
+    });
+    return;
 });

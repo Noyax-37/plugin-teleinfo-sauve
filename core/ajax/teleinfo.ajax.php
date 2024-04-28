@@ -591,6 +591,78 @@ try {
             $return['result'] = '2';
             ajax::success($return);
         break;
+        case 'sauveCmd':
+            $return['erreur']='nOk';
+            $return = teleinfo::sauveCmd(init('compteur'));
+            ajax::success($return);
+        break;
+        case 'restaureCmd':
+            $return['erreur'] = 'nOk';
+            event::add('jeedom::alert', array(
+                'level' => 'warning',
+                'page' => 'teleinfo',
+                'message' => __("envoi " . init('idRestaure') . ' vers id compteur ' . init('compteur') . ' du fichier ' . init('fichierRestaure'), __FILE__),
+            ));
+            $eqLogic = eqLogic::byId(init('compteur'));
+            if (!is_object($eqLogic)){
+                event::add('jeedom::alert', array(
+                    'level' => 'warning',
+                    'page' => 'teleinfo',
+                    'message' => __("ddd ouille", __FILE__),
+                ));
+            }
+            $cmd = $eqLogic->getCmd('info',init('idRestaure'));
+            if (!is_object($cmd)){
+                event::add('jeedom::alert', array(
+                    'level' => 'warning',
+                    'page' => 'teleinfo',
+                    'message' => __("Commande inexistante => création", __FILE__),
+                ));
+                $cmd = teleinfo::createCmdFromRest($eqLogic,init('idRestaure'));
+                event::add('jeedom::alert', array(
+                    'level' => 'warning',
+                    'page' => 'teleinfo',
+                    'message' => __("nouvelle commande créée => " . $cmd->getName(), __FILE__),
+                ));
+            }
+
+            event::add('jeedom::alert', array(
+                'level' => 'warning',
+                'page' => 'teleinfo',
+                'message' => __("Récupération des données du fichier ". __DIR__ . '/../../sauvegarde/' . init('fichierRestaure'), __FILE__),
+            ));
+
+            if (($fichier = fopen(__DIR__ . '/../../sauvegarde/' . init('fichierRestaure'), 'r')) != FALSE){
+                event::add('jeedom::alert', array(
+                    'level' => 'warning',
+                    'page' => 'teleinfo',
+                    'message' => __("Restauration de l'historique de l'index ".$cmd->getName(), __FILE__),
+                ));
+                $i=0;
+                while (($donnees = fgetcsv($fichier, 1000, ",")) !== FALSE) {
+                    $i+=1;
+                    if ($i<3){
+                        event::add('jeedom::alert', array(
+                            'level' => 'warning',
+                            'page' => 'teleinfo',
+                            'message' => __("getcsv ligne". $i . ' date = ' . $donnees[1] . ', valeur = ' . $donnees[2], __FILE__),
+                        ));
+                    }
+                    if ($i!= 1){
+                        $sql = "REPLACE INTO historyArch SET cmd_id=:cmdId,datetime=:newDatetime,value=:newValue";
+                        $values = array(
+                            'cmdId' => $cmd->getId(),
+                            'newDatetime' => date('Y-m-d H:00:00', strtotime($donnees[1])),
+                            'newValue' => floatval($donnees[2]),
+                        );
+                        $replaceValues = DB::Prepare($sql, $values, DB::FETCH_TYPE_ROW);
+                    }
+                }
+                $return['erreur'] = 'ok';
+            }
+            ajax::success($return);
+        break;
+
     }
     throw new \Exception('Aucune methode correspondante');
 } catch (\Exception $e) {

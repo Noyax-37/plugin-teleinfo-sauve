@@ -14,6 +14,7 @@ BASEDIR=$(dirname $(readlink -f $0))
 
 pyv="$(python3 -V 2>&1)"
 echo "Version de python installée : $pyv"
+echo "Repertoire de base pour installation VENV : $BASEDIR"
 
 echo 5 > ${PROGRESS_FILE}
 sudo apt-get update
@@ -34,6 +35,7 @@ date
 
 echo 25 > ${PROGRESS_FILE}
 sudo -u www-data python3 -m venv $BASEDIR/venv --without-pip --system-site-packages
+sudo DEBIAN_FRONTEND=noninteractive apt install $BASEDIR/venv/bin/python3-pip
 date
 
 pyv="$($BASEDIR/venv/bin/python3 -V 2>&1)"

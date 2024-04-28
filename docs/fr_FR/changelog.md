@@ -12,6 +12,11 @@ Pour toutes demandes :
  - [Changelog version stable](https://nextdom.github.io/plugin-teleinfo/fr_FR/changelog.md)
  - [Changelog version bêta](https://noyax.github.io/plugin-teleinfo/fr_FR/changelog.md)
 
+## 4.8. (-05-2024) => version bêta
+- compatibilité Debian 12, merci @
+- en cas de changement de jeedom sans tout réinstaller possibilité d'exporter et d'importer les données, merci @mjeanne d'avoir demandé cet ajout
+- déplacement de l'info température extérieure dans la configuration générale du plugin
+
 ## 4.8.4 (27-03-2024) => version stable ET bêta
 - intégration de la PR de @jlayec (github) alias @ceyal14 (jeedom community) : fix python 3.10 and better exception connection
 - modification du démon MQTT pour accepter le MQTT issu directement du modem WIFITIC de Cartelectronic. Le topic doit obligatoirement être sous la forme /wifiTICxxx/teleinfo où xxx est libre

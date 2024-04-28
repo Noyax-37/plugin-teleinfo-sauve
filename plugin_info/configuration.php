@@ -322,6 +322,25 @@ try {
                     <input class="configKey form-control" data-l1key="cycle" placeholder="{{0.3}}"/>
                 </div>
             </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label">{{Temp. extérieure}} :</label>
+                <div class="input-group col-sm-2">
+                    <input id="outsideTemp" class="eqLogicAttr form-control input-sm configKey" data-l1key="outside_temp">
+                    <span class="input-group-btn">
+                        <a class="btn btn-default btn-sm cursor" id="bt_selectoutsideTemp" title="{{Choisir une commande}}"><i class="fas fa-list-alt"></i></a>
+                    </span>
+                    <span class="input-group-btn">
+                        <a class="btn btn-default btn-sm cursor" id="bt_supprTemp" title="{{supprimer}}">suppr</a>
+                    </span>
+                </div>
+
+            </div>
+
+
+
+
         </div>
     </fieldset>
     <br /><br /><br /><br /><br /><br />
@@ -528,3 +547,7 @@ try {
         });
 
 </script>
+<?php
+
+include_file('desktop', 'options', 'js', 'teleinfo');
+?>

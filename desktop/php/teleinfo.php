@@ -72,6 +72,25 @@ switch ($controlerState) {
                 <br/>
                 <span>{{Options}}</span>
             </div>
+			<?php
+			// à conserver
+			// sera afficher uniquement si l'utilisateur est en version 4.4 ou supérieur
+			$jeedomVersion  = jeedom::version() ?? '0';
+			$displayInfoValue = version_compare($jeedomVersion, '4.4.0', '>=');
+			if ($displayInfoValue) {
+			?>
+				<div class="col-sm-2">
+					<div class="eqLogicThumbnailContainer">
+						<div class="cursor eqLogicAction logoSecondary warning" data-action="createCommunityPost">
+							<i class="fas fa-ambulance"></i>
+							<br>
+							<span class="warning">{{Créer un post Community}}</span>
+						</div>
+					</div>
+				</div>
+			<?php
+			}
+			?>
 		</div>
 
         <legend>{{Mes Modules de Téléinformation}}</legend>
@@ -332,20 +351,64 @@ switch ($controlerState) {
 						  </br>
 						  </br>
                           </br>
+						  <label class="col-sm-12 control-label pull-left" style="text-decoration:underline">Les fichier sauvegardés ou à restaurer ci-dessous sont stockés dans /html/plugins/teleinfo/sauvegarde :</label>
+						  </br> </br>
+                          <label class="col-sm-5 control-label pull-left">Sauvegarder l'historique des commandes </label>
+                          <div class="col-sm-6">
+                              <a class="btn btn-info tooltips"  id="btSauve"><i class="fa-solid fa-floppy-disk"></i>{{ Sauvegarder}}</a>
+                          </div>
+						  </br> </br> </br>
+                          <label class="col-sm-5 control-label pull-left">Restaurer un historique vers commande </label>
+                          <div class="col-sm-2">
+                              <?php
+                                    $indexId=array("BASE","EAIT","EAST","EASF01","EASF02","EASF03","EASF04","EASF05","EASF06","EASF07","EASF08","EASF09","EASF10",
+                                                    "HCHC", "HCHP", "EJPHN", "EJPHPM", "BBRHCJB", "BBRHPJB", "BBRHCJW", "BBRHPJW", "BBRHCJR","BBRHPJR");
+                                    $tabrestaure='<select id="idRestaure">';
+                                    $tabrestaure.='<option selected="selected">Aucun</option>';
+                                    foreach($indexId as $value){
+                                        $tabrestaure.='<option value='.$value.'>';
+                                        $tabrestaure.= $value.' </option>';
+                                    }
+                                    $tabrestaure.='</select>';
+                              ?>
+                              <?php echo $tabrestaure ?>
+                          </div>
+                          <label class="col-sm-5 control-label pull-left">Historique à restaurer </label>
+                          <div class="col-sm-4">
+                              <?php
+                                    $dir = __DIR__ . '/../../sauvegarde/';
+                                    $fichiers = array_diff(scandir($dir), array('.', '..'));
+                                    $tabFichiers='<select id="idFichierRestaure">';
+                                    $tabFichiers.='<option selected="selected">Aucun</option>';
+                                    foreach($fichiers as $value){
+                                        $tabFichiers.='<option value='.$value.'>';
+                                        $tabFichiers.= $value.' </option>';
+                                    }
+                                    $tabFichiers.='</select>';
+                              ?>
+                              <?php echo $tabFichiers ?>
+                          </div>
+                          <label class="col-sm-5 control-label pull-left">Lancer restauration </label>
+                          <div class="col-sm-6">
+                                <a class="btn btn-info tooltips"  id="btRestaure"><i class="fas fa-medkit"></i>{{ Restaurer}}</a>
+                          </div>
+                          </br> </br> </br> 
+                          </br> </br> </br> 
 						  </br>
-						  </br>
-							  <div> 
-								  <label>Pour la période du (date au format AAAA-MM-JJ) : </label>
-								  <input id="in_startDate" class="form-control input-sm in_datepicker" style="display : inline-block; width: 87px;" value="<?php echo $date['start']?>"/>
-								  <label> au : </label>
-								  <input id="in_endDate" class="form-control input-sm in_datepicker" style="display : inline-block; width: 87px;" value="<?php echo $date['end']?>"/>
-							  </div>
+                          <label style="text-decoration:underline">Création ou régénération des statistiques liées aux "nouveaux index" : </label>
+						  </br> </br>
+                          <div> 
+                            <label>Pour la période du (date au format AAAA-MM-JJ) : </label>
+                            <input id="in_startDate" class="form-control input-sm in_datepicker" style="display : inline-block; width: 87px;" value="<?php echo $date['start']?>"/>
+                            <label> au : </label>
+                            <input id="in_endDate" class="form-control input-sm in_datepicker" style="display : inline-block; width: 87px;" value="<?php echo $date['end']?>"/>
+                          </div>
 <!--						  <label class="col-sm-5 control-label pull-left">Copier anciennes données  conso totale vers Index00</label>
                           <div class="col-sm-6">
                               <a class="btn btn-info tooltips"  id="btIndex00"><i class="fas fa-medkit"></i>{{ Index00}}</a>
                           </div>
 -->						  </br>
-                          <label class="col-sm-5 control-label pull-left">Copier anciennes données vers Index </label>
+                          <label class="col-sm-5 control-label pull-left">Copier anciennes données vers Index (ou (re)créer les stats) </label>
                           <div class="col-sm-6">
                               <a class="btn btn-info tooltips"  id="btIndex"><i class="fas fa-medkit"></i>{{ Copier}}</a>
                           </div>
