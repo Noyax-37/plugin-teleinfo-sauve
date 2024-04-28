@@ -3,14 +3,13 @@
 **[Fil d'actualité du plugin](https://community.jeedom.com/t/plugin-teleinfo-actualites/100688?u=noyax37)**
 
 Pour toutes demandes : 
- - [https://github.com/NextDom/plugin-teleinfo/issues](https://github.com/NextDom/plugin-teleinfo/issues) 
  - [https://community.jeedom.com/tag/plugin-teleinfo](https://community.jeedom.com/tag/plugin-teleinfo)
 
  - [Doc version stable](https://nextdom.github.io/plugin-teleinfo/fr_FR/)
  - [Doc version bêta](https://noyax.github.io/plugin-teleinfo/fr_FR/)
 
- - [Changelog version stable](https://nextdom.github.io/plugin-teleinfo/fr_FR/changelog.md)
- - [Changelog version bêta](https://noyax.github.io/plugin-teleinfo/fr_FR/changelog.md)
+ - [Changelog version stable](https://github.com/Noyax-37/plugin-teleinfo/blob/master/docs/fr_FR/changelog.md)
+ - [Changelog version bêta](https://github.com/Noyax-37/plugin-teleinfo/blob/develop/docs/fr_FR/changelog.md)
 
 ## 4.8.5 (28-04-2024) => version bêta
 - compatibilité Debian 12, merci @
