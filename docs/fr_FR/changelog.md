@@ -11,6 +11,9 @@ Pour toutes demandes :
  - [Changelog version stable](https://github.com/Noyax-37/plugin-teleinfo/blob/master/docs/fr_FR/changelog.md)
  - [Changelog version bêta](https://github.com/Noyax-37/plugin-teleinfo/blob/develop/docs/fr_FR/changelog.md)
 
+## 4.8.6a (04-05-2024) => version bêta
+- amélioration installation des dépendances
+
 ## 4.8.6 (03-05-2024) => version bêta
 - correction d'erreur dans la sauvegarde des données, merci @Jean-Baptiste
 - amélioration de la sauvegarde des données, restauration et suppression possible des fichiers
