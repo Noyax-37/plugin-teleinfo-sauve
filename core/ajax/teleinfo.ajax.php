@@ -596,6 +596,22 @@ try {
             $return = teleinfo::sauveCmd(init('compteur'));
             ajax::success($return);
         break;
+        case 'supprCmd':
+            $return['erreur']='nOk';
+            $retour =true;
+            if (init('compteur')!='aucun')
+            $mask = __DIR__ . "/../../sauvegarde/*equipement-" . init('compteur') . '_*.*';
+            $retour = array_map( "unlink", glob( $mask ) );
+            event::add('jeedom::alert', array(
+                'level' => 'warning',
+                'page' => 'teleinfo',
+                'message' => __("suppression des fichiers de sauvegarde du compteur " . init('compteur'), __FILE__),
+            ));
+            if ($retour == true){
+                $return['erreur'] = 'ok';
+            }
+            ajax::success($return);
+        break;
         case 'restaureCmd':
             $return['erreur'] = 'nOk';
             event::add('jeedom::alert', array(
@@ -605,11 +621,6 @@ try {
             ));
             $eqLogic = eqLogic::byId(init('compteur'));
             if (!is_object($eqLogic)){
-                event::add('jeedom::alert', array(
-                    'level' => 'warning',
-                    'page' => 'teleinfo',
-                    'message' => __("ddd ouille", __FILE__),
-                ));
             }
             $cmd = $eqLogic->getCmd('info',init('idRestaure'));
             if (!is_object($cmd)){

@@ -2066,6 +2066,10 @@ class teleinfo extends eqLogic
         $eqLogic = eqLogic::byId($id);
         log::add('teleinfo', 'info', "[TELEINFO]----- sauvegarde du compteur " . $eqLogic->getName() . " avec l'ID : " . $id) ;
         $indexSauve = array('BASE','EAST','EASF01','EASF03','EASF05','HCHC','BBRHCJB','BBRHCJW','BBRHCJR','EJPHN','EASF02','EASF04','EASF06','HCHP','BBRHPJB','BBRHPJW','BBRHPJR','EJPHPM','EAIT');
+        $dir = __DIR__ . '/../../sauvegarde/';
+        if (!is_dir($dir)){
+            mkdir($dir);
+        }
         foreach ($indexSauve as $sauve){
             try{
                 $cmd = $eqLogic->getCmd('info', $sauve);
@@ -2082,7 +2086,7 @@ class teleinfo extends eqLogic
                     //$filename = __DIR__ . "/../../sauvegarde/id_" . strval($cmdId) . "_data_" . date('Y-m-d') . ".csv"; 
                         
                     // Create a file pointer 
-                    $f = fopen(__DIR__ . '/../../sauvegarde/memory_equipement-'. str_replace(" ", "_", strval($eqLogic->getName())) . "_index-" . $sauve . '_le-' . date('Y-m-d') . '.csv', 'w'); 
+                    $f = fopen($dir . 'sauvegarde_equipement-'. str_replace(" ", "_", strval($eqLogic->getName())) . "_index-" . $sauve . '_le-' . date('Y-m-d') . '.csv', 'w'); 
                         
                     // Set column headers 
                     $fields = array('cmd_id', 'datetime', 'value'); 

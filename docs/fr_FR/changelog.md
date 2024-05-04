@@ -5,14 +5,18 @@
 Pour toutes demandes : 
  - [https://community.jeedom.com/tag/plugin-teleinfo](https://community.jeedom.com/tag/plugin-teleinfo)
 
- - [Doc version stable](https://nextdom.github.io/plugin-teleinfo/fr_FR/)
- - [Doc version bêta](https://noyax.github.io/plugin-teleinfo/fr_FR/)
+ - [Doc version stable](https://github.com/Noyax-37/plugin-teleinfo/blob/master/docs/fr_FR/index.md)
+ - [Doc version bêta](https://github.com/Noyax-37/plugin-teleinfo/blob/develop/docs/fr_FR/index.md)
 
  - [Changelog version stable](https://github.com/Noyax-37/plugin-teleinfo/blob/master/docs/fr_FR/changelog.md)
  - [Changelog version bêta](https://github.com/Noyax-37/plugin-teleinfo/blob/develop/docs/fr_FR/changelog.md)
 
+## 4.8.6 (03-05-2024) => version bêta
+- correction d'erreur dans la sauvegarde des données, merci @Jean-Baptiste
+- amélioration de la sauvegarde des données, restauration et suppression possible des fichiers
+
 ## 4.8.5 (28-04-2024) => version bêta
-- compatibilité Debian 12, merci @
+- compatibilité Debian 12, merci @Jean-Baptiste
 - en cas de changement de jeedom sans tout réinstaller possibilité d'exporter et d'importer les données, merci @mjeanne d'avoir demandé cet ajout
 - déplacement de l'info température extérieure dans la configuration générale du plugin
 

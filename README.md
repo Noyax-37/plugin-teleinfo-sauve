@@ -17,6 +17,6 @@ Lien vers le forum [ici](https://community.jeedom.com/tag/plugin-teleinfo)
 
 ## Documentation
 
-Version stable: [Cliquer ici](https://NextDom.github.io/plugin-teleinfo/)
+Version stable: [Cliquer ici](https://github.com/Noyax-37/plugin-teleinfo/blob/master/docs/fr_FR/index.md)
 
-Version bêta: [Cliquer ici](https://noyax.github.io/plugin-teleinfo/fr_FR/)
+Version bêta: [Cliquer ici](https://github.com/Noyax-37/plugin-teleinfo/blob/develop/docs/fr_FR/index.md)

@@ -357,8 +357,38 @@ switch ($controlerState) {
                           <div class="col-sm-6">
                               <a class="btn btn-info tooltips"  id="btSauve"><i class="fa-solid fa-floppy-disk"></i>{{ Sauvegarder}}</a>
                           </div>
+                          </br> </br> 
+                          <label class="col-sm-3 control-label pull-left">Supprimer les fichiers du compteur : </label>
+                          <div class="col-sm-2">
+                              <?php
+                                    $dir = __DIR__ . '/../../sauvegarde/';
+                                    $fichiers = array();
+                                    if (is_dir($dir)){
+                                        $fichiers = array_diff(scandir($dir), array('.', '..'));
+                                        asort($fichiers);
+                                    }
+                                    $tabCompteur='<select id="idCompteurSuppr">';
+                                    $tabCompteur.='<option selected="selected">Aucun</option>';
+                                    $valueAnc = ' ';
+                                    foreach($fichiers as $value){
+                                        $debut = explode('equipement-',$value);
+                                        $fin = explode('_index',$debut[1]);
+                                        $valueNew = $fin[0];
+                                        if ($valueAnc != $valueNew){
+                                            $tabCompteur.='<option value=' . $valueNew . '>';
+                                            $tabCompteur.= $valueNew . ' </option>';
+                                        }
+                                        $valueAnc = $valueNew;
+                                    }
+                                    $tabCompteur.='</select>';
+                              ?>
+                              <?php echo $tabCompteur ?>
+                          </div>
+                          <div class="col-sm-6">
+                                <a class="btn btn-info tooltips"  id="btSuppr"><i class="fas fa-medkit"></i>{{ Supprimer}}</a>
+                          </div>
 						  </br> </br> </br>
-                          <label class="col-sm-5 control-label pull-left">Restaurer un historique vers commande </label>
+                          <label class="col-sm-5 control-label pull-left">Restaurer un historique vers index : </label>
                           <div class="col-sm-2">
                               <?php
                                     $indexId=array("BASE","EAIT","EAST","EASF01","EASF02","EASF03","EASF04","EASF05","EASF06","EASF07","EASF08","EASF09","EASF10",
@@ -373,11 +403,14 @@ switch ($controlerState) {
                               ?>
                               <?php echo $tabrestaure ?>
                           </div>
-                          <label class="col-sm-5 control-label pull-left">Historique à restaurer </label>
+                          <label class="col-sm-5 control-label pull-left">Historique à restaurer : </label>
                           <div class="col-sm-4">
                               <?php
                                     $dir = __DIR__ . '/../../sauvegarde/';
-                                    $fichiers = array_diff(scandir($dir), array('.', '..'));
+                                    $fichiers = array();
+                                    if (is_dir($dir)){
+                                        $fichiers = array_diff(scandir($dir), array('.', '..'));
+                                    }
                                     $tabFichiers='<select id="idFichierRestaure">';
                                     $tabFichiers.='<option selected="selected">Aucun</option>';
                                     foreach($fichiers as $value){
@@ -392,7 +425,6 @@ switch ($controlerState) {
                           <div class="col-sm-6">
                                 <a class="btn btn-info tooltips"  id="btRestaure"><i class="fas fa-medkit"></i>{{ Restaurer}}</a>
                           </div>
-                          </br> </br> </br> 
                           </br> </br> </br> 
 						  </br>
                           <label style="text-decoration:underline">Création ou régénération des statistiques liées aux "nouveaux index" : </label>
