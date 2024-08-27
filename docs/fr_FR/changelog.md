@@ -32,6 +32,9 @@ Pour toutes demandes :
 - modification du démon MQTT pour accepter le MQTT issu directement du modem WIFITIC de Cartelectronic. Le topic doit obligatoirement être sous la forme /wifiTICxxx/teleinfo où xxx est libre
 - prise en compte du répertoire réel d'installation du plugin lors de la mise à jour des dépendances
 
+## sans up de version le 08/03/24
+- modification du script d'installation suite https://community.jeedom.com/t/venv-bin-python3-no-such-file-or-directory/122269/24?u=noyax37
+
 ## 4.8.3a (02-03-2024) => version stable ET bêta
 - correction d'un problème qui pouvait se produire lors de l'install de l'environnement virtuel
 
