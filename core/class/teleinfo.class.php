@@ -326,6 +326,7 @@ class teleinfo extends eqLogic
      */
     public static function runDeamon($debug = false, $type = 'conso', $mqtt = false)
     {
+        $pidFile = jeedom::getTmpFolder('teleinfo') . '/teleinfo';
         $teleinfoPath         	  = realpath(dirname(__FILE__) . '/../../ressources');
         $activation_Modem = (config::byKey('activation_Modem', 'teleinfo') == "") ? 1 : config::byKey('activation_Modem', 'teleinfo');
         if ($activation_Modem==''){
@@ -421,7 +422,7 @@ class teleinfo extends eqLogic
             $cmd         .= ' --callback ' . network::getNetworkAccess('internal', 'proto:127.0.0.1:port:comp') . '/plugins/teleinfo/core/php/jeeTeleinfo.php';
             $cmd         .= ' --loglevel '. log::convertLogLevel(log::getLogLevel(__CLASS__));
             $cmd         .= ' --cyclesommeil ' . config::byKey('cycle_sommeil', 'teleinfo', '0.5');
-            $cmd         .= ' --loglevel '. log::convertLogLevel(log::getLogLevel(__CLASS__));
+            $cmd         .= ' --pidfile '. $pidFile;
 
             log::add('teleinfo', 'info', '[' . $type . '] Exécution du service : ' . $cmd);
             $result = exec('nohup ' . $cmd . ' >> ' . log::getPathToLog('teleinfo_deamon_' . $type) . ' 2>&1 &');

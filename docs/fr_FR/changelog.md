@@ -11,6 +11,10 @@ Pour toutes demandes :
  - [Changelog version stable](https://github.com/Noyax-37/plugin-teleinfo/blob/master/docs/fr_FR/changelog.md)
  - [Changelog version bêta](https://github.com/Noyax-37/plugin-teleinfo/blob/develop/docs/fr_FR/changelog.md)
 
+## 4.8.7 (27-08-2024) => version bêta
+- Modification du libellé de certaines données dans le panel (merci à @Xst et @Bison pour leurs remarques pertinentes)
+- Modification de la gestion des fichiers temporaires
+
 ## 4.8.6a (04-05-2024) => version bêta
 - amélioration installation des dépendances
 
