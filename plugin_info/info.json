@@ -14,9 +14,9 @@
 		"forum":"https://community.jeedom.com/tag/plugin-teleinfo",
 		"Fil d'actualité du plugin":"https://community.jeedom.com/t/plugin-teleinfo-actualites/100688?u=noyax37"
 	},
-	"changelog" : "https://NextDom.github.io/plugin-teleinfo/fr_FR/changelog",
-	"documentation" : "https://NextDom.github.io/plugin-teleinfo/fr_FR/",
-	"changelog_beta" : "https://noyax.github.io/plugin-teleinfo/fr_FR/changelog",
-	"documentation_beta" : "https://noyax.github.io/plugin-teleinfo/fr_FR/",
-	"pluginVersion" : "4.8.3"
+	"changelog" : "https://github.com/Noyax-37/plugin-teleinfo/blob/master/docs/fr_FR/changelog.md",
+	"documentation" : "https://github.com/Noyax-37/plugin-teleinfo/blob/master/docs/fr_FR/index.md",
+	"changelog_beta" : "https://github.com/Noyax-37/plugin-teleinfo/blob/develop/docs/fr_FR/changelog.md",
+	"documentation_beta" : "https://github.com/Noyax-37/plugin-teleinfo/blob/develop/docs/fr_FR/index.md",
+	"pluginVersion" : "4.8.7"
 }

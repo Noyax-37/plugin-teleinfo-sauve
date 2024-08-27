@@ -161,6 +161,23 @@ class teleinfo extends eqLogic
 	 * @param $oValue valeur
 	 * @return Commande
 	 */
+
+     public static function createCmdFromRest($teleinfo, $oKey){
+        log::add('teleinfo', 'info', 'création de la commande ' . $oKey . ' pour le compteur ' . $teleinfo->getName());
+        $cmd = (new teleinfoCmd())
+            ->setName($oKey)
+            ->setLogicalId($oKey)
+            ->setType('info')
+            ->setSubType('numeric')
+            ->setDisplay('generic_type', 'GENERIC_INFO');
+        $cmd->setEqLogic_id($teleinfo->id);
+        $cmd->setConfiguration('info_conso', $oKey);
+        $cmd->setIsHistorized(1)
+            ->setIsVisible(1);
+        $cmd->save();
+        return $cmd;
+     }
+
     public static function createCmdFromDef($oADCO, $oKey, $oValue)
     {
         if (!isset($oKey) || !isset($oADCO)) {
@@ -309,6 +326,7 @@ class teleinfo extends eqLogic
      */
     public static function runDeamon($debug = false, $type = 'conso', $mqtt = false)
     {
+        $pidFile = jeedom::getTmpFolder('teleinfo') . '/teleinfo';
         $teleinfoPath         	  = realpath(dirname(__FILE__) . '/../../ressources');
         $activation_Modem = (config::byKey('activation_Modem', 'teleinfo') == "") ? 1 : config::byKey('activation_Modem', 'teleinfo');
         if ($activation_Modem==''){
@@ -404,7 +422,7 @@ class teleinfo extends eqLogic
             $cmd         .= ' --callback ' . network::getNetworkAccess('internal', 'proto:127.0.0.1:port:comp') . '/plugins/teleinfo/core/php/jeeTeleinfo.php';
             $cmd         .= ' --loglevel '. log::convertLogLevel(log::getLogLevel(__CLASS__));
             $cmd         .= ' --cyclesommeil ' . config::byKey('cycle_sommeil', 'teleinfo', '0.5');
-            $cmd         .= ' --loglevel '. log::convertLogLevel(log::getLogLevel(__CLASS__));
+            $cmd         .= ' --pidfile '. $pidFile;
 
             log::add('teleinfo', 'info', '[' . $type . '] Exécution du service : ' . $cmd);
             $result = exec('nohup ' . $cmd . ' >> ' . log::getPathToLog('teleinfo_deamon_' . $type) . ' 2>&1 &');
@@ -1030,7 +1048,7 @@ class teleinfo extends eqLogic
 					log::add('teleinfo', 'debug', ' ==> Valeur Index ' . $i . ' MIN : ' . intval($statMinToday));
 					$$b = intval($statMaxToday) - intval($statMinToday);
 					log::add('teleinfo', 'debug', 'Total Index ' . $i . ' --> ' . ${$b});
-                    $$d = $$b * $$e / 1000;
+                    $$d = $$b * floatval($$e) / 1000;
                     if ($i == 0){
                         $Coutindex00Init = $Coutindex00;
                         $statTodayIndex00init = $statTodayIndex00;
@@ -2044,6 +2062,62 @@ class teleinfo extends eqLogic
 
     } 
 
+    public static function sauveCmd($id){
+        $return['erreur'] = 'nOk';
+        $eqLogic = eqLogic::byId($id);
+        log::add('teleinfo', 'info', "[TELEINFO]----- sauvegarde du compteur " . $eqLogic->getName() . " avec l'ID : " . $id) ;
+        $indexSauve = array('BASE','EAST','EASF01','EASF03','EASF05','HCHC','BBRHCJB','BBRHCJW','BBRHCJR','EJPHN','EASF02','EASF04','EASF06','HCHP','BBRHPJB','BBRHPJW','BBRHPJR','EJPHPM','EAIT');
+        $dir = __DIR__ . '/../../sauvegarde/';
+        if (!is_dir($dir)){
+            mkdir($dir);
+        }
+        foreach ($indexSauve as $sauve){
+            try{
+                $cmd = $eqLogic->getCmd('info', $sauve);
+                if (is_object($cmd)){
+                    $cmdId = $cmd->getId();
+                    log::add('teleinfo', 'info', "[TELEINFO]----- sauvegarde de " . $sauve . " avec l'ID : " . $cmdId) ;
+                    $sql = "SELECT * FROM historyArch WHERE (cmd_id=:cmdId)";
+                    $values = array(
+                        'cmdId' => $cmdId,
+                    );
+                    $sql = "SELECT * FROM historyArch WHERE (cmd_id=:cmdId)";
+                    $querys = DB::Prepare($sql, $values, DB::FETCH_TYPE_ALL);
+                    $delimiter = ","; 
+                    //$filename = __DIR__ . "/../../sauvegarde/id_" . strval($cmdId) . "_data_" . date('Y-m-d') . ".csv"; 
+                        
+                    // Create a file pointer 
+                    $f = fopen($dir . 'sauvegarde_equipement-'. str_replace(" ", "_", strval($eqLogic->getName())) . "_index-" . $sauve . '_le-' . date('Y-m-d') . '.csv', 'w'); 
+                        
+                    // Set column headers 
+                    $fields = array('cmd_id', 'datetime', 'value'); 
+                    fputcsv($f, $fields, $delimiter); 
+                        
+                    // Output each row of the data, format line as csv and write to file pointer 
+                    foreach ($querys as $query){
+                        $lineData = $query; //array($query[0], $query[1], $query[2]); 
+                        fputcsv($f, $lineData, $delimiter); 
+                    }
+                    // Move back to beginning of file 
+                    fseek($f, 0); 
+                        
+                    // Set headers to download file rather than displayed 
+                    header('Content-Type: text/csv'); 
+                    header('Content-Disposition: attachment; filename="' . $f . '";'); 
+                        
+                    //output all remaining data on a file pointer 
+                    fpassthru($f); 
+                } 
+                    
+            } catch (\Exception $e) {
+                log::add('teleinfo', 'error', '[TELEINFO]----- problème lors de la sauvegarde' . $e) ;
+            }
+    
+    
+        }
+        $return['erreur'] = 'ok';
+        return $return;
+    }
 
     public static function regenerateMonthlyStat(){
         cache::set('teleinfo::regenerateMonthlyStat', '1', 86400);
@@ -2430,6 +2504,52 @@ class teleinfo extends eqLogic
         }
     }
 
+    public static function getConfigForCommunity() {
+        if (!file_exists('/var/www/html/plugins/teleinfo/plugin_info/info.json')) {
+          log::add('Teleinfo','warning','Pas de fichier info.json');
+        }
+        $data = json_decode(file_get_contents('/var/www/html/plugins/teleinfo/plugin_info/info.json'), true);
+        if (!is_array($data)) {
+            log::add('Teleinfo','warning','Impossible de décoder le fichier info.json');
+        }
+        try {
+            $core_version = $data['pluginVersion'];
+        } catch (\Exception $e) {
+            log::add('Teleinfo','warning','Impossible de récupérer la version.');
+        }
+    
+    
+        $index = 1;
+        $CommunityInfo = "";
+        foreach (eqLogic::byType('teleinfo', true) as $teleinfo)  {
+          if ($teleinfo->getConfiguration('ActivationProduction') == 1) { $prod = 'Producteur et consommateur'; }
+          else if ($teleinfo->getConfiguration('ActivationProduction') == 0) { $prod = 'Consommateur'; }
+          if ($teleinfo->getConfiguration('HCHP') == 1) { $style = 'HPHC ancienne formule'; }
+          else if ($teleinfo->getConfiguration('HCHP') == 0) { $style = 'pas de HPHC ancienne formule'; }
+          if ($teleinfo->getConfiguration('newIndex') == 1) { $newIndex = 'Utilisation new index'; }
+          else if ($teleinfo->getConfiguration('newIndex') == 0) { $newIndex = 'pas de new index'; }
+          $CommunityInfo = $CommunityInfo . "Compteur #" . $index . " - Mode : " . $prod . " - HPHC? : ". $style . " - Nouveaux index? : ". $newIndex . "\n";
+          $index++;
+        }
+        
+        $CommunityInfo .= '<br/>';
+    
+        
+        $hw = jeedom::getHardwareName();
+        if ($hw == 'diy')
+            $hw = trim(shell_exec('systemd-detect-virt'));
+        if ($hw == 'none')
+            $hw = 'diy';
+        $distrib = trim(shell_exec('. /etc/*-release && echo $ID $VERSION_ID'));
+        $CommunityInfo .= 'OS: ' . $distrib . ' on ' . $hw;
+        $CommunityInfo .= ' ; PHP: ' . phpversion();
+        $CommunityInfo .= ' ; Python: ' . trim(shell_exec("python3 -V | cut -d ' ' -f 2"));
+        $CommunityInfo .= '<br/>teleinfo: version ' . $core_version;
+        $CommunityInfo .= ' ; cmds: ' . count(cmd::searchConfiguration('', teleinfo::class));
+        return $CommunityInfo;
+      }
+       
+    
     public function createPanelStats()
     {
         log::add('teleinfo', 'debug', '-------- Commandes des stats ---------');

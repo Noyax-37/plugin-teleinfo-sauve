@@ -1,6 +1,5 @@
 {
   "apt" : {
-    "python3-ftdi1" : {}
   },
   "pip3" :{
   },

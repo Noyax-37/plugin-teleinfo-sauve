@@ -575,7 +575,7 @@ function loadData(){
                                 if(compteurProd||prodEtConso){
                                     stackGraph = 0
                                     if (datacmd.name == 'STAT_YESTERDAY_PROD'){
-                                        datacmd.name = 'Prod ';
+                                        datacmd.name = 'Réinjection ';
                                     }
                                     serie = 14;
                                     console.log("[loadData][STAT_YESTERDAY_PROD] " + datacmd.id);
@@ -609,7 +609,7 @@ function loadData(){
                                 if(compteurProd||prodEtConso){
                                     stackGraph = 0
                                     commande = datacmd;
-                                    commande.name = 'Prod ';
+                                    commande.name = 'Réinjection ';
                                     serie = 14;
                                     console.log("[loadData][STAT_YESTERDAY_PROD_COUT] " + commande.id);
                                     //if(!prodEtConso){

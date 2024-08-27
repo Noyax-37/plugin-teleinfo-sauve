@@ -553,6 +553,7 @@ parser.add_argument("--port", help="Port du modem", type=str)
 parser.add_argument("--vitesse", help="Vitesse du modem", type=str)
 parser.add_argument("--mode", help="Model mode", type=str)
 parser.add_argument("--cyclesommeil", help="Wait time between 2 readline", type=str)
+parser.add_argument("--pidfile", help="pidfile", type=str)
 args = parser.parse_args()
 
 if args.apikey:
@@ -575,6 +576,8 @@ if args.mode:
     globals.mode = args.mode
 if args.cyclesommeil:
     globals.cycle_sommeil = float(args.cyclesommeil)
+if args.pidfile:
+    globals.pidfile = args.pidfile
 
 globals.socketport = int(globals.socketport)
 globals.cycle = float(globals.cycle)
@@ -594,7 +597,7 @@ logging.info('GLOBAL------Mode : '+str(globals.mode))
 
 signal.signal(signal.SIGINT, handler)
 signal.signal(signal.SIGTERM, handler)
-globals.pidfile = "/tmp/jeedom/teleinfo/teleinfo2cpt.pid"
+globals.pidfile = globals.pidfile + "2cpt.pid"
 jeedom_utils.write_pid(str(globals.pidfile))
 globals.JEEDOM_COM = jeedom_com(apikey = globals.apikey,url = globals.callback,cycle=globals.cycle)
 if not globals.JEEDOM_COM.test():

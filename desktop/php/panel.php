@@ -250,7 +250,7 @@ $eqLogics = eqLogic::byType('teleinfo');
 <!--- Elaboration du tableau PROD --->
 						<?php
 							$tableau3.='<tr class="PRODUCTION">';
-								$tableau3.='<th rowspan="2" style="vertical-align: middle" class="teleinfoth PRODUCTION">Prod</th>';
+								$tableau3.='<th rowspan="2" style="vertical-align: middle" class="teleinfoth PRODUCTION">Réinjection</th>';
 								$tableau3.='<th class="teleinfoth PRODCONSO" style="font-size: 1em;">Energie</th>';
 								foreach($periode as $jours){
 									$tableau3.='<td class="teleinfotd PRODCONSO">';
@@ -311,37 +311,37 @@ $eqLogics = eqLogic::byType('teleinfo');
 						<div class="indexgraph" id='div_graphGlobalPower'>
 						</div>
 						<div class="coutsgraph" style="padding-top:10px;padding-left:24px;padding-bottom:25px;font-size: 1.5em;">
-							<i style="font-size: initial;" class="fas fa-chart-line"></i> {{Coût instantané}}
+							<i style="font-size: initial;" class="fas fa-chart-line"></i> {{Coût et revenu instantané}}
 						</div>
 						<div class="coutsgraph" id='div_graphGlobalPowerCout'>
 						</div>
 						<div class="indexgraph" style="padding-top:10px;padding-left:24px;padding-bottom:25px;font-size: 1.5em;">
-							<i style="font-size: initial;" class="fas fa-chart-bar"></i> {{Evolution consommation journalière}}
+							<i style="font-size: initial;" class="fas fa-chart-bar"></i> {{Evolution consommation et réinjection journalière}}
 						</div>
 						<div class="indexgraph" id='div_graphGlobalJournalier'>
 						</div>
 						<div class="coutsgraph" style="padding-top:10px;padding-left:24px;padding-bottom:25px;font-size: 1.5em;">
-							<i style="font-size: initial;" class="fas fa-chart-bar"></i> {{Evolution coûts journaliers}}
+							<i style="font-size: initial;" class="fas fa-chart-bar"></i> {{Evolution coûts et revenus journaliers}}
 						</div>
 						<div class="coutsgraph" id='div_graphGlobalJournalierCout'>
 						</div>
 						<div class="indexgraph" style="padding-top:10px;padding-left:24px;padding-bottom:25px;font-size: 1.5em;">
-							<i style="font-size: initial;" class="fas fa-chart-bar"></i> {{Evolution consommation mensuelle}}
+							<i style="font-size: initial;" class="fas fa-chart-bar"></i> {{Evolution consommation et réinjection mensuelle}}
 						</div>
 						<div class="indexgraph" id='div_graphGlobalIndex'>
 						</div>
 						<div class="coutsgraph" style="padding-top:10px;padding-left:24px;padding-bottom:25px;font-size: 1.5em;">
-							<i style="font-size: initial;" class="fas fa-chart-bar"></i> {{Evolution coûts mensuels}}
+							<i style="font-size: initial;" class="fas fa-chart-bar"></i> {{Evolution coûts et revenus mensuels}}
 						</div>
 						<div class="coutsgraph" id='div_graphGlobalIndexCout'>
 						</div>
 						<div class="indexgraph" style="padding-top:10px;padding-left:24px;padding-bottom:25px;font-size: 1.5em;">
-							<i style="font-size: initial;" class="fas fa-chart-bar"></i> {{Evolution consommation annuelle}}
+							<i style="font-size: initial;" class="fas fa-chart-bar"></i> {{Evolution consommation et réinjection annuelle}}
 						</div>
 						<div class="indexgraph" id='div_graphGlobalAnnual'>
 						</div>
 						<div class="coutsgraph" style="padding-top:10px;padding-left:24px;padding-bottom:25px;font-size: 1.5em;">
-							<i style="font-size: initial;" class="fas fa-chart-bar"></i> {{Evolution coûts annuels}}
+							<i style="font-size: initial;" class="fas fa-chart-bar"></i> {{Evolution coûts et revenus annuels}}
 						</div>
 						<div class="coutsgraph" id='div_graphGlobalAnnualCout'>
 						</div>

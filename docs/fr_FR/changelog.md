@@ -3,14 +3,40 @@
 **[Fil d'actualité du plugin](https://community.jeedom.com/t/plugin-teleinfo-actualites/100688?u=noyax37)**
 
 Pour toutes demandes : 
- - [https://github.com/NextDom/plugin-teleinfo/issues](https://github.com/NextDom/plugin-teleinfo/issues) 
  - [https://community.jeedom.com/tag/plugin-teleinfo](https://community.jeedom.com/tag/plugin-teleinfo)
 
- - [Doc version stable](https://nextdom.github.io/plugin-teleinfo/fr_FR/)
- - [Doc version bêta](https://noyax.github.io/plugin-teleinfo/fr_FR/)
+ - [Doc version stable](https://github.com/Noyax-37/plugin-teleinfo/blob/master/docs/fr_FR/index.md)
+ - [Doc version bêta](https://github.com/Noyax-37/plugin-teleinfo/blob/develop/docs/fr_FR/index.md)
 
- - [Changelog version stable](https://nextdom.github.io/plugin-teleinfo/fr_FR/changelog.md)
- - [Changelog version bêta](https://noyax.github.io/plugin-teleinfo/fr_FR/changelog.md)
+ - [Changelog version stable](https://github.com/Noyax-37/plugin-teleinfo/blob/master/docs/fr_FR/changelog.md)
+ - [Changelog version bêta](https://github.com/Noyax-37/plugin-teleinfo/blob/develop/docs/fr_FR/changelog.md)
+
+## 4.8.7 (27-08-2024) => version bêta
+- Modification du libellé de certaines données dans le panel (merci à @Xst et @Bison pour leurs remarques pertinentes)
+- Modification de la gestion des fichiers temporaires
+
+## 4.8.6a (04-05-2024) => version bêta
+- amélioration installation des dépendances
+
+## 4.8.6 (03-05-2024) => version bêta
+- correction d'erreur dans la sauvegarde des données, merci @Jean-Baptiste
+- amélioration de la sauvegarde des données, restauration et suppression possible des fichiers
+
+## 4.8.5 (28-04-2024) => version bêta
+- compatibilité Debian 12, merci @Jean-Baptiste
+- en cas de changement de jeedom sans tout réinstaller possibilité d'exporter et d'importer les données, merci @mjeanne d'avoir demandé cet ajout
+- déplacement de l'info température extérieure dans la configuration générale du plugin
+
+## 4.8.4 (27-03-2024) => version stable ET bêta
+- intégration de la PR de @jlayec (github) alias @ceyal14 (jeedom community) : fix python 3.10 and better exception connection
+- modification du démon MQTT pour accepter le MQTT issu directement du modem WIFITIC de Cartelectronic. Le topic doit obligatoirement être sous la forme /wifiTICxxx/teleinfo où xxx est libre
+- prise en compte du répertoire réel d'installation du plugin lors de la mise à jour des dépendances
+
+## sans up de version le 08/03/24
+- modification du script d'installation suite https://community.jeedom.com/t/venv-bin-python3-no-such-file-or-directory/122269/24?u=noyax37
+
+## 4.8.3a (02-03-2024) => version stable ET bêta
+- correction d'un problème qui pouvait se produire lors de l'install de l'environnement virtuel
 
 ## 4.8.3 (**-**-2024)
 - Adapatation du plugin à jeedom V4.4 + Debian 12 + php 8.2.7 (merci @Typher)

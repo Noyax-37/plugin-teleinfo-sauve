@@ -1,3 +1,4 @@
+<script src="core/php/getJS.php?file=3rdparty/highstock/modules/solid-gauge.js"></script>
 <div style="width:140px;min-height : 50px;" class="cmd #history# tooltips cmd-widget conso#id#" data-type="info" data-subtype="numeric" data-cmd_id="#id#" title="#collectDate#">
 	<div id="gauge#id#" style="width:100px; height:55px"></div>
 
@@ -107,8 +108,13 @@
                     },
                 }]
             });
-  
-  
-  
+            jeedom.cmd.addUpdateFunction('#id#', function (_options) {
+                if (isNaN(_options.value)) { _options.value = '#state#' };
+                $('.cmd[data-cmd_id=#id#]').attr('title', '{{Date de valeur}} : ' + _options.valueDate + '<br/>{{Date de collecte}} : ' + _options.collectDate)
+                $('#gauge#id#').highcharts().series[0].update({ data: [Math.round(parseFloat(_options.value) * 10) / 10] }, false);
+                $('#gauge#id#').highcharts().series[0].redraw();
+                console.log('charts: '); // + [Math.round(parseFloat(_options.value) * 10) / 10] + ' | ' + '{{Date de valeur}} : ' + _options.valueDate + ' | ' + '{{Date de collecte}} : ' + _options.collectDate);
+            });
+            jeedom.cmd.refreshValue([{ cmd_id: '#id#', display_value: '#state#', valueDate: '#valueDate#', collectDate: '#collectDate#', alertLevel: '#alertLevel#', unit: '#unite#' }])
 </script>
 </div>

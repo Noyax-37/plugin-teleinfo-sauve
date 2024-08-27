@@ -19,7 +19,10 @@ import logging
 import threading
 import requests
 import datetime
-import collections
+try:
+	from collections.abc import Mapping
+except ImportError:
+	from collections import Mapping
 import serial
 import os
 from os.path import join
@@ -123,8 +126,8 @@ class jeedom_com():
 	def merge_dict(self,d1, d2):
 	    for k,v2 in d2.items():
 	        v1 = d1.get(k) # returns None if v1 has no value for this key
-	        if ( isinstance(v1, collections.Mapping) and
-	             isinstance(v2, collections.Mapping) ):
+	        if ( isinstance(v1, Mapping) and
+	             isinstance(v2, Mapping) ):
 	            self.merge_dict(v1, v2)
 	        else:
 	            d1[k] = v2
