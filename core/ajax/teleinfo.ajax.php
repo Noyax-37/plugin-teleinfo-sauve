@@ -130,7 +130,7 @@ try {
             );
             $page     = array();
 
-            $path = realpath(dirname(__FILE__) . '/../../ressources/teleinfo.log');
+            $path = realpath(dirname(__FILE__) . '/../../resources/teleinfo.log');
             if (!file_exists($path)) {
                 $return['result'] = array('Deamon non lancé');
                 ajax::success($return);

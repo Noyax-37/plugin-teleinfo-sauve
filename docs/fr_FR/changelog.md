@@ -11,7 +11,13 @@ Pour toutes demandes :
  - [Changelog version stable](https://github.com/Noyax-37/plugin-teleinfo/blob/master/docs/fr_FR/changelog.md)
  - [Changelog version bêta](https://github.com/Noyax-37/plugin-teleinfo/blob/develop/docs/fr_FR/changelog.md)
 
-## 4.8.7 (27-08-2024) => version bêta
+
+## 4.9.1 (xx-xx-2024) => version bêta
+- modification du répertoire auparavant appelé "ressources" par le nom conforme "resources" (un "s" en moins)
+- ajout du numéro de version en plus de la date dans la zone "état" de la configuration du plugin (merci à @Bad pour son coup de main)
+- utilisation des lib de @nebz et de @Mips + @TiTidom (dependance.lib et pyenv.lib)
+
+## 4.8.7 (27-08-2024) => version stable + bêta
 - Modification du libellé de certaines données dans le panel (merci à @Xst et @Bison pour leurs remarques pertinentes)
 - Modification de la gestion des fichiers temporaires
 
@@ -31,9 +37,6 @@ Pour toutes demandes :
 - intégration de la PR de @jlayec (github) alias @ceyal14 (jeedom community) : fix python 3.10 and better exception connection
 - modification du démon MQTT pour accepter le MQTT issu directement du modem WIFITIC de Cartelectronic. Le topic doit obligatoirement être sous la forme /wifiTICxxx/teleinfo où xxx est libre
 - prise en compte du répertoire réel d'installation du plugin lors de la mise à jour des dépendances
-
-## sans up de version le 08/03/24
-- modification du script d'installation suite https://community.jeedom.com/t/venv-bin-python3-no-such-file-or-directory/122269/24?u=noyax37
 
 ## 4.8.3a (02-03-2024) => version stable ET bêta
 - correction d'un problème qui pouvait se produire lors de l'install de l'environnement virtuel

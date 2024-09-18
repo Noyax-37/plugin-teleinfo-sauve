@@ -48,7 +48,7 @@ class teleinfo extends eqLogic
 
     // Fonction pour exclure un sous répertoire de la sauvegarde
     public static function backupExclude() {
-		return ['ressources/venv'];
+		return ['resources/venv'];
 	}
 
     public static function changeLogLive($level)
@@ -327,7 +327,7 @@ class teleinfo extends eqLogic
     public static function runDeamon($debug = false, $type = 'conso', $mqtt = false)
     {
         $pidFile = jeedom::getTmpFolder('teleinfo') . '/teleinfo';
-        $teleinfoPath         	  = realpath(dirname(__FILE__) . '/../../ressources');
+        $teleinfoPath         	  = realpath(dirname(__FILE__) . '/../../resources');
         $activation_Modem = (config::byKey('activation_Modem', 'teleinfo') == "") ? 1 : config::byKey('activation_Modem', 'teleinfo');
         if ($activation_Modem==''){
             $activation_Modem = 1;
@@ -446,7 +446,7 @@ class teleinfo extends eqLogic
     
     public static function runDeamonMqtt($debug = false, $type = 'mqtt'){
   
-        $teleinfoPath   = realpath(dirname(__FILE__) . '/../../ressources');
+        $teleinfoPath   = realpath(dirname(__FILE__) . '/../../resources');
         $socketPort 	= config::byKey('socketport', 'teleinfo', '55062') + 2;
         $socketHost 	= config::byKey('socketHost', 'teleinfo', '127.0.0.1');
         $mqtt_broker 	= config::byKey('mqtt_broker', 'teleinfo', '127.0.0.1');
@@ -2612,36 +2612,64 @@ class teleinfo extends eqLogic
 
     /*     * ******** MANAGEMENT ZONE ******* */
 
-    public static function dependancy_info()
-    {
-        $return                  = array();
-        $return['log']           = 'teleinfo_update';
-        $return['progress_file'] = '/tmp/jeedom/teleinfo/dependance';
-        $return['state']         = (self::installationOk()) ? 'ok' : 'nok';
-        return $return;
-    }
-
-    public static function installationOk()
-    {
-        try {
-            $dependances_version = config::byKey('dependancy_version', 'teleinfo', 0);
-            if (intval($dependances_version) >= 1.0) {
-                return true;
-            } else {
-                config::save('dependancy_version', 1.0, 'teleinfo');
-                return false;
-            }
-        } catch (\Exception $e) {
-            return true;
+    private static function pythonRequirementsInstalled(string $pythonPath, string $requirementsPath) {
+        if (!file_exists($pythonPath) || !file_exists($requirementsPath)) {
+          return false;
         }
-    }
-
-    public static function dependancy_install()
-    {
-        log::remove(__CLASS__ . '_update');
-        return array('script' => __DIR__ . '/../../ressources/install_#stype#.sh ' . jeedom::getTmpFolder('teleinfo') . '/dependance', 'log' => log::getPathToLog(__CLASS__ . '_update'));
-    }
-
+        exec("{$pythonPath} -m pip freeze", $packages_installed);
+        $packages = join("||", $packages_installed);
+        exec("cat {$requirementsPath}", $packages_needed);
+        foreach ($packages_needed as $line) {
+          if (preg_match('/([^\s]+)[\s]*([>=~]=)[\s]*([\d+\.?]+)$/', $line, $need) === 1) {
+            if (preg_match('/' . $need[1] . '==([\d+\.?]+)/', $packages, $install) === 1) {
+              if ($need[2] == '==' && $need[3] != $install[1]) {
+                return false;
+              } elseif (version_compare($need[3], $install[1], '>')) {
+                return false;
+              }
+            } else {
+              return false;
+            }
+          }
+        }
+        return true;
+      }
+    
+      public static function dependancy_info()
+      {
+        $pythonBin = __DIR__ . '/../../resources/venv/bin/python3';
+        $pythonReq = __DIR__ . '/../../resources/requirements.txt';
+        $return = array();
+        $return['log'] = log::getPathToLog(__CLASS__ . '_packages');
+        $return['progress_file'] = jeedom::getTmpFolder(__CLASS__) . '/dependance';
+        $return['state'] = 'ok';
+        if (file_exists($return['progress_file'])) {
+          $return['state'] = 'in_progress';
+          log::add(__CLASS__, 'debug', sprintf(
+            __("Dépendances en cours d'installation... (%s%%)", __FILE__),
+            trim(file_get_contents($return['progress_file']))
+          ));
+        } elseif (!file_exists($pythonBin)) {
+          $return['state'] = 'nok';
+        } elseif (!self::pythonRequirementsInstalled($pythonBin, $pythonReq)) {
+          $return['state'] = 'nok';
+        } else {
+          log::add(__CLASS__, 'debug', sprintf(__('Dépendances installées.', __FILE__)));
+        }
+        return $return;
+      }
+    
+      public static function dependancy_install()
+      {
+        $depLogFile = __CLASS__ . '_packages';
+        log::remove($depLogFile);
+        log::add(__CLASS__, 'info', sprintf(
+            __('Installation des dépendances, voir log dédié (%s)', __FILE__),
+            $depLogFile
+          ));
+        return array('script' => __DIR__ . '/../../resources/install_apt.sh ' . jeedom::getTmpFolder(__CLASS__) . '/dependance', 'log' => log::getPathToLog($depLogFile));
+      }
+    
 }
 
 class teleinfoCmd extends cmd

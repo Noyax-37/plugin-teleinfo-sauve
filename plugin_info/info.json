@@ -3,13 +3,13 @@
 	"name" : "Téléinfo",
 	"description" : "Plugin pour utiliser les modems téléinformation USB / Série. Développé initialement par Cédric Guine (@Ticed35)",
 	"licence" : "AGPL",
-	"author" : "Cédric GUINE repris par Noyax37",
+	"author" : "Noyax37",
 	"require" : "4.2",
 	"category" : "automation protocol",
 	"display" : "panel",
 	"hasDependency" : true,
 	"hasOwnDeamon" : true,
-	"maxDependancyInstallTime" : 45,
+	"maxDependancyInstallTime" : 60,
 	"link" : {
 		"forum":"https://community.jeedom.com/tag/plugin-teleinfo",
 		"Fil d'actualité du plugin":"https://community.jeedom.com/t/plugin-teleinfo-actualites/100688?u=noyax37"
@@ -18,5 +18,5 @@
 	"documentation" : "https://github.com/Noyax-37/plugin-teleinfo/blob/master/docs/fr_FR/index.md",
 	"changelog_beta" : "https://github.com/Noyax-37/plugin-teleinfo/blob/develop/docs/fr_FR/changelog.md",
 	"documentation_beta" : "https://github.com/Noyax-37/plugin-teleinfo/blob/develop/docs/fr_FR/index.md",
-	"pluginVersion" : "4.8.7"
+	"pluginVersion" : "4.9.1"
 }

@@ -846,19 +846,19 @@ Configuration de Jeedom
 Configuration de votre serveur hébergeant le démon
 - Installez le démon
 ```
-wget http://IP-JEEDOM/plugins/teleinfo/ressources/globals.py
-wget http://IP-JEEDOM/plugins/teleinfo/ressources/teleinfo.py
+wget http://IP-JEEDOM/plugins/teleinfo/resources/globals.py
+wget http://IP-JEEDOM/plugins/teleinfo/resources/teleinfo.py
 mkdir jeedom
 cd jeedom
-wget http://IP-JEEDOM/plugins/teleinfo/ressources/jeedom/__init__.py
-wget http://IP-JEEDOM/plugins/teleinfo/ressources/jeedom/jeedom.py
+wget http://IP-JEEDOM/plugins/teleinfo/resources/jeedom/__init__.py
+wget http://IP-JEEDOM/plugins/teleinfo/resources/jeedom/jeedom.py
 ```
 - Executez le démon en ajustant les paramètres (insérez le à votre script de démarrage)
 ```
 python /root/teleinfo/teleinfo.py --port /dev/ttyUSB0 --apikey API-KEY-JEEDOM-TELEINFO --callback http://IP-JEEDOM/plugins/teleinfo/core/php/jeeTeleinfo.php --loglevel debug --cyclesommeil 15 --pidfile /tmp/teleinfo --sockethost IP-SERVEUR-DEMON >> /tmp/teleinfo.log 2>&1 &
 ```
 - Remarque 1 : si vous observez des infos manquantes, surtout si vous avez un compteur en mode standard, n'hésitez pas à baisser la valeur de "--cyclesommeil 15", par défaut ce cycle de sommeil de téléinfo dans jeedom est de 0.5
-- Remarque 2 : il peut-être nécéssaire d'installer des dépendances Python (inspirez-vous du fichier http://IP-JEEDOM/plugins/teleinfo/ressources/install_apt.sh)
+- Remarque 2 : il peut-être nécéssaire d'installer des dépendances Python (inspirez-vous du fichier http://IP-JEEDOM/plugins/teleinfo/resources/install_apt.sh)
 
 
 Bug

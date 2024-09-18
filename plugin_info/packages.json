@@ -1,9 +1,0 @@
-{
-  "apt" : {
-  },
-  "pip3" :{
-  },
-  "post-install" : {
-    "script" : "plugins/teleinfo/ressources/post-install.sh"
-  }
-}

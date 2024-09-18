@@ -5,7 +5,7 @@
 
 core/class/teleinfo.class - copie.php
 
-ressources/teleinfo - Copie.py
+resources/teleinfo - Copie.py
 
 .coveralls.yml
 
@@ -15,7 +15,7 @@ ressources/teleinfo - Copie.py
 
 .travis.yml
 
-ressources/venv/
+resources/venv/
 
 
 

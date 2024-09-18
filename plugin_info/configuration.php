@@ -22,6 +22,9 @@ if (!isConnect()) {
     die();
 }
 
+sendVarToJS('version', config::byKey('version', 'teleinfo', 'unknown', true));
+include_file('desktop', 'teleinfo.config', 'js', 'teleinfo');
+
 $port = config::byKey('port', 'teleinfo');
 $activation_Modem = config::byKey('activation_Modem', 'teleinfo');
 $activation_Mqtt = config::byKey('activation_Mqtt', 'teleinfo');
