@@ -2321,12 +2321,12 @@ class teleinfo extends eqLogic
                 foreach ($eqLogic->getCmd('info') as $cmd) {
                     if ($cmd->getConfiguration('type') == "data" || $cmd->getConfiguration('type') == "") {
                         if (strpos($indexConsoHP, $cmd->getConfiguration('info_conso')) !== false) {
-							log::add('teleinfo', 'debug', 'HP : ' . $cmd->getId());
                             $ppapHp += $cmd->execCmd();
+							log::add('teleinfo', 'debug', 'HP : ' . $cmd->getId() . ' Valeur: ' . $ppapHp);
                         }
                         if (strpos($indexConsoHC, $cmd->getConfiguration('info_conso')) !== false) {
-							log::add('teleinfo', 'debug', 'HC : ' . $cmd->getId());
                             $ppapHc += $cmd->execCmd();
+							log::add('teleinfo', 'debug', 'HC : ' . $cmd->getId() . ' Valeur: ' . $ppapHc);
                         }
                     }
                 }
@@ -2337,10 +2337,10 @@ class teleinfo extends eqLogic
                 $cacheHp        = $cacheHp->getValue();
                 $datetimeMesure = $datetimeMesure->getTimestamp();
                 $datetime2      = time();
-                $interval       = $datetime2 - $datetimeMesure;
-                $consoResultat  = ((($ppapHp - $cacheHp) + ($ppapHc - $cacheHc)) / $interval) * 3600;
+                $interval       = (int)$datetime2 - (int)$datetimeMesure;
+                $consoResultat  = ((($ppapHp - (int)$cacheHp) + ($ppapHc - (int)$cacheHc)) / $interval) * 3600;
                 log::add('teleinfo', 'debug', 'Intervale depuis la dernière valeur : ' . $interval);
-                log::add('teleinfo', 'debug', 'Conso calculée : ' . $consoResultat . ' Wh');
+                log::add('teleinfo', 'debug', 'Conso calculée : ' . intval($consoResultat) . ' Wh');
                 $cmdPpap->event(intval($consoResultat));
                 cache::set('teleinfo::ppap_manuelle::' . $eqLogic->getId() . '::hc', $ppapHc, 150);
                 cache::set('teleinfo::ppap_manuelle::' . $eqLogic->getId() . '::hp', $ppapHp, 150);

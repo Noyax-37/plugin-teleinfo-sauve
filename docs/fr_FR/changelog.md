@@ -12,10 +12,11 @@ Pour toutes demandes :
  - [Changelog version bêta](https://github.com/Noyax-37/plugin-teleinfo/blob/develop/docs/fr_FR/changelog.md)
 
 
-## 4.9.1 (xx-xx-2024) => version bêta
+## 4.9.1 => version bêta
 - modification du répertoire auparavant appelé "ressources" par le nom conforme "resources" (un "s" en moins)
 - ajout du numéro de version en plus de la date dans la zone "état" de la configuration du plugin (merci à @Bad pour son coup de main)
 - utilisation des lib de @nebz et de @Mips + @TiTidom (dependance.lib et pyenv.lib)
+- correction d'une erreur apparue avec Debian 12 dans le calcul de la conso moyenne sur la dernière minute (statistique utilisée pour certaines configuration). Merci @bernardfr.caron
 
 ## 4.8.7 (27-08-2024) => version stable + bêta
 - Modification du libellé de certaines données dans le panel (merci à @Xst et @Bison pour leurs remarques pertinentes)
