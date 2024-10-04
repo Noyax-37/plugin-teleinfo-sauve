@@ -40,7 +40,7 @@ knowledge of the CeCILL license and that you accept its terms.
 """
 
 import time
-import optparse
+#import optparse
 #import urllib2
 import sys
 import os
@@ -119,7 +119,7 @@ class Ftdi(object):
             logging.error("MODEM_2cpt------Can't open usb (%d, %s)" % (err, ftdi.ftdi_get_error_string(self.__ftdic)))
             raise FtdiError("Can't open usb (%d, %s)" % (err, ftdi.ftdi_get_error_string(self.__ftdic)))
 
-        err = ftdi.ftdi_set_baudrate(self.__ftdic, baud_rate)
+        err = ftdi.ftdi_set_baudrate(self.__ftdic, int(globals.vitesse))
         if err < 0:
             logging.error("MODEM_2cpt------Can't set baudrate (%d, %s)" % (err, ftdi.ftdi_get_error_string(self.__ftdic)))
             raise FtdiError("Can't set baudrate (%d, %s)" % (err, ftdi.ftdi_get_error_string(self.__ftdic)))
@@ -540,7 +540,7 @@ globals.socketport = 55062
 globals.sockethost = '127.0.0.1'
 globals.apikey = ''
 globals.callback = ''
-globals.cycle = 1;
+globals.cycle = 1
 
 parser = argparse.ArgumentParser(description='Teleinfo Daemon for Jeedom plugin')
 parser.add_argument("--apikey", help="Value to write", type=str)

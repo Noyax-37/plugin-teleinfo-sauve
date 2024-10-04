@@ -179,7 +179,7 @@ createVenv() {
 autoSetupVenv() {
 	# Default values if not defined
 	[ -n "${firstSubStep}" ] || firstSubStep=20
-	[ -n "${lastSubStep}" ] || lastSubStep=70
+	[ -n "${lastSubStep}" ] || lastSubStep=60
 	numSubStepMax=5
 
 	subStep "$(t "Initialisation de python3 et des prérequis")"
@@ -218,8 +218,11 @@ launchInstall() {
 
 	autoSetupVenv
 
-	step 80 "$(t "Installation des paquets python nécessaires")"
+	step 70 "$(t "Installation des paquets python nécessaires")"
 	try ${VENV_DIR}/bin/python3 -m pip install --upgrade -r ${BASE_DIR}/requirements.txt
+
+	step 80 "$(t "Rétablissement des droits des dossiers et fichiers")"
+	chown -Rh www-data:www-data ${VENV_DIR}
 
 	step 90 "$(t "Résumé des paquets installés")"
 	${VENV_DIR}/bin/python3 -m pip freeze

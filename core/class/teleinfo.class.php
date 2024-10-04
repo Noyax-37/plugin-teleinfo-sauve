@@ -392,11 +392,11 @@ class teleinfo extends eqLogic
                 }
             }
 
-            exec('sudo chmod 777 ' . $port . ' > /dev/null 2>&1');
+            exec('sudo chmod 777 ' . (string)$port . ' > /dev/null 2>&1');
 
 
             log::add('teleinfo', 'info', '---------- Informations de lancement ---------');
-            log::add('teleinfo', 'info', 'Port modem : ' . $port);
+            log::add('teleinfo', 'info', 'Port modem : ' . (string)$port);
             log::add('teleinfo', 'info', 'Socket : ' . $socketPort);
             log::add('teleinfo', 'info', 'Type : ' . $type);
             log::add('teleinfo', 'info', 'Mode : ' . $mode);
@@ -413,7 +413,7 @@ class teleinfo extends eqLogic
                 //$cmd          = 'nice -n 19 /usr/bin/python3 ' . $teleinfoPath . '/teleinfo.py';
                 $cmd         .= ' --type ' . $type;
             }
-            $cmd         .= ' --port ' . $port;
+            $cmd         .= ' --port ' . (string)$port;
             $cmd         .= ' --vitesse ' . $modemVitesse;
             $cmd         .= ' --apikey ' . jeedom::getApiKey('teleinfo');
             $cmd         .= ' --mode ' . $mode;

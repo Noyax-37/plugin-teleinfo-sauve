@@ -12,6 +12,9 @@ Pour toutes demandes :
  - [Changelog version bêta](https://github.com/Noyax-37/plugin-teleinfo/blob/develop/docs/fr_FR/changelog.md)
 
 
+## 4.9.2 => version bêta
+- ajourt d'une lib pour faire fonctionner avec les modem cartelectronique 2 compteurs
+
 ## 4.9.1 => version bêta
 - modification du répertoire auparavant appelé "ressources" par le nom conforme "resources" (un "s" en moins)
 - ajout du numéro de version en plus de la date dans la zone "état" de la configuration du plugin (merci à @Bad pour son coup de main)
