@@ -17,6 +17,6 @@ fi
 
 TARGET_PYTHON_VERSION="3.11"
 # VENV_DIR=${BASE_DIR}/venv
-# APT_PACKAGES="php-yaml"
+APT_PACKAGES="python3-ftdi1"
 
 launchInstall
