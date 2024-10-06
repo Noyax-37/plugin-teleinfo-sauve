@@ -529,7 +529,7 @@ def shutdown():
     except:
         pass
     logging.debug("Exit 0")
-    sys.stdout.flush()
+    #sys.stdout.flush()
     os._exit(0)
 #------------------------------------------------------------------------------
 # MAIN

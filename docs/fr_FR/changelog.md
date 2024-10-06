@@ -13,7 +13,7 @@ Pour toutes demandes :
 
 
 ## 4.9.2 => version bêta
-- ajourt d'une lib pour faire fonctionner avec les modem cartelectronique 2 compteurs
+- ajout d'une lib pour faire fonctionner avec les modem cartelectronique 2 compteurs
 
 ## 4.9.1 => version bêta
 - modification du répertoire auparavant appelé "ressources" par le nom conforme "resources" (un "s" en moins)

@@ -550,12 +550,13 @@ class teleinfo extends eqLogic
         $activation_Mqtt = (config::byKey('activation_Mqtt', 'teleinfo') == "") ? 0 : config::byKey('activation_Mqtt', 'teleinfo');
         $consoPort = (config::byKey('port', 'teleinfo') == "") ? "" : config::byKey('port', 'teleinfo');
         $productionPort = (config::byKey('port_modem2', 'teleinfo') == "") ? "" : config::byKey('port_modem2', 'teleinfo');
+        $twoCptCartelectronic = config::byKey('2cpt_cartelectronic', 'teleinfo');
         if ($productionPort != ""){
             $productionActivated = 1;
         } else {
             $productionActivated = 0;
         }
-        if ($consoPort != ""){
+        if ($consoPort != "" || $twoCptCartelectronic == 1){
             $consoActivated = 1;
         } else {
             $consoActivated = 0;
@@ -568,7 +569,6 @@ class teleinfo extends eqLogic
         $returnprod = 'sans';
         if ($consoActivated == 1 && $activation_Modem==1){
             log::add('teleinfo', 'debug', '[TELEINFO_deamon_infoserial] test pid');
-            $twoCptCartelectronic = config::byKey('2cpt_cartelectronic', 'teleinfo');
             if ($twoCptCartelectronic == 1) {
                 $pidFile = jeedom::getTmpFolder('teleinfo') . '/teleinfo2cpt.pid';
             } else {
