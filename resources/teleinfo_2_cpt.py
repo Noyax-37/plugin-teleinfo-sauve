@@ -8,9 +8,9 @@ License
 
 teleinfo_2_cpt.py is Copyright:
 - (C) 2010-2012 Samuel <samuel DOT buffet AT gmail DOT com>
-- (C) 2012-2017 Frédéric <fma38 AT gbiloba DOT org>
+- (C) 2012-2017 FrÃ©dÃ©ric <fma38 AT gbiloba DOT org>
 - (C) 2017 Samuel <samuel DOT buffet AT gmail DOT com>
-- (C) 2015-2018 Cédric Guiné <cedric DOT guine AT gmail DOT com>
+- (C) 2015-2018 CÃ©dric GuinÃ© <cedric DOT guine AT gmail DOT com>
 
 This software is governed by the CeCILL license under French law and
 abiding by the rules of distribution of free software.  You can  use,
@@ -39,6 +39,7 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 """
 
+
 import time
 #import optparse
 #import urllib2
@@ -61,8 +62,7 @@ except ImportError:
 try:
     from jeedom.jeedom import *
 except ImportError as ex:
-    print("Error: importing module from jeedom folder")
-    print(ex)
+    logging.error("MODEM_2cpt------Error: importing module from jeedom folder %s" % str(ex))
     sys.exit(1)
 # USB settings
 usb_vendor = 0x0403
@@ -196,17 +196,25 @@ class Teleinfo(object):
         """
         """
         logging.info("MODEM_2cpt------Initialisation de la teleinfo")
-        logging.info("MODEM_2cpt------MODEM_2cpt------FTDI TYPE : " + str(ftdi_type))
+        logging.info("MODEM_2cpt------FTDI TYPE : " + str(ftdi_type))
         if ftdi_type == 0:
             globals.ftdi_context = ""
             super(Teleinfo, self).__init__()
             self.__ftdi = ftdi_
         else:
             globals.ftdi_context = ftdi.new()
-            ret = ftdi.usb_open(globals.ftdi_context, 0x0403, 0x6001)
-            if ret < 0:
-                logging.error("MODEM_2cpt------Can't open usb (%d, %s)" % (err, ftdi.ftdi_get_error_string(self.__ftdic)))
-            ftdi.set_baudrate(globals.ftdi_context, int(globals.vitesse))
+            err = ftdi.usb_open(globals.ftdi_context, 0x0403, 0x6001)
+            if err < 0:
+                raise FtdiError("Impossible d'ouvrir le port usb (%d, %s)" % (err, ftdi.get_error_string(globals.ftdi_context)))
+            else:
+                err, chipid = ftdi.read_chipid(globals.ftdi_context)
+                if err < 0:
+                    logging.debug("MODEM_2cpt------Erreur lecture chipid %d => -1= read failed, -2= USB device unavailable" %err)
+                else:
+                    logging.debug("MODEM_2cpt------Chipid = %s" % chipid)
+                err = ftdi.set_baudrate(globals.ftdi_context, int(globals.vitesse))
+                if err < 0:
+                    raise FtdiError("Impossible de regler la vitesse de transmission (%d, %s)" % (err, ftdi.get_error_string(globals.ftdi_context)))
         if globals.mode == "historique":
             globals.frame_length = 500
             #ftdi.set_line_property(globals.ftdi_context, ftdi.BITS_8, ftdi.EVEN, ftdi.STOP_BIT_1)
@@ -219,18 +227,22 @@ class Teleinfo(object):
         else:
             err = ftdi.set_bitmode(globals.ftdi_context, usb_port[num], ftdi.BITMODE_CBUS)
             if err < 0:
-                logging.error("MODEM_2cpt------Can't set bitmode (%d, %s)" % (err, ftdi.get_error_string(globals.ftdi_context)))
-                raise FtdiError("Can't set bitmode (%d, %s)" % (err, ftdi.get_error_string(globals.ftdi_context)))
+                #logging.error("MODEM_2cpt------Can't set bitmode (%d, %s)" % (err, ftdi.get_error_string(globals.ftdi_context)))
+                raise FtdiError("Impossible de regler le bitmode (%d, %s)" % (err, ftdi.get_error_string(globals.ftdi_context)))
             time.sleep(0.1)
 
     def __readOne(self):
         """ read 1 char from usb
         """
-        err, buf = ftdi.read_data(globals.ftdi_context, 0x1)
+        if globals.debugger:
+            logging.debug("MODEM_2cpt------trace 17")
+        err, buf = ftdi.read_data(globals.ftdi_context, 1)
+        if globals.debugger:
+            logging.debug("MODEM_2cpt------trace 18 code retour erreur fonction read_data: %d" % err)
         if err < 0:
-            logging.error("MODEM_2cpt------Can't read data (%d, %s)" % (err, ftdi.get_error_string(globals.ftdi_context)))
+            #logging.error("MODEM_2cpt------Can't read data (%d, %s)" % (err, ftdi.get_error_string(globals.ftdi_context)))
             self.close()
-            raise FtdiError("Can't read data (%d, %s)" % (err, ftdi.get_error_string(globals.ftdi_context)))
+            raise FtdiError("Impossible de lire les datas (%d, %s)" % (err, ftdi.get_error_string(globals.ftdi_context)))
         if err:
             #c = unichr(ord(buf) % 0x80)  # Clear bit 7
             c = chr(ord(buf) & 0x07f)
@@ -247,16 +259,26 @@ class Teleinfo(object):
         if ftdi_type == 0:
             raw = self.__ftdi.read(globals.frame_length)
         else:
+            if globals.debugger:
+                logging.debug("MODEM_2cpt------trace 7")
             err = ftdi.usb_purge_buffers(globals.ftdi_context)
+            if globals.debugger:
+                logging.debug("MODEM_2cpt------trace 9 ")
             if err < 0:
-                logging.error("MODEM_2cpt------Can't purge buffers (%d, %s)" % (err, ftdi.get_error_string(globals.ftdi_context)))
-                raise FtdiError("Can't purge buffers (%d, %s)" % (err, ftdi.get_error_string(globals.ftdi_context)))
+                if globals.debugger:
+                    logging.debug("MODEM_2cpt------trace 10")
+                raise FtdiError("Impossible de purger les buffers (%d, %s)" % (err, ftdi.get_error_string(globals.ftdi_context)))
             raw = u""
             while len(raw) < globals.frame_length:
+                if globals.debugger:
+                    logging.debug("MODEM_2cpt------trace 19 %d" % len(raw))
                 err, c = self.__readOne()
+                if globals.debugger:
+                    logging.debug("MODEM_2cpt------trace 20 %d lecture %s" % (err, c))
                 if c is not None and c != '\x00':
                     raw += c
-                    #logging.debug(c)
+        if globals.debugger:
+            logging.debug("MODEM_2cpt------trace 16")
         return raw
 
     def __frameToDatas(self, frame):
@@ -271,8 +293,8 @@ class Teleinfo(object):
                 #logging.debug('chechsum : ' + checksum)
                 header, value = line[:-2].split()
                 #data = {'header': header.encode(), 'value': value.encode(), 'checksum': checksum}
-                #logging.debug('TELEINFO------name : ' + header.encode() + ' value : ' + value.encode() + ' checksum : ' + checksum)
-                logging.debug('TELEINFO------name : ' + header + ' value : ' + value + ' chechsum : ' + checksum)
+                #logging.debug('MODEM_2cpt------name : ' + header.encode() + ' value : ' + value.encode() + ' checksum : ' + checksum)
+                logging.debug('MODEM_2cpt------nom : ' + header + ', valeur : ' + value + ', chechsum : ' + checksum)
                 if self.__checkData(line):
                     #logging.debug('retour vrai du checksum')
                     #Content[header.encode()] = value.encode()
@@ -336,6 +358,8 @@ class Teleinfo(object):
     def readMeter(self):
         """ Read raw frame for giver meter
         """
+        if globals.debugger:
+            logging.debug("MODEM_2cpt------trace 5")
         num_compteur = 1
         cpt1_data = {}
         cpt2_data = {}
@@ -361,6 +385,7 @@ class Teleinfo(object):
                     cpt2_data_temp.pop(cle)
             send_data = {}
             self.__selectMeter(num_compteur)
+            logging.debug('MODEM_2cpt------ lecture du compteur num %d' % num_compteur)
             raw = self.__readRawFrame()
             self.__selectMeter(0)
             datas = self.extractDatas(raw)
@@ -374,7 +399,6 @@ class Teleinfo(object):
                         cpt1_data[cle] = valeur
                     else:
                         cpt1_data[cle] = valeur
-                        logging.debug('cle : ' + cle + ' valeur : ' + valeur)
             elif num_compteur == 2:
                 for cle, valeur in datas.items():
                     if cle == 'PTEC':
@@ -407,6 +431,8 @@ class Teleinfo(object):
                         cpt2_data_temp[cle] = valeur
                         PENDING_CHANGES = True
             try:
+                if globals.debugger:
+                    logging.debug("MODEM_2cpt------trace 6")
                 if PENDING_CHANGES :
                     if num_compteur == 1:
                         if globals.mode == "standard": # Zone linky standard
@@ -428,23 +454,19 @@ class Teleinfo(object):
                                 globals.JEEDOM_COM.add_changes('device::'+cpt2_data_temp["ADCO"],send_data)
             except Exception:
                 errorCom = "Connection error"
-                logging.error(errorCom)
-            #logging.debug("MODEM_2cpt------START SLEEPING " + str(globals.cycle_sommeil) + " seconds")
+                logging.error("MODEM_2cpt------%s" % errorCom)
             time.sleep(globals.cycle_sommeil)
-            #logging.debug("MODEM_2cpt------WAITING : " + str(globals.TELEINFO_SERIAL.inWaiting()) + " octets dans la file apres sleep ")
-            #if globals.TELEINFO_SERIAL.inWaiting() > 1500:
-            #    globals.TELEINFO_SERIAL.flushInput()
-            #    logging.info("MODEM_2cpt------BUFFER OVERFLOW => FLUSH")
-            #    logging.debug(str(globals.TELEINFO_SERIAL.inWaiting()) + "octets dans la file apres flush ")
             if num_compteur == 1:
                 num_compteur = 2
             else:
                 num_compteur = 1
+        if globals.debugger:
+            logging.debug("MODEM_2cpt------trace 15")
         self.terminate()
 
     def exit_handler(self, *args):
         self.terminate()
-        logging.info("[exit_handler]")
+        logging.info("MODEM_2cpt------[exit_handler]")
 
     def close(self):
         if ftdi_type == 0:
@@ -453,7 +475,7 @@ class Teleinfo(object):
             ftdi.close()
 
     def terminate(self):
-        print ("Terminating...")
+        logging.debug("MODEM_2cpt------Fin du programme...")
         self.close()
         #sys.close(gOutput)
         #sys.exit()
@@ -463,38 +485,42 @@ def read_socket(cycle):
         try:
             global JEEDOM_SOCKET_MESSAGE
             if not JEEDOM_SOCKET_MESSAGE.empty():
-                logging.debug("SOCKET-READ------Message received in socket JEEDOM_SOCKET_MESSAGE")
+                logging.debug("MODEM_2cpt------SOCKET-READ: Message JEEDOM_SOCKET_MESSAGE")
                 message = json.loads(JEEDOM_SOCKET_MESSAGE.get())
-                logging.debug("SOCKET-READ------Message received in socket JEEDOM_SOCKET_MESSAGE " + message['cmd'])
+                logging.debug("MODEM_2cpt------SOCKET-READ: Message JEEDOM_SOCKET_MESSAGE " + message['cmd'])
                 if message['apikey'] != globals.apikey:
-                    logging.error("SOCKET-READ------Invalid apikey from socket : " + str(message))
+                    logging.error("MODEM_2cpt------SOCKET-READ: Invalide apikey : " + str(message))
                     return
-                logging.debug('SOCKET-READ------Received command from jeedom : ' + str(message['cmd']))
+                #logging.debug('SOCKET-READ------Received command from jeedom : ' + str(message['cmd']))
                 if message['cmd'] == 'action':
-                    logging.debug('SOCKET-READ------Attempt an action on a device')
+                    logging.debug('MODEM_2cpt------SOCKET-READ: Action attendue sur le device')
                     _thread.start_new_thread(action_handler, (message,))
-                    logging.debug('SOCKET-READ------Action Thread Launched')
+                    #logging.debug('SOCKET-READ------Action Thread Launched')
                 elif message['cmd'] == 'changelog':
                     jeedom_utils.set_log_level('info')
-                    logging.info('SOCKET-READ------Passage du demon en mode ' + message['level'])
+                    logging.info('MODEM_2cpt------SOCKET-READ: Passage du demon en mode ' + message['level'])
                     log = logging.getLogger()
                     for hdlr in log.handlers[:]:
                         log.removeHandler(hdlr)
-                    logging.info("SOCKET-READ------------ C'est parti ;)")
+                    logging.info("MODEM_2cpt------SOCKET-READ: C'est parti ;)")
                     jeedom_utils.set_log_level(message['level'])
         except Exception as e:
-            logging.error("SOCKET-READ------Exception on socket : %s" % str(e))
+            logging.error("MODEM_2cpt------SOCKET-READ: Levee d'une exception sur le socket : %s" % str(e))
             logging.debug(traceback.format_exc())
         time.sleep(cycle)
+
+def action_handler(message):
+    logging.debug("MODEM_2cpt-----Nouvelle action lancee")
+    #je laisse au cas ou...
 
 def listen():
     globals.PENDING_ACTION=False
     jeedom_socket.open()
     logging.info("MODEM_2cpt------Start listening...")
     #globals.TELEINFO = Teleinfo()
-    logging.info("MODEM_2cpt------Preparing Teleinfo...")
+    #logging.info("MODEM_2cpt------Preparing Teleinfo...")
     _thread.start_new_thread( read_socket, (globals.cycle,))
-    logging.debug('GLOBAL------Read Socket Thread Launched')
+    logging.debug('MODEM_2cpt------Lecture Socket Thread Launched')
     while 1:
         try:
             if ftdi_type == 0:
@@ -502,15 +528,26 @@ def listen():
                 ftdi_.init()
                 globals.TELEINFO = Teleinfo(ftdi_)
             else:
+                if globals.debugger:
+                    logging.debug("MODEM_2cpt------trace 1")
                 globals.TELEINFO = Teleinfo("")
+                if globals.debugger:
+                    logging.debug("MODEM_2cpt------trace 2")
+            if globals.debugger:
+                logging.debug("MODEM_2cpt------trace 3")
             globals.TELEINFO.readMeter()
+            if globals.debugger:
+                logging.debug("MODEM_2cpt------trace 4")
         except Exception as e:
-            print("Error:")
-            print(e)
+            if globals.debugger:
+                logging.debug("MODEM_2cpt------trace 13")
+            logging.error("MODEM_2cpt------sortie fonction listen suite erreur => %s" % str(e))
             shutdown()
 
 def handler(signum=None, frame=None):
-    logging.debug("Signal %i caught, exiting..." % int(signum))
+    if globals.debugger:
+        logging.debug("MODEM_2cpt------trace 12")
+    logging.debug("MODEM_2cpt------Signal %i caught, exiting..." % int(signum))
     shutdown()
 
 def shutdown():
@@ -518,8 +555,8 @@ def shutdown():
     #if ftdi_type == 0:
         #ftdi_.shutdown()
     #globals.TELEINFO.close()
-    logging.debug("Shutdown")
-    logging.debug("Removing PID file " + str(globals.pidfile))
+    #logging.debug("Shutdown")
+    logging.debug("MODEM_2cpt------Effacement du fichier PID " + str(globals.pidfile))
     try:
         os.remove(globals.pidfile)
     except:
@@ -528,7 +565,7 @@ def shutdown():
         jeedom_socket.close()
     except:
         pass
-    logging.debug("Exit 0")
+    logging.debug("MODEM_2cpt------Exit 0")
     #sys.stdout.flush()
     os._exit(0)
 #------------------------------------------------------------------------------
@@ -583,17 +620,17 @@ globals.socketport = int(globals.socketport)
 globals.cycle = float(globals.cycle)
 
 jeedom_utils.set_log_level(globals.log_level)
-logging.info('GLOBAL------Start teleinfod')
-logging.info('GLOBAL------Cycle Sommeil : '+str(globals.cycle_sommeil))
-logging.info('GLOBAL------Socket port : '+str(globals.socketport))
-logging.info('GLOBAL------Socket host : '+str(globals.sockethost))
-logging.info('GLOBAL------Log level : '+str(globals.log_level))
-logging.info('GLOBAL------Callback : '+str(globals.callback))
-logging.info('GLOBAL------Vitesse : '+str(globals.vitesse))
-logging.info('GLOBAL------Apikey : '+str(globals.apikey))
-logging.info('GLOBAL------Cycle : '+str(globals.cycle))
-logging.info('GLOBAL------Port : '+str(globals.port))
-logging.info('GLOBAL------Mode : '+str(globals.mode))
+logging.info('MODEM_2cpt------Start teleinfo_2_cpt.py')
+logging.info('MODEM_2cpt------Cycle Sommeil : '+str(globals.cycle_sommeil))
+logging.info('MODEM_2cpt------Socket port : '+str(globals.socketport))
+logging.info('MODEM_2cpt------Socket host : '+str(globals.sockethost))
+logging.info('MODEM_2cpt------Log level : '+str(globals.log_level))
+logging.info('MODEM_2cpt------Callback : '+str(globals.callback))
+logging.info('MODEM_2cpt------Vitesse : '+str(globals.vitesse))
+logging.info('MODEM_2cpt------Apikey : '+str(globals.apikey))
+logging.info('MODEM_2cpt------Cycle : '+str(globals.cycle))
+logging.info('MODEM_2cpt------Port : '+str(globals.port))
+logging.info('MODEM_2cpt------Mode : '+str(globals.mode))
 
 signal.signal(signal.SIGINT, handler)
 signal.signal(signal.SIGTERM, handler)
@@ -601,7 +638,7 @@ globals.pidfile = globals.pidfile + "2cpt.pid"
 jeedom_utils.write_pid(str(globals.pidfile))
 globals.JEEDOM_COM = jeedom_com(apikey = globals.apikey,url = globals.callback,cycle=globals.cycle)
 if not globals.JEEDOM_COM.test():
-    logging.error('MODEM_2cpt------Network communication issues. Please fix your Jeedom network configuration.')
+    logging.error('MODEM_2cpt------Erreur communication reseau. SVP reparerla configuration reseau de Jeedom.')
     shutdown()
 jeedom_socket = jeedom_socket(port=globals.socketport,address=globals.sockethost)
 listen()

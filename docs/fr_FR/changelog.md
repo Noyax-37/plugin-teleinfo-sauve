@@ -12,8 +12,12 @@ Pour toutes demandes :
  - [Changelog version bêta](https://github.com/Noyax-37/plugin-teleinfo/blob/develop/docs/fr_FR/changelog.md)
 
 
+## 4.9.3
+- correction erreur dans le démon du modem cartelectronic modèle 2 compteurs
+- amélioration de la gestion des erreurs dans le démon du modem cartelectronic modèle 2 compteurs
+
 ## 4.9.2 => version bêta
-- ajout d'une lib pour faire fonctionner avec les modem cartelectronique 2 compteurs
+- ajout d'une lib pour faire fonctionner avec les modem cartelectronic 2 compteurs
 
 ## 4.9.1 => version bêta
 - modification du répertoire auparavant appelé "ressources" par le nom conforme "resources" (un "s" en moins)

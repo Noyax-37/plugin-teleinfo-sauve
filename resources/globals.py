@@ -1,4 +1,5 @@
 # coding: utf-8
+debugger = 0
 JEEDOM_COM = ''
 TELEINFO_SERIAL = ''
 TELEINFO_FTDI = ''

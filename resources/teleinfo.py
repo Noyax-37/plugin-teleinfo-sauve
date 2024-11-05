@@ -522,6 +522,11 @@ def read_socket(cycle):
             logging.debug(traceback.format_exc())
         time.sleep(cycle)
 
+def action_handler(message):
+    logging.debug("MODEM----- Nouvelle action lancee")
+    #je laisse au cas ou...
+
+
 def listen():
     globals.PENDING_ACTION = False
     jeedom_socket.open()
