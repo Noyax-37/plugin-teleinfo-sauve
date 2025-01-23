@@ -247,6 +247,7 @@ class teleinfo extends eqLogic
                 case "RELAIS06":
                 case "RELAIS07":
                 case "RELAIS08":
+                case "VTIC":
                     $cmd->setSubType('string')
                             ->setDisplay('generic_type', 'GENERIC_INFO');
                     break;

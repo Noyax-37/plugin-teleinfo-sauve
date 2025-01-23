@@ -146,6 +146,13 @@ function teleinfo_update($direct=true) {
                 $cmd->refresh();
             }
 
+            $cmdvtic = $eqLogic->getCmd('info', 'VTIC');
+            if (is_object($cmdvtic)) {
+                $cmdvtic->setSubType('string');
+                $cmdvtic->save();
+                $cmdvtic->refresh();
+            }
+
         }
     }
 
