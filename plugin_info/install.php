@@ -177,6 +177,19 @@ function teleinfo_update($direct=true) {
         $crontoday->save();
     }
     $crontoday->stop();
+
+    $cronclean = cron::byClassAndFunction('teleinfo', 'cleanDBTeleinfo');
+    if (!is_object($cronclean)) {
+        $cronclean = new cron();
+        $cronclean->setClass('teleinfo');
+        $cronclean->setFunction('cleanDBTeleinfo');
+        $cronclean->setEnable(1);
+        $cronclean->setDeamon(0);
+        $cronclean->setSchedule('25 0 * * 1');
+        $cronclean->save();
+    }
+    $cronclean->stop();
+    
     message::removeAll('teleinfo');
     if ($direct){
         message::add('teleinfo', 'Mise à jour du plugin Téléinfo terminée, vous êtes en version ' . $core_version . '.' . $versionIdentique);

@@ -15,6 +15,7 @@ Pour toutes demandes :
 ## 4.9.3
 - correction erreur dans le démon du modem cartelectronic modèle 2 compteurs
 - amélioration de la gestion des erreurs dans le démon du modem cartelectronic modèle 2 compteurs
+- utilisation des f-string dans les démons python à la place des %d, %i, ...
 
 ## 4.9.2 => version bêta
 - ajout d'une lib pour faire fonctionner avec les modem cartelectronic 2 compteurs

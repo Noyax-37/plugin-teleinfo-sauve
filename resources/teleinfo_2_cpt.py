@@ -62,7 +62,7 @@ except ImportError:
 try:
     from jeedom.jeedom import *
 except ImportError as ex:
-    logging.error("MODEM_2cpt------Error: importing module from jeedom folder %s" % str(ex))
+    logging.error(f"MODEM_2cpt------Error: importing module from jeedom folder {ex}")
     sys.exit(1)
 # USB settings
 usb_vendor = 0x0403
@@ -109,26 +109,26 @@ class Ftdi(object):
         # Init ftdi context
         err = ftdi.ftdi_init(self.__ftdic)
         if err < 0:
-            logging.error("MODEM_2cpt------Can't init ftdi context (%d, %s)" % (err, ftdi.ftdi_get_error_string(self.__ftdic)))
-            raise FtdiError("Can't init ftdi context (%d, %s)" % (err, ftdi.ftdi_get_error_string(self.__ftdic)))
+            logging.error(f"MODEM_2cpt------Can't init ftdi context ({err}, {ftdi.ftdi_get_error_string(self.__ftdic)})")
+            raise FtdiError(f"Can't init ftdi context ({err}, {ftdi.ftdi_get_error_string(self.__ftdic)})")
 
         # Open port
         logging.info("Try to open ftdi port")
         err = ftdi.ftdi_usb_open(self.__ftdic, usb_vendor, usb_product)
         if err < 0:
-            logging.error("MODEM_2cpt------Can't open usb (%d, %s)" % (err, ftdi.ftdi_get_error_string(self.__ftdic)))
-            raise FtdiError("Can't open usb (%d, %s)" % (err, ftdi.ftdi_get_error_string(self.__ftdic)))
+            logging.error(f"MODEM_2cpt------Can't open usb ({err}, {}ftdi.ftdi_get_error_string(self.__ftdic))")
+            raise FtdiError(f"Can't open usb ({err}, {ftdi.ftdi_get_error_string(self.__ftdic)})")
 
         err = ftdi.ftdi_set_baudrate(self.__ftdic, int(globals.vitesse))
         if err < 0:
-            logging.error("MODEM_2cpt------Can't set baudrate (%d, %s)" % (err, ftdi.ftdi_get_error_string(self.__ftdic)))
-            raise FtdiError("Can't set baudrate (%d, %s)" % (err, ftdi.ftdi_get_error_string(self.__ftdic)))
+            logging.error(f"MODEM_2cpt------Can't set baudrate ({err}, {ftdi.ftdi_get_error_string(self.__ftdic)})")
+            raise FtdiError(f"Can't set baudrate ({err}, {ftdi.ftdi_get_error_string(self.__ftdic)})")
 
         # Because of the usb interface, must use 8 bits transmission data, instead of 7 bits
         err = ftdi.ftdi_set_line_property(self.__ftdic, ftdi.BITS_8, ftdi.EVEN, ftdi.STOP_BIT_1)
         if err < 0:
-            logging.error("MODEM_2cpt------Can't set line property (%d, %s)" % (err, ftdi.ftdi_get_error_string(self.__ftdic)))
-            raise FtdiError("Can't set line property (%d, %s)" % (err, ftdi.ftdi_get_error_string(self.__ftdic)))
+            logging.error(f"MODEM_2cpt------Can't set line property ({err}, {ftdi.ftdi_get_error_string(self.__ftdic)})")
+            raise FtdiError(f"Can't set line property ({err}, {ftdi.ftdi_get_error_string(self.__ftdic)})")
 
     def shutdown(self):
         """ Shutdown ftdi com.
@@ -136,8 +136,8 @@ class Ftdi(object):
         logging.info("Try to close ftdi port")
         err = ftdi.ftdi_usb_close(self.__ftdic)
         if err < 0:
-            logging.error("MODEM_2cpt------Can't close ftdi com. (%d, %s)" % (err, ftdi.ftdi_get_error_string(self.__ftdic)))
-            raise FtdiError("Can't close ftdi com. (%d, %s)" % (err, ftdi.ftdi_get_error_string(self.__ftdic)))
+            logging.error(f"MODEM_2cpt------Can't close ftdi com. ({err}, {ftdi.ftdi_get_error_string(self.__ftdic)})")
+            raise FtdiError(f"Can't close ftdi com. ({err}, {ftdi.ftdi_get_error_string(self.__ftdic)})")
 
         ftdi.ftdi_deinit(self.__ftdic)
 
@@ -146,8 +146,8 @@ class Ftdi(object):
         """
         err = ftdi.ftdi_set_bitmode(self.__ftdic, port, ftdi.BITMODE_CBUS)
         if err < 0:
-            logging.error("MODEM_2cpt------Can't set bitmode (%d, %s)" % (err, ftdi.ftdi_get_error_string(self.__ftdic)))
-            raise FtdiError("Can't set bitmode (%d, %s)" % (err, ftdi.ftdi_get_error_string(self.__ftdic)))
+            logging.error(f"MODEM_2cpt------Can't set bitmode ({err}, {ftdi.ftdi_get_error_string(self.__ftdic)})")
+            raise FtdiError(f"Can't set bitmode ({err}, {ftdi.ftdi_get_error_string(self.__ftdic)})")
         time.sleep(0.1)
 
     def purgeBuffers(self):
@@ -155,8 +155,8 @@ class Ftdi(object):
         """
         err = ftdi.ftdi_usb_purge_buffers(self.__ftdic)
         if err < 0:
-            logging.error("MODEM_2cpt------Can't purge buffers (%d, %s)" % (err, ftdi.ftdi_get_error_string(self.__ftdic)))
-            raise FtdiError("Can't purge buffers (%d, %s)" % (err, ftdi.ftdi_get_error_string(self.__ftdic)))
+            logging.error(f"MODEM_2cpt------Can't purge buffers ({err}, {ftdi.ftdi_get_error_string(self.__ftdic)})")
+            raise FtdiError(f"Can't purge buffers ({err}, {ftdi.ftdi_get_error_string(self.__ftdic)})")
 
     def readOne(self):
         """ read 1 char from usb
@@ -164,9 +164,9 @@ class Ftdi(object):
         buf = ' '
         err = ftdi.ftdi_read_data(self.__ftdic, buf, 1)
         if err < 0:
-            logging.error("MODEM_2cpt------Can't read data (%d, %s)" % (err, ftdi.ftdi_get_error_string(self.__ftdic)))
+            logging.error(f"MODEM_2cpt------Can't read data ({err}, {ftdi.ftdi_get_error_string(self.__ftdic)})")
             self.shutdown()
-            raise FtdiError("Can't read data (%d, %s)" % (err, ftdi.ftdi_get_error_string(self.__ftdic)))
+            raise FtdiError(f"Can't read data ({err}, {ftdi.ftdi_get_error_string(self.__ftdic)})")
         if err:
             c_error = chr(ord(buf) % 0x80)  # Clear bit 7
             return c_error
@@ -205,16 +205,16 @@ class Teleinfo(object):
             globals.ftdi_context = ftdi.new()
             err = ftdi.usb_open(globals.ftdi_context, 0x0403, 0x6001)
             if err < 0:
-                raise FtdiError("Impossible d'ouvrir le port usb (%d, %s)" % (err, ftdi.get_error_string(globals.ftdi_context)))
+                raise FtdiError(f"Impossible d'ouvrir le port usb ({err}, {ftdi.get_error_string(globals.ftdi_context)})")
             else:
                 err, chipid = ftdi.read_chipid(globals.ftdi_context)
                 if err < 0:
-                    logging.debug("MODEM_2cpt------Erreur lecture chipid %d => -1= read failed, -2= USB device unavailable" %err)
+                    logging.debug(f"MODEM_2cpt------Erreur lecture chipid {err} => -1= read failed, -2= USB device unavailable")
                 else:
-                    logging.debug("MODEM_2cpt------Chipid = %s" % chipid)
+                    logging.debug(f"MODEM_2cpt------Chipid = {chipid}")
                 err = ftdi.set_baudrate(globals.ftdi_context, int(globals.vitesse))
                 if err < 0:
-                    raise FtdiError("Impossible de regler la vitesse de transmission (%d, %s)" % (err, ftdi.get_error_string(globals.ftdi_context)))
+                    raise FtdiError(f"Impossible de regler la vitesse de transmission ({err}, {ftdi.get_error_string(globals.ftdi_context)})")
         if globals.mode == "historique":
             globals.frame_length = 500
             #ftdi.set_line_property(globals.ftdi_context, ftdi.BITS_8, ftdi.EVEN, ftdi.STOP_BIT_1)
@@ -227,8 +227,8 @@ class Teleinfo(object):
         else:
             err = ftdi.set_bitmode(globals.ftdi_context, usb_port[num], ftdi.BITMODE_CBUS)
             if err < 0:
-                #logging.error("MODEM_2cpt------Can't set bitmode (%d, %s)" % (err, ftdi.get_error_string(globals.ftdi_context)))
-                raise FtdiError("Impossible de regler le bitmode (%d, %s)" % (err, ftdi.get_error_string(globals.ftdi_context)))
+                #logging.error(f"MODEM_2cpt------Can't set bitmode ({err}, {ftdi.get_error_string(globals.ftdi_context})")
+                raise FtdiError(f"Impossible de regler le bitmode ({err}, {ftdi.get_error_string(globals.ftdi_context)})")
             time.sleep(0.1)
 
     def __readOne(self):
@@ -238,11 +238,11 @@ class Teleinfo(object):
             logging.debug("MODEM_2cpt------trace 17")
         err, buf = ftdi.read_data(globals.ftdi_context, 1)
         if globals.debugger:
-            logging.debug("MODEM_2cpt------trace 18 code retour erreur fonction read_data: %d" % err)
+            logging.debug(f"MODEM_2cpt------trace 18 code retour erreur fonction read_data: {err}")
         if err < 0:
-            #logging.error("MODEM_2cpt------Can't read data (%d, %s)" % (err, ftdi.get_error_string(globals.ftdi_context)))
+            #logging.error(f"MODEM_2cpt------Can't read data ({err}, {ftdi.get_error_string(globals.ftdi_context})")
             self.close()
-            raise FtdiError("Impossible de lire les datas (%d, %s)" % (err, ftdi.get_error_string(globals.ftdi_context)))
+            raise FtdiError(f"Impossible de lire les datas ({err}, {ftdi.get_error_string(globals.ftdi_context)})")
         if err:
             #c = unichr(ord(buf) % 0x80)  # Clear bit 7
             c = chr(ord(buf) & 0x07f)
@@ -267,14 +267,14 @@ class Teleinfo(object):
             if err < 0:
                 if globals.debugger:
                     logging.debug("MODEM_2cpt------trace 10")
-                raise FtdiError("Impossible de purger les buffers (%d, %s)" % (err, ftdi.get_error_string(globals.ftdi_context)))
+                raise FtdiError(f"Impossible de purger les buffers ({err}, {ftdi.get_error_string(globals.ftdi_context)})")
             raw = u""
             while len(raw) < globals.frame_length:
                 if globals.debugger:
-                    logging.debug("MODEM_2cpt------trace 19 %d" % len(raw))
+                    logging.debug(f"MODEM_2cpt------trace 19 {len(raw)}")
                 err, c = self.__readOne()
                 if globals.debugger:
-                    logging.debug("MODEM_2cpt------trace 20 %d lecture %s" % (err, c))
+                    logging.debug(f"MODEM_2cpt------trace 20 {err} lecture {c}")
                 if c is not None and c != '\x00':
                     raw += c
         if globals.debugger:
@@ -294,7 +294,7 @@ class Teleinfo(object):
                 header, value = line[:-2].split()
                 #data = {'header': header.encode(), 'value': value.encode(), 'checksum': checksum}
                 #logging.debug('MODEM_2cpt------name : ' + header.encode() + ' value : ' + value.encode() + ' checksum : ' + checksum)
-                logging.debug('MODEM_2cpt------nom : ' + header + ', valeur : ' + value + ', chechsum : ' + checksum)
+                logging.debug(f'MODEM_2cpt------nom : {header}, valeur : {value}, chechsum : {checksum}')
                 if self.__checkData(line):
                     #logging.debug('retour vrai du checksum')
                     #Content[header.encode()] = value.encode()
@@ -325,13 +325,13 @@ class Teleinfo(object):
             #computed_checksum = ((my_sum + 0x09) & int("111111", 2)) + 0x20
             #logging.debug('computed checksum : ' + chr(computed_checksum) + ' compare a checksum : ' + data[-1])
         else:
-            #print "Check checksum : f = %s, chk = %s" % (frame, checksum)
+            #print (f"Check checksum : f = {frame}, chk = {checksum}")
             datas = ' '.join(data.split()[0:2])
             my_sum = 0
             for cks in datas:
                 my_sum = my_sum + ord(cks)
             computed_checksum = (my_sum & int("111111", 2)) + 0x20
-            #print "computed_checksum = %s" % chr(computed_checksum)
+            #print (f"computed_checksum = {computed_checksum}")
         return chr(computed_checksum) == data[-1]
 
     def extractDatas(self, raw):
@@ -385,7 +385,7 @@ class Teleinfo(object):
                     cpt2_data_temp.pop(cle)
             send_data = {}
             self.__selectMeter(num_compteur)
-            logging.debug('MODEM_2cpt------ lecture du compteur num %d' % num_compteur)
+            logging.debug(f'MODEM_2cpt------ lecture du compteur num {num_compteur}')
             raw = self.__readRawFrame()
             self.__selectMeter(0)
             datas = self.extractDatas(raw)
@@ -454,7 +454,7 @@ class Teleinfo(object):
                                 globals.JEEDOM_COM.add_changes('device::'+cpt2_data_temp["ADCO"],send_data)
             except Exception:
                 errorCom = "Connection error"
-                logging.error("MODEM_2cpt------%s" % errorCom)
+                logging.error(f"MODEM_2cpt------{errorCom}")
             time.sleep(globals.cycle_sommeil)
             if num_compteur == 1:
                 num_compteur = 2
@@ -505,7 +505,7 @@ def read_socket(cycle):
                     logging.info("MODEM_2cpt------SOCKET-READ: C'est parti ;)")
                     jeedom_utils.set_log_level(message['level'])
         except Exception as e:
-            logging.error("MODEM_2cpt------SOCKET-READ: Levee d'une exception sur le socket : %s" % str(e))
+            logging.error(f"MODEM_2cpt------SOCKET-READ: Levee d'une exception sur le socket : {e}")
             logging.debug(traceback.format_exc())
         time.sleep(cycle)
 
@@ -541,13 +541,13 @@ def listen():
         except Exception as e:
             if globals.debugger:
                 logging.debug("MODEM_2cpt------trace 13")
-            logging.error("MODEM_2cpt------sortie fonction listen suite erreur => %s" % str(e))
+            logging.error(f"MODEM_2cpt------sortie fonction listen suite erreur => {e}")
             shutdown()
 
 def handler(signum=None, frame=None):
     if globals.debugger:
         logging.debug("MODEM_2cpt------trace 12")
-    logging.debug("MODEM_2cpt------Signal %i caught, exiting..." % int(signum))
+    logging.debug(f"MODEM_2cpt------Signal {signum} caught, exiting...")
     shutdown()
 
 def shutdown():

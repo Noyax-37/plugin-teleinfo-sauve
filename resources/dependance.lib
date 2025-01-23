@@ -332,8 +332,16 @@ fixNO_PUBKEY() {
 	missing_keys=$(grep 'NO_PUBKEY' $TMPFOLDER/errorLog.$$ | sed -n 's/.*NO_PUBKEY \([^ ]*\).*/\1/p')
 
 	for key in $missing_keys; do
-		echo "== $(t "TROUVÉ") 'NO_PUBKEY $key' $(t "dans l'erreur, je lance une commande pour corriger (ignorez le warning), attendez 45sec et relancez les dépendances pour réessayer")"
-		sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys "$key"
+		echo "== $(t "TROUVÉ") 'NO_PUBKEY $key' $(t "dans l'erreur, je lance une commande pour essayer de corriger (ignorez le warning), attendez 45sec et relancez les dépendances pour réessayer")"
+		echo "== $(t "Si ça ne fonctionne toujours pas, vous devrez résoudre le problème par vous même ou via le support")"
+		if [ "$key" == "93D6889F9F0E78D5" ] && [ ! -f "/media/boot/multiboot/meson64_odroidc2.dtb.linux" ]; then
+			sudo wget https://apt.armbian.com/armbian.key -O key
+			sudo gpg --dearmor < key | sudo tee /usr/share/keyrings/armbian.gpg > /dev/null
+			sudo chmod go+r /usr/share/keyrings/armbian.gpg
+			echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/armbian.gpg] http://apt.armbian.com $(lsb_release -cs) main  $(lsb_release -cs)-utils  $(lsb_release -cs)-desktop" | sudo tee /etc/apt/sources.list.d/armbian.list
+		else
+			sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys "$key"
+		fi
 		HAS_FIX=1
 	done
 }

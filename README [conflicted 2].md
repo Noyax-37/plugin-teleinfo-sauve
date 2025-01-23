@@ -5,7 +5,7 @@ Plugin pour utiliser les modems téléinformation USB sur Jeedom
 
 <img src="plugin_info/teleinfo_icon.png" align="right" height="160" width="150">
 
-![teleinfo1](/docs/images/teleinfo_screenshot1.png)
+![teleinfo1](./docs/images/teleinfo_screenshot1.png)
 
 ### Market
 
