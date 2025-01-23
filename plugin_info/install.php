@@ -213,6 +213,10 @@ function teleinfo_remove() {
     if (is_object($crontoday)) {
         $crontoday->remove();
     }
+    $cronclean = cron::byClassAndFunction('teleinfo', 'cleanDBTeleinfo');
+    if (is_object($cronclean)) {
+        $cronclean->remove();
+    }
     message::removeAll('teleinfo');
     message::add('teleinfo', 'Désinstallation du plugin Téléinfo terminée, vous pouvez de nouveau relever les index à la main ;)');
 }
