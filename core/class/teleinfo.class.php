@@ -355,6 +355,10 @@ class teleinfo extends eqLogic
                                 log::add('teleinfo', 'error', '[TELEINFO]-----[' . $type . '] Le port1 '. $port . ' n\'existe pas');
                                 return false;
                             }
+                        } else {
+                            log::add('teleinfo', 'error', '[TELEINFO]-----[' . $type . '] Le port1 n\'est pas configuré');
+                            log::add('teleinfo', 'error', '[TELEINFO]----- Le démon ' . $type . ' ne sera pas lancé');
+                            return false;
                         }
                     }
                 }
@@ -376,6 +380,10 @@ class teleinfo extends eqLogic
                                 log::add('teleinfo', 'error', '[TELEINFO]-----[' . $type . '] Le port2 '. $port . ' n\'existe pas');
                                 return false;
                             }
+                        } else {
+                            log::add('teleinfo', 'error', '[TELEINFO]-----[' . $type . '] Le port2 n\'est pas configuré');
+                            log::add('teleinfo', 'error', '[TELEINFO]----- Le démon ' . $type . ' ne sera pas lancé');
+                            return false;
                         }
                     }
                 }
@@ -458,7 +466,7 @@ class teleinfo extends eqLogic
         log::add('teleinfo', 'info', '---------------------------------------------');
         log::add('teleinfo', 'info', '[MQTT] Démarrage service MQTT ');
         log::add('teleinfo', 'info', "SocketHost : " . $socketHost);
-        log::add('teleinfo', 'info', "Socketport : " . $socketport);
+        log::add('teleinfo', 'info', "Socketport : " . $socketPort);
         log::add('teleinfo', 'info', "Broker : " . $mqtt_broker);
         log::add('teleinfo', 'info', "Port du Broker : " . $mqtt_port);
         log::add('teleinfo', 'info', "topic : " . '"' . $mqtt_topic . '"');
@@ -652,6 +660,7 @@ class teleinfo extends eqLogic
         $activation_Mqtt = (config::byKey('activation_Mqtt', 'teleinfo') == "") ? 0 : config::byKey('activation_Mqtt', 'teleinfo');
         $consoPort = (config::byKey('port', 'teleinfo') == "") ? "" : config::byKey('port', 'teleinfo');
         $productionPort = (config::byKey('port_modem2', 'teleinfo') == "") ? "" : config::byKey('port_modem2', 'teleinfo');
+        $configure = 0;
         if ($productionPort != ""){
             $productionActivated = 1;
         } else {
@@ -664,23 +673,29 @@ class teleinfo extends eqLogic
         }
         if ($activation_Modem == 1) {
             log::add('teleinfo', 'info', '[deamon_start_modem] Démarrage du service');
-            if (config::byKey('port', 'teleinfo') != "" || config::byKey('2cpt_cartelectronic', 'teleinfo') != "") {    // Si un port est sélectionné
+            if (config::byKey('port', 'teleinfo') != "" || config::byKey('2cpt_cartelectronic', 'teleinfo') == 1) {    // Si un port est sélectionné
                 if (!self::deamonRunning()) {
-                    log::add('teleinfo', 'info', 'Lancement compteur 1');
+                    log::add('teleinfo', 'info', 'Lancement démon pour modem 1');
                     self::runDeamon($debug, 'conso');
                 }
                 message::removeAll('teleinfo', 'noTeleinfoPort');
             } else {
-                log::add('teleinfo', 'info', 'Pas d\'informations sur le port1 USB (Modem série ?) ');
+                log::add('teleinfo', 'info', 'Port du modem1 non configuré');
+                $configure += 1;
             }
             if ($productionActivated == 1) {    // Si un port est sélectionné
                 //if (!self::deamonRunning()) {
-                    log::add('teleinfo', 'info', 'Lancement compteur 2');
+                    log::add('teleinfo', 'info', 'Lancement démon pour modem 2');
                     self::runDeamon($debug, 'prod');
                 //}
                 //message::removeAll('teleinfo', 'noTeleinfoPort');
             } else {
-                log::add('teleinfo', 'info', 'Port2 non configuré ');
+                log::add('teleinfo', 'info', 'Port du modem2 non configuré');
+                $configure += 1;
+            }
+            if ($configure == 2) {
+                log::add('teleinfo', 'error', "Aucun port modem configuré ce n'est pas normal");
+                log::add('teleinfo', 'error', "Les démons modem ne seront pas lancés");
             }
         }
         if ($activation_Mqtt == 1){
@@ -1529,7 +1544,7 @@ class teleinfo extends eqLogic
                         $statYesterdayCoutTotalIndex00Init = 0;
                     }
 
-                    log::add('teleinfo', 'debug', 'Total Cout Index ' . $i . ' hier --> ' . ${$e} . ' id numéro: ' . ${$d} . ' Index 00 ' . $statYesterdayTotalIndex00 . ' Coût Index 00 ' . $statYesterdayCoutTotalIndex00);
+                    log::add('teleinfo', 'debug', 'Total Cout Index ' . $i . ' hier --> ' . ${$e} . ' id coût index : ' . ${$d} . ' Conso index : ' . ${$c} . ' id index : ' . ${$a});
                 }
 			}
             $statYesterdayTotalIndex00 += $statYesterdayTotalIndex00Init;
@@ -1719,6 +1734,176 @@ class teleinfo extends eqLogic
         }
     log::add('teleinfo', 'info', 'other stats -------------------------------------');
 }
+
+    public static function cleanDBTeleinfo(){
+        log::add('teleinfo_clean','info', "Début de l'opération de nettoyage de la base de données.");
+        foreach (eqLogic::byType('teleinfo') as $eqLogic) {
+            if ($eqLogic->getConfiguration('cleanDBTeleinfo') == 1) {
+                log::add('teleinfo', 'info', 'nettoyage compteur '. $eqLogic->getName());
+                foreach ($eqLogic->getCmd('info') as $cmd) {
+                    if ($cmd->getIsHistorized()==1){
+                        $minParHeure = array();
+                        $valuesClean = 0;
+                        $donneeOptimized = $cmd->getLogicalId(); //init('logicalid')
+                        $donneeType = $cmd->getConfiguration('type'); //init('type')
+                        $donneeId = $cmd->getId(); //init('id')
+                        $replaceValues = '';
+                        $deleteValues = '';
+                        log::add('teleinfo', 'info', "Optimisation de l'historique de ".$donneeOptimized.", cela peut prendre du temps.");
+                        
+                        //compter le nb de ligne
+                        $sql = "SELECT COUNT(*) FROM historyArch WHERE cmd_id=:cmdId";
+                        $values = array(
+                            'cmdId' => $cmd->getId(),
+                        );
+                        $valeursDepartDB = DB::Prepare($sql, $values, DB::FETCH_TYPE_ROW);
+                        $valeursDepart = $valeursDepartDB['COUNT(*)'];
+                        log::add('teleinfo', 'info', "Nombre d'enregistrements: " . $valeursDepart);
+
+                        $sql = 'SELECT COUNT(*) FROM historyArch WHERE cmd_id=:cmdId AND MINUTE(datetime) <> "0" AND (HOUR(datetime) <> "23" AND MINUTE(datetime) <> "59")';
+                        $values = array(
+                            'cmdId' => $cmd->getId(),
+                        );
+                        $valeursEffacerDB = DB::Prepare($sql, $values, DB::FETCH_TYPE_ROW);
+                        $valeursEffacer = $valeursEffacerDB['COUNT(*)'];
+                        log::add('teleinfo', 'info', 'Enregistrements à effacer: ' . $valeursEffacer);
+
+                        if ($valeursEffacer > 1000){                      
+                            
+                            //test si on a affaire à un stat_
+                            if (strpos($donneeOptimized, 'STAT_') !== 0){
+                                //sélectionne le min par heure
+                                if ($donneeType != "AVG"){
+                                    $sql = "SELECT cmd_id,datetime,value FROM historyArch WHERE (cmd_id=:cmdId) GROUP BY YEAR(datetime),MONTH(datetime),DAY(datetime),HOUR(datetime)";
+                                }else{
+                                    $sql = "SELECT cmd_id, FROM_UNIXTIME(AVG(UNIX_TIMESTAMP(datetime))) as datetime, (CAST(value AS DECIMAL(12,2))) as value FROM historyArch WHERE (cmd_id=:cmdId) GROUP BY YEAR(datetime),MONTH(datetime),DAY(datetime),HOUR(datetime)";
+                                }
+                                $values = array(
+                                            'cmdId' => $donneeId,
+                                );
+                                $minParHeure = DB::Prepare($sql, $values, DB::FETCH_TYPE_ALL);
+
+                                //sélectionne le max de la journée
+                                if ($donneeType != "AVG"){
+                                    $sql = "SELECT cmd_id,datetime, max(value) as value 
+                                        FROM historyArch 
+                                        WHERE (cmd_id=:cmdId) AND `datetime` < date(NOW())
+                                        GROUP BY YEAR(datetime),MONTH(datetime),DAY(datetime)";
+                                    $maxJournee = DB::Prepare($sql, $values, DB::FETCH_TYPE_ALL);
+                                }
+
+                                log::add('teleinfo', 'debug', 'Les données sont stockées dans une variable, passons à la suppression du superflu, la phase la plus longue...');
+
+                                // Nettoyage de toutes les valeurs
+                                $sql = "DELETE FROM historyArch WHERE cmd_id=:cmdId";
+                                $values = array(
+                                                'cmdId' => $donneeId,
+                                );
+                                $deleteValues = DB::Prepare($sql, $values, DB::FETCH_TYPE_ROW);
+                                log::add('teleinfo', 'debug', 'Les anciennes données sont supprimées, passons à la remise en place des valeurs stockées');
+
+                                //remise des données purgées en place
+                                $valuesClean=0;
+                                foreach ($minParHeure as $cle => $valeur) {
+                                    $sql = "REPLACE INTO historyArch SET cmd_id=:cmdId,datetime=:newDatetime,value=:newValue";
+                                    $values = array(
+                                        'cmdId' => $donneeId,
+                                        'newDatetime' => date('Y-m-d H:00:00', strtotime($valeur['datetime'])),
+                                        'newValue' => $valeur['value'],
+                                    );
+                                    $replaceValues = DB::Prepare($sql, $values, DB::FETCH_TYPE_ROW);
+                                }
+                                if ($donneeType !== "AVG"){
+                                    foreach ($maxJournee as $cle2 => $valeur2){
+                                        $sql = "REPLACE INTO historyArch SET cmd_id=:cmdId,datetime=:newDatetime,value=:newValue";
+                                        $values = array(
+                                            'cmdId' => $donneeId,
+                                            'newDatetime' => date('Y-m-d 23:59:59', strtotime($valeur2['datetime'])),
+                                            'newValue' => $valeur2['value'],
+                                        );
+                                        $replaceValues = DB::Prepare($sql, $values, DB::FETCH_TYPE_ROW);
+                                    }
+                                }
+                            }else{
+                                if (strpos($donneeOptimized, 'STAT_YESTERDAY') === 0){
+                                    //si on a affaire à des 'stat_yesterday' alors il ne faut garder que le max de la journée
+                                    $sql = "SELECT cmd_id,datetime,max(value) as value FROM historyArch WHERE (cmd_id=:cmdId) GROUP BY YEAR(datetime),MONTH(datetime),DAY(datetime)";
+                                    $values = array(
+                                                'cmdId' => $donneeId,
+                                    );
+                                    $minParJour = DB::Prepare($sql, $values, DB::FETCH_TYPE_ALL);
+                                    log::add('teleinfo', 'debug', 'Les données sont stockées dans une variable, passons à la suppression du superflu, la phase la plus longue...');
+                        
+                                    // Nettoyage de toutes les valeurs
+                                    $sql = "DELETE FROM historyArch WHERE cmd_id=:cmdId";
+                                    $values = array(
+                                                    'cmdId' => $donneeId,
+                                    );
+                                    $deleteValues = DB::Prepare($sql, $values, DB::FETCH_TYPE_ROW);
+                                    log::add('teleinfo', 'debug', 'Les anciennes données sont supprimées, passons à la remise en place des valeurs stockées');
+
+                                    //remise des données purgées en place
+                                    $valuesClean=0;
+                                    foreach ($minParJour as $cle => $valeur) {
+                                        $sql = "REPLACE INTO historyArch SET cmd_id=:cmdId,datetime=:newDatetime,value=:newValue";
+                                        $values = array(
+                                            'cmdId' => $donneeId,
+                                            'newDatetime' => date('Y-m-d 00:00:00', strtotime($valeur['datetime'])),
+                                            'newValue' => $valeur['value'],
+                                        );
+                                        $replaceValues = DB::Prepare($sql, $values, DB::FETCH_TYPE_ROW);
+                                    }
+                                }else{
+                                    if (strpos($donneeOptimized, 'STAT_TODAY') === 0){
+                                        //si on a affaire à des 'stat_today' alors il ne faut garder que le max de chaque heure
+                                        $sql = "SELECT cmd_id,datetime,max(value) as value FROM historyArch WHERE (cmd_id=:cmdId) GROUP BY YEAR(datetime),MONTH(datetime),DAY(datetime),HOUR(datetime)";
+                                        $values = array(
+                                            'cmdId' => $donneeId,
+                                        );
+                                        $maxParHeure = DB::Prepare($sql, $values, DB::FETCH_TYPE_ALL);
+                                        log::add('teleinfo', 'debug', 'Les données sont stockées dans une variable, passons à la suppression du superflu, la phase la plus longue...');
+                            
+                                        // Nettoyage de toutes les valeurs
+                                        $sql = "DELETE FROM historyArch WHERE cmd_id=:cmdId";
+                                        $values = array(
+                                                        'cmdId' => $donneeId,
+                                        );
+                                        $deleteValues = DB::Prepare($sql, $values, DB::FETCH_TYPE_ROW);
+                                        log::add('teleinfo', 'debug', 'Les anciennes données sont supprimées, passons à la remise en place des valeurs stockées');
+
+                                        //remise des données purgées en place
+                                        $valuesClean=0;
+                                        foreach ($maxParHeure as $cle => $valeur) {
+                                            $sql = "REPLACE INTO historyArch SET cmd_id=:cmdId,datetime=:newDatetime,value=:newValue";
+                                            $values = array(
+                                                'cmdId' => $donneeId,
+                                                'newDatetime' => date('Y-m-d H:00:00', strtotime($valeur['datetime'])),
+                                                'newValue' => $valeur['value'],
+                                            );
+                                            $replaceValues = DB::Prepare($sql, $values, DB::FETCH_TYPE_ROW);
+                                        }
+                                    }
+                                }
+
+                            }
+                            $sql = "SELECT COUNT(*) FROM historyArch WHERE cmd_id=:cmdId";
+                            $values = array(
+                                'cmdId' => $donneeId,
+                            );
+                            $valuesCleanDB = DB::Prepare($sql, $values, DB::FETCH_TYPE_ROW);
+                            $valuesClean = $valuesCleanDB['COUNT(*)'];
+
+                            log::add('teleinfo','info', 'Optimisation de l\'historique terminée. Les données sont remises en place. Il y avait ' . $valeursDepart . ' lignes de données avant, il en reste '.$valuesClean);
+                        }else{
+                            log::add('teleinfo','info', 'Pas assez de données à supprimer => au suivant...');
+                        }
+                    }
+                }
+            }
+        }
+        log::add('teleinfo','info', "Fin de l'opération de nettoyage de la base de données.");
+    }
+
     public static function copyVersIndex($compteur, $startDate, $endDate,
                                             $indexcopy01,$indexcopy02,$indexcopy03,$indexcopy04,$indexcopy05,$indexcopy06,$indexcopy07,$indexcopy08,$indexcopy09,$indexcopy10,
                                             $coutcopy00,$coutcopy01,$coutcopy02,$coutcopy03,$coutcopy04,$coutcopy05,$coutcopy06,$coutcopy07,$coutcopy08,$coutcopy09,$coutcopy10,$coutcopyprod){
@@ -2064,6 +2249,7 @@ class teleinfo extends eqLogic
 
     public static function sauveCmd($id){
         $return['erreur'] = 'nOk';
+        log::add('teleinfo', 'info', "[TELEINFO]----- début sauvegarde");
         $eqLogic = eqLogic::byId($id);
         log::add('teleinfo', 'info', "[TELEINFO]----- sauvegarde du compteur " . $eqLogic->getName() . " avec l'ID : " . $id) ;
         $indexSauve = array('BASE','EAST','EASF01','EASF03','EASF05','HCHC','BBRHCJB','BBRHCJW','BBRHCJR','EJPHN','EASF02','EASF04','EASF06','HCHP','BBRHPJB','BBRHPJW','BBRHPJR','EJPHPM','EAIT');
@@ -2137,6 +2323,7 @@ class teleinfo extends eqLogic
             $statHcToCumul       = array();
             $statProdToCumul     = array();
             $statTotalToCumul    = array();
+            $statTotal           = 0;
 
             try{
                 $cmdYesterdayHP     = $eqLogic->getCmd('info', 'STAT_YESTERDAY_HP');
@@ -2337,8 +2524,8 @@ class teleinfo extends eqLogic
                 $cacheHp        = $cacheHp->getValue();
                 $datetimeMesure = $datetimeMesure->getTimestamp();
                 $datetime2      = time();
-                $interval       = (int)$datetime2 - (int)$datetimeMesure;
-                $consoResultat  = ((($ppapHp - (int)$cacheHp) + ($ppapHc - (int)$cacheHc)) / $interval) * 3600;
+                $interval       = (float)$datetime2 - (float)$datetimeMesure;
+                $consoResultat  = ((((float)$ppapHp - (float)$cacheHp) + ((float)$ppapHc - (float)$cacheHc)) / $interval) * 3600;
                 log::add('teleinfo', 'debug', 'Intervale depuis la dernière valeur : ' . $interval);
                 log::add('teleinfo', 'debug', 'Conso calculée : ' . intval($consoResultat) . ' Wh');
                 $cmdPpap->event(intval($consoResultat));

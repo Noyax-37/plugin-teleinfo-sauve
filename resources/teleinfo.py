@@ -60,6 +60,7 @@ class Teleinfo:
         this method can take time, but it enures that the frame returned is valid.
         @return frame : list of dict {name, value, checksum}
         """
+        tramecomplete = ''
         if globals.mode == "standard":  # Process Linky "Standard" Mode
             resp = (globals.TELEINFO_SERIAL.readline().decode("UTF-8"))
             is_ok = False
@@ -67,13 +68,21 @@ class Teleinfo:
             content = {}
             while not is_ok:
                 try:
+                    patience = 0
                     while 'VTIC' not in resp:
                         resp = (globals.TELEINFO_SERIAL.readline().decode("UTF-8"))
+                        if patience < 70:
+                            patience += 1
+                        else:
+                            logging.debug('MODEM------ Attente VTIC très longue, trame recue: ' + str(resp))
+                            patience = 0
                     while 'ADSC' not in resp:
                         if premtrame:
                             premtrame = False
                         else:
                             resp = (globals.TELEINFO_SERIAL.readline().decode("UTF-8"))
+                        tramecomplete += resp
+                        logging.debug('MODEM------ DONNEES RECUES: ' + str(resp))
                         if len(resp.replace('\r', '').replace('\n', '').split('\x09')) == 4:
                             name, horodate, value, checksum = resp.replace('\r', '').replace('\n', '').split('\x09')
                             # checksum = ' '
@@ -82,7 +91,7 @@ class Teleinfo:
                                 content[name] = value
                             else:
                                 logging.debug("MODEM------ ** DONNEES HS ! ** sur trame : " + resp)
-                            logging.debug('MODEM----name : ' + name + ' value : ' + value + ' Horodate : ' + horodate + ' checksum : ' + checksum)
+                            logging.debug('MODEM------ name : ' + name + ' value : ' + value + ' Horodate : ' + horodate + ' checksum : ' + checksum)
                         else:
                             name, value, checksum = resp.replace('\r', '').replace('\n', '').split('\x09')
                             # logging.debug('Nombre de champs : ' + champs)
@@ -296,6 +305,7 @@ class Teleinfo:
                                 logging.debug('MODEM------ ** DONNEES HS ! ** sur trame : ' + resp + ' checksum : ' + checksum)
                             
                             logging.debug('MODEM------ name : ' + name + ' value : ' + value + ' Horodate : ' + " " + ' checksum : ' + checksum)
+                    logging.debug('MODEM------ Trame complete recue : \n' + str(tramecomplete))
                     logging.debug('MODEM------ Content : ' + str(content))
                     is_ok = True
                 except ValueError:
@@ -375,7 +385,7 @@ class Teleinfo:
             else:
                 logging.debug('MODEM------ checksum concordant. Checksum reçu : ' + checksum[0:1] + ' Checksum calcul : ' + chr(computed_checksum))
         else:
-            # print "Check checksum : f = %s, chk = %s" % (frame, checksum)
+            # print (f"Check checksum : f = {frame}, chk = {checksum}"
             datas = ' '.join(frame.split()[0:2])
             my_sum = 0
             for cks in datas:
@@ -385,7 +395,7 @@ class Teleinfo:
                 logging.debug('MODEM------ checksum non concordant. Checksum reçu : ' + checksum[0:1] + ' Checksum calcul : ' + chr(computed_checksum))
             else:
                 logging.debug('MODEM------ checksum concordant. Checksum reçu : ' + checksum[0:1] + ' Checksum calcul : ' + chr(computed_checksum))
-            # print "computed_checksum = %s" % chr(computed_checksum)
+            # print (f"computed_checksum = {computed_checksum}")
         return chr(computed_checksum) == checksum[0:1]
 
     # noinspection PyBroadException
@@ -489,7 +499,7 @@ def open():
         globals.TELEINFO_SERIAL = serial.Serial(globals.port, globals.vitesse, bytesize=7, parity='E', stopbits=1)
         logging.info("MODEM------ CONNECTION OPENED")
     except serial.SerialException:
-        logging.error("MODEM------ Error opening Teleinfo modem '%s' : %s" % (globals.port, traceback.format_exc()))
+        logging.error(f"MODEM------ Error opening Teleinfo modem '{globals.port}' : {traceback.format_exc()}")
 
 
 def read_socket(cycle):
@@ -518,9 +528,14 @@ def read_socket(cycle):
                         log.removeHandler(hdlr)
                     jeedom_utils.set_log_level(message['level'])
         except Exception as e:
-            logging.error("SOCKET-READ------ Exception on socket : %s" % str(e))
+            logging.error(f"SOCKET-READ------ Exception on socket : {e}")
             logging.debug(traceback.format_exc())
         time.sleep(cycle)
+
+def action_handler(message):
+    logging.debug("MODEM----- Nouvelle action lancee")
+    #je laisse au cas ou...
+
 
 def listen():
     globals.PENDING_ACTION = False
@@ -547,7 +562,7 @@ def listen():
 
 
 def handler(signum=None, frame=None):
-    logging.debug("Signal %i caught, exiting..." % int(signum))
+    logging.debug(f"Signal {signum} caught, exiting...")
     shutdown()
 
 

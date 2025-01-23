@@ -334,6 +334,12 @@ switch ($controlerState) {
                               <input type="checkbox" id="AutoCreateFromCompteur" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="AutoCreateFromCompteur"/>
                           </div>
                       </div>
+                      <div class="form-group maintenanceAuto">
+                          <label class="col-lg-4 control-label pull-left">{{Maintenance automatique}} <sup><i class="fas fa-question-circle tooltips" title="{{nettoyage de la base de données tous les lundi}}"></i></sup></label>
+                          <div class="col-lg-7 tooltips">
+                              <input type="checkbox" id="cleanDBTeleinfo" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="cleanDBTeleinfo"/>
+                          </div>
+                      </div>
                       <div class="form-group">
                           <label class="col-lg-4 control-label pull-left"></label>
                           <div class="col-lg-7">

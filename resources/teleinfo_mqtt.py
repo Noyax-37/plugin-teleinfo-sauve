@@ -33,15 +33,15 @@ class error(Exception):
 # Teleinfo core
 # ----------------------------------------------------------------------------
 def handler(signum=None, frame=None):
-    logging.debug("MQTT------Signal %i caught, exiting..." % int(signum))
+    logging.debug(f"MQTT------Signal {signum} caught, exiting...")
     shutdown()
 
 def mqtt_on_log( client, userdata, level, buf ):
     logging.info( "MQTT------log: " + buf)
 
 def mqtt_on_connect( client, userdata, flags, rc ):
-    logging.info( "MQTT------Connexion: code retour = %d" % rc )
-    logging.info( "MQTT------Connexion: Statut = %s" % ("OK" if rc==0 else "échec") )
+    logging.info(f"MQTT------Connexion: code retour = {rc}")
+    logging.info(f"MQTT------Connexion: Statut = {'OK' if rc==0 else 'échec'}")
     client.subscribe(globals.mqtt_topic)
 
 
@@ -55,8 +55,8 @@ def mqtt_on_message(client, userdata, message):
     data = {}
     _SendData = {}
     y = str(message.payload.decode("utf-8"))
-    logging.debug( "MQTT------Topic : %s" % message.topic )
-    logging.debug( "MQTT------Data  : " + y )
+    logging.debug(f"MQTT------Topic : {message.topic}")
+    logging.debug("MQTT------Data  : " + y )
     trouveTIC = False
     if 'wifiTIC' in message.topic:
         try:
@@ -188,7 +188,7 @@ def read_socket(cycle):
                         log.removeHandler(hdlr)
                     jeedom_utils.set_log_level(message['level'])
         except Exception as e:
-            logging.error("SOCKET-READ------Exception on socket : %s" % str(e))
+            logging.error(f"SOCKET-READ------Exception on socket : {e}")
             logging.debug("MQTT------" + traceback.format_exc())
         time.sleep(cycle)
 
