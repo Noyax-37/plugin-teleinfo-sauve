@@ -142,7 +142,7 @@ En cliquant dessus vous rentrez dans l'équipement
 # L'équipement 1/2:
 <br>
 <a href="../../images/teleinfo_equipement01.png">
-<img src="../../images/teleinfo_equipement01.png" alt="configuration" style="width:600px;"/>
+<img src="../../images/teleinfo_equipement01.png" alt="configuration" style="width:1000px;"/>
 <a>
 <br><br>
 
@@ -177,17 +177,17 @@ Si vous voulez continuer à suivre les statistiques dans le panel de votre compt
 <br><br>
 
 Permet de suivre jusqu'à 10 index dans le panel paramètrables indépendamment les uns des autres + l'index 00 qui sert soit au suivi des conso pour un abonnement de base soit de totalisateur de l'ensembles des index de 01 à 10.
-<br><br><br><br><br><br><br><br><br><br>
+<br><br>
 
 ## (6) Maintenance
 <br><br>
 
 L'écran sur lequel on arrive en cliquant sur ce bouton sert à montrer l'utilisation en base de données des différentes commandes et à en assurer la maintenance (lissage des données).
 <br><br>
-
 <a href="../../images/teleinfo_maintenance.png">
 <img src="../../images/teleinfo_maintenance.png" alt="configuration" style="width:800px;"/>
 <a>
+<br><br>
 
 ### (1) Regénérer les stats mensuelles
 <br><br>
@@ -229,9 +229,16 @@ L'action de ce bouton dépend de:
 **IMPORTANT:** cette opération est destructrice, pensez à faire une sauvegarde de votre base au cas où un problème survient pendant cette manipulation.
 <br><br>
 
-**IMPORTANT bis:** Il est préférable de na pas demander à JEEDOM de lisser automatiquement les index utilisés pour construire les statistiques. En effet JEEDOM ne prend pas la valeur max de la journée lors su lissage ce qui peut ammener à ne pas tenir compte de la dernère heure de la journée (ou de la première si le lissage est sur la valeur MAX). L'inconvénient est qu'il faut penser régulièrement à faire la maintenance des données. Dans une version future je pense proposer le lissage type TELEINFO à intervalle régulier en option.
+**IMPORTANT bis:** Il est préférable de na pas demander à JEEDOM de lisser automatiquement les index utilisés pour construire les statistiques. En effet JEEDOM ne prend pas la valeur max de la journée lors su lissage ce qui peut ammener à ne pas tenir compte de la dernère heure de la journée (ou de la première si le lissage est sur la valeur MAX). L'inconvénient est qu'il faut penser régulièrement à faire la maintenance des données.
+<br><br>
 
+
+## (7) Maintenance automatique
+<br><br>
+
+Si coché, sert à supprimer les informations superflues des commandes historisées (comme la commande '>_optimiser' ci-dessus). Cette maintenance automatique est prévue pour être exécutée tous les lundis à 00h25 mais cette programmation peut être modifiée dans le "moteur des tâches" de Jeedom.
 <br><br><br><br><br><br><br><br><br><br>
+
 
 # L'équipement 2/2:
 <br>
