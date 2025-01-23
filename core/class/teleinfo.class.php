@@ -1739,7 +1739,7 @@ class teleinfo extends eqLogic
         log::add('teleinfo_clean','info', "Début de l'opération de nettoyage de la base de données.");
         foreach (eqLogic::byType('teleinfo') as $eqLogic) {
             if ($eqLogic->getConfiguration('cleanDBTeleinfo') == 1) {
-                log::add('teleinfo', 'info', 'nettoyage compteur '. $eqLogic->getName());
+                log::add('teleinfo_clean', 'info', 'nettoyage compteur '. $eqLogic->getName());
                 foreach ($eqLogic->getCmd('info') as $cmd) {
                     if ($cmd->getIsHistorized()==1){
                         $minParHeure = array();
@@ -1749,7 +1749,7 @@ class teleinfo extends eqLogic
                         $donneeId = $cmd->getId(); //init('id')
                         $replaceValues = '';
                         $deleteValues = '';
-                        log::add('teleinfo', 'info', "Optimisation de l'historique de ".$donneeOptimized.", cela peut prendre du temps.");
+                        log::add('teleinfo_clean', 'info', "Optimisation de l'historique de ".$donneeOptimized.", cela peut prendre du temps.");
                         
                         //compter le nb de ligne
                         $sql = "SELECT COUNT(*) FROM historyArch WHERE cmd_id=:cmdId";
@@ -1758,7 +1758,7 @@ class teleinfo extends eqLogic
                         );
                         $valeursDepartDB = DB::Prepare($sql, $values, DB::FETCH_TYPE_ROW);
                         $valeursDepart = $valeursDepartDB['COUNT(*)'];
-                        log::add('teleinfo', 'info', "Nombre d'enregistrements: " . $valeursDepart);
+                        log::add('teleinfo_clean', 'info', "Nombre d'enregistrements: " . $valeursDepart);
 
                         $sql = 'SELECT COUNT(*) FROM historyArch WHERE cmd_id=:cmdId AND MINUTE(datetime) <> "0" AND (HOUR(datetime) <> "23" AND MINUTE(datetime) <> "59")';
                         $values = array(
@@ -1766,7 +1766,7 @@ class teleinfo extends eqLogic
                         );
                         $valeursEffacerDB = DB::Prepare($sql, $values, DB::FETCH_TYPE_ROW);
                         $valeursEffacer = $valeursEffacerDB['COUNT(*)'];
-                        log::add('teleinfo', 'info', 'Enregistrements à effacer: ' . $valeursEffacer);
+                        log::add('teleinfo_clean', 'info', 'Enregistrements à effacer: ' . $valeursEffacer);
 
                         if ($valeursEffacer > 1000){                      
                             
@@ -1792,7 +1792,7 @@ class teleinfo extends eqLogic
                                     $maxJournee = DB::Prepare($sql, $values, DB::FETCH_TYPE_ALL);
                                 }
 
-                                log::add('teleinfo', 'debug', 'Les données sont stockées dans une variable, passons à la suppression du superflu, la phase la plus longue...');
+                                log::add('teleinfo_clean', 'debug', 'Les données sont stockées dans une variable, passons à la suppression du superflu, la phase la plus longue...');
 
                                 // Nettoyage de toutes les valeurs
                                 $sql = "DELETE FROM historyArch WHERE cmd_id=:cmdId";
@@ -1800,7 +1800,7 @@ class teleinfo extends eqLogic
                                                 'cmdId' => $donneeId,
                                 );
                                 $deleteValues = DB::Prepare($sql, $values, DB::FETCH_TYPE_ROW);
-                                log::add('teleinfo', 'debug', 'Les anciennes données sont supprimées, passons à la remise en place des valeurs stockées');
+                                log::add('teleinfo_clean', 'debug', 'Les anciennes données sont supprimées, passons à la remise en place des valeurs stockées');
 
                                 //remise des données purgées en place
                                 $valuesClean=0;
@@ -1832,7 +1832,7 @@ class teleinfo extends eqLogic
                                                 'cmdId' => $donneeId,
                                     );
                                     $minParJour = DB::Prepare($sql, $values, DB::FETCH_TYPE_ALL);
-                                    log::add('teleinfo', 'debug', 'Les données sont stockées dans une variable, passons à la suppression du superflu, la phase la plus longue...');
+                                    log::add('teleinfo_clean', 'debug', 'Les données sont stockées dans une variable, passons à la suppression du superflu, la phase la plus longue...');
                         
                                     // Nettoyage de toutes les valeurs
                                     $sql = "DELETE FROM historyArch WHERE cmd_id=:cmdId";
@@ -1840,7 +1840,7 @@ class teleinfo extends eqLogic
                                                     'cmdId' => $donneeId,
                                     );
                                     $deleteValues = DB::Prepare($sql, $values, DB::FETCH_TYPE_ROW);
-                                    log::add('teleinfo', 'debug', 'Les anciennes données sont supprimées, passons à la remise en place des valeurs stockées');
+                                    log::add('teleinfo_clean', 'debug', 'Les anciennes données sont supprimées, passons à la remise en place des valeurs stockées');
 
                                     //remise des données purgées en place
                                     $valuesClean=0;
@@ -1861,7 +1861,7 @@ class teleinfo extends eqLogic
                                             'cmdId' => $donneeId,
                                         );
                                         $maxParHeure = DB::Prepare($sql, $values, DB::FETCH_TYPE_ALL);
-                                        log::add('teleinfo', 'debug', 'Les données sont stockées dans une variable, passons à la suppression du superflu, la phase la plus longue...');
+                                        log::add('teleinfo_clean', 'debug', 'Les données sont stockées dans une variable, passons à la suppression du superflu, la phase la plus longue...');
                             
                                         // Nettoyage de toutes les valeurs
                                         $sql = "DELETE FROM historyArch WHERE cmd_id=:cmdId";
@@ -1869,7 +1869,7 @@ class teleinfo extends eqLogic
                                                         'cmdId' => $donneeId,
                                         );
                                         $deleteValues = DB::Prepare($sql, $values, DB::FETCH_TYPE_ROW);
-                                        log::add('teleinfo', 'debug', 'Les anciennes données sont supprimées, passons à la remise en place des valeurs stockées');
+                                        log::add('teleinfo_clean', 'debug', 'Les anciennes données sont supprimées, passons à la remise en place des valeurs stockées');
 
                                         //remise des données purgées en place
                                         $valuesClean=0;
@@ -1893,15 +1893,15 @@ class teleinfo extends eqLogic
                             $valuesCleanDB = DB::Prepare($sql, $values, DB::FETCH_TYPE_ROW);
                             $valuesClean = $valuesCleanDB['COUNT(*)'];
 
-                            log::add('teleinfo','info', 'Optimisation de l\'historique terminée. Les données sont remises en place. Il y avait ' . $valeursDepart . ' lignes de données avant, il en reste '.$valuesClean);
+                            log::add('teleinfo_clean','info', 'Optimisation de l\'historique terminée. Les données sont remises en place. Il y avait ' . $valeursDepart . ' lignes de données avant, il en reste '.$valuesClean);
                         }else{
-                            log::add('teleinfo','info', 'Pas assez de données à supprimer => au suivant...');
+                            log::add('teleinfo_clean','info', 'Pas assez de données à supprimer => au suivant...');
                         }
                     }
                 }
             }
         }
-        log::add('teleinfo','info', "Fin de l'opération de nettoyage de la base de données.");
+        log::add('teleinfo_clean','info', "Fin de l'opération de nettoyage de la base de données.");
     }
 
     public static function copyVersIndex($compteur, $startDate, $endDate,
