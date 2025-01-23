@@ -12,14 +12,12 @@ Pour toutes demandes :
  - [Changelog version bêta](https://github.com/Noyax-37/plugin-teleinfo/blob/develop/docs/fr_FR/changelog.md)
 
 
-## 4.9.4
-- correction de quelques erreurs de code
-- ajout d'une option de "maintenance automatique" pour chaque compteur. Le lundi dans la nuit les commandes des compteurs dont l'option sera sélectionnée seront nettoyées du superflu
-
 ## 4.9.3
 - correction erreur dans le démon du modem cartelectronic modèle 2 compteurs
 - amélioration de la gestion des erreurs dans le démon du modem cartelectronic modèle 2 compteurs
 - utilisation des f-string dans les démons python à la place des %d, %i, ...
+- correction de quelques erreurs de code
+- ajout d'une option de "maintenance automatique" pour chaque compteur. Le lundi dans la nuit les commandes des compteurs dont l'option sera sélectionnée seront nettoyées du superflu
 
 ## 4.9.2 => version bêta
 - ajout d'une lib pour faire fonctionner avec les modem cartelectronic 2 compteurs
