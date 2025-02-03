@@ -613,7 +613,12 @@ class teleinfo extends eqLogic
                 log::add('teleinfo', 'error', "[TELEINFO_deamon_infoserial] le deamon port modem 2 n'est pas démarré");
                 $returnprod = 'nok';
             }
-            }
+        }
+
+        if (($consoPort == "" && $productionPort == "") && $activation_Modem == 1){
+            log::add('teleinfo', 'error', "[TELEINFO_deamon_infoserial] Aucun port modem configuré, revoir votre config");
+            $returnmodem = 'Aucun port modem configuré';
+        }
 
         if ($activation_Mqtt==1){
             $pidFile = jeedom::getTmpFolder('teleinfo') . '/teleinfo_Mqtt.pid';
@@ -2526,7 +2531,11 @@ class teleinfo extends eqLogic
                 $datetimeMesure = $datetimeMesure->getTimestamp();
                 $datetime2      = time();
                 $interval       = (float)$datetime2 - (float)$datetimeMesure;
-                $consoResultat  = ((((float)$ppapHp - (float)$cacheHp) + ((float)$ppapHc - (float)$cacheHc)) / $interval) * 3600;
+                if ($interval!=0){
+                    $consoResultat = ((((float)$ppapHp - (float)$cacheHp) + ((float)$ppapHc - (float)$cacheHc)) / $interval) * 3600;
+                } else {
+                    $consoResultat = 0;
+                }
                 log::add('teleinfo', 'debug', 'Intervale depuis la dernière valeur : ' . $interval);
                 log::add('teleinfo', 'debug', 'Conso calculée : ' . intval($consoResultat) . ' Wh');
                 $cmdPpap->event(intval($consoResultat));
