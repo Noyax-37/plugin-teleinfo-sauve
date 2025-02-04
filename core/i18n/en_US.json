@@ -1,0 +1,94 @@
+{
+    "plugins\/teleinfo\/core\/php\/jeeDownload.php": {
+        "401 - Accès non autorisé": "401 - Unauthorized access"
+    },
+    "plugins\/teleinfo\/core\/template\/dashboard\/cmd.info.numeric.teleinfo_base_teleinfo_conso_inst.html": {
+        "Date de collecte": "Date of collection",
+        "Date de valeur": "Value date"
+    },
+    "plugins\/teleinfo\/core\/template\/dashboard\/cmd.info.numeric.teleinfo_bleu_teleinfo_conso_inst.html": {
+        "Date de collecte": "Date of collection",
+        "Date de valeur": "Value date"
+    },
+    "plugins\/teleinfo\/core\/template\/dashboard\/cmd.info.numeric.teleinfo_conso_inst.html": {
+        "Date de collecte": "Date of collection",
+        "Date de valeur": "Value date"
+    },
+    "plugins\/teleinfo\/desktop\/js\/panel.js": {
+        "Il n\\'existe encore aucun historique pour cette commande :": "No history available for this command:",
+        "Santé": "Health",
+        "au": "to",
+        "du": "from",
+        "jusqu\\'au": "until",
+        "à partir de": "From"
+    },
+    "plugins\/teleinfo\/desktop\/js\/teleinfo.js": {
+        "Afficher": "Show",
+        "Configuration": "Configuration",
+        "Durée avant retour d\\'état (min)": "Duration before status return (min)",
+        "Erreur": "Error",
+        "Historiser": "Historize",
+        "Max": "Maximum",
+        "Min": "Minimum",
+        "Nom": "Name",
+        "Options": "Options",
+        "Tester": "Test",
+        "Valeur retour d\\'état": "Status return value"
+    },
+    "plugins\/teleinfo\/desktop\/modal\/diagnostic.php": {
+        "Démarrer": "Start",
+        "Suivant": "Next",
+        "Télécharger": "Download"
+    },
+    "plugins\/teleinfo\/desktop\/modal\/health.php": {
+        "Dernière communication": "Last communication",
+        "Statut": "Status",
+        "Valeur": "Value"
+    },
+    "plugins\/teleinfo\/desktop\/modal\/info_daemon.php": {
+        "401 - Accès non autorisé": "401 - Unauthorized access",
+        "Pause": "Break",
+        "Rechercher": "Search"
+    },
+    "plugins\/teleinfo\/desktop\/modal\/maintenance.php": {
+        "Lissage": "Smoothing"
+    },
+    "plugins\/teleinfo\/desktop\/modal\/options.php": {
+        "Choisir une commande": "Choose a command"
+    },
+    "plugins\/teleinfo\/desktop\/modal\/panel_sante.php": {
+        "Commentaire": "Comment",
+        "Statut": "Status"
+    },
+    "plugins\/teleinfo\/desktop\/php\/panel.php": {
+        "401 - Accès non autorisé": "401 - Unauthorized access",
+        "Ok": "OK",
+        "Tout": "All"
+    },
+    "plugins\/teleinfo\/desktop\/php\/teleinfo.php": {
+        "Activer": "Enable",
+        "Aucun": "None",
+        "Catégorie": "Category",
+        "Commandes": "Commands",
+        "Configuration": "Configuration",
+        "Configuration avancée": "Advanced configuration",
+        "Equipement": "Equipment",
+        "Gestion": "Management",
+        "Index": "Index",
+        "Nom": "Name",
+        "Options": "Options",
+        "Paramètres": "Settings",
+        "Sauvegarder": "Save",
+        "Sous-Type": "Subtype",
+        "Supprimer": "Delete",
+        "Valeur": "Value",
+        "Visible": "Visible"
+    },
+    "plugins\/teleinfo\/plugin_info\/configuration.php": {
+        "Actif": "Active",
+        "Activer": "Enable",
+        "Choisir une commande": "Choose a command",
+        "Oui": "Yes",
+        "Version": "Version"
+    }
+}

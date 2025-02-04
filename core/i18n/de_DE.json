@@ -1,0 +1,94 @@
+{
+    "plugins\/teleinfo\/core\/php\/jeeDownload.php": {
+        "401 - Accès non autorisé": "401 - Nicht autorisierter Zugriff"
+    },
+    "plugins\/teleinfo\/core\/template\/dashboard\/cmd.info.numeric.teleinfo_base_teleinfo_conso_inst.html": {
+        "Date de collecte": "Datum der Abholung",
+        "Date de valeur": "Datum der Wertstellung"
+    },
+    "plugins\/teleinfo\/core\/template\/dashboard\/cmd.info.numeric.teleinfo_bleu_teleinfo_conso_inst.html": {
+        "Date de collecte": "Datum der Abholung",
+        "Date de valeur": "Datum der Wertstellung"
+    },
+    "plugins\/teleinfo\/core\/template\/dashboard\/cmd.info.numeric.teleinfo_conso_inst.html": {
+        "Date de collecte": "Datum der Abholung",
+        "Date de valeur": "Datum der Wertstellung"
+    },
+    "plugins\/teleinfo\/desktop\/js\/panel.js": {
+        "Il n\\'existe encore aucun historique pour cette commande :": "Es ist noch keine Chronik für diesen Befehl vorhanden :",
+        "Santé": "Gesundheit",
+        "au": "bis",
+        "du": "die",
+        "jusqu\\'au": "bis zu",
+        "à partir de": "ab"
+    },
+    "plugins\/teleinfo\/desktop\/js\/teleinfo.js": {
+        "Afficher": "Anzeige",
+        "Configuration": "Konfiguration",
+        "Durée avant retour d\\'état (min)": "Dauer vor Statusrückgabe (min)",
+        "Erreur": "Fehler",
+        "Historiser": "Chronik",
+        "Max": "Max",
+        "Min": "Minimum",
+        "Nom": "Name",
+        "Options": "Optionen",
+        "Tester": "Prüfung",
+        "Valeur retour d\\'état": "Statusrückgabewert"
+    },
+    "plugins\/teleinfo\/desktop\/modal\/diagnostic.php": {
+        "Démarrer": "Start",
+        "Suivant": "Folgende",
+        "Télécharger": "Download"
+    },
+    "plugins\/teleinfo\/desktop\/modal\/health.php": {
+        "Dernière communication": "Letzte Mitteilung",
+        "Statut": "Status",
+        "Valeur": "Wert"
+    },
+    "plugins\/teleinfo\/desktop\/modal\/info_daemon.php": {
+        "401 - Accès non autorisé": "401 - Nicht autorisierter Zugriff",
+        "Pause": "Unterbrechung",
+        "Rechercher": "Suchen nach"
+    },
+    "plugins\/teleinfo\/desktop\/modal\/maintenance.php": {
+        "Lissage": "Glätten"
+    },
+    "plugins\/teleinfo\/desktop\/modal\/options.php": {
+        "Choisir une commande": "Wählen Sie eine Bestellung"
+    },
+    "plugins\/teleinfo\/desktop\/modal\/panel_sante.php": {
+        "Commentaire": "Kommentar",
+        "Statut": "Status"
+    },
+    "plugins\/teleinfo\/desktop\/php\/panel.php": {
+        "401 - Accès non autorisé": "401 - Nicht autorisierter Zugriff",
+        "Ok": "OK",
+        "Tout": "Alles"
+    },
+    "plugins\/teleinfo\/desktop\/php\/teleinfo.php": {
+        "Activer": "Aktivieren",
+        "Aucun": "Nein",
+        "Catégorie": "Kategorie",
+        "Commandes": "Befehle",
+        "Configuration": "Konfiguration",
+        "Configuration avancée": "Erweiterte Konfiguration",
+        "Equipement": "Gerät",
+        "Gestion": "Management",
+        "Index": "Index",
+        "Nom": "Name",
+        "Options": "Optionen",
+        "Paramètres": "Die Einstellungen",
+        "Sauvegarder": "Zu schützen",
+        "Sous-Type": "Unterart",
+        "Supprimer": "Entfernen",
+        "Valeur": "Wert",
+        "Visible": "Sichtbar"
+    },
+    "plugins\/teleinfo\/plugin_info\/configuration.php": {
+        "Actif": "Aktiviert",
+        "Activer": "Aktivieren",
+        "Choisir une commande": "Wählen Sie eine Bestellung",
+        "Oui": "Ja",
+        "Version": "Ausführung"
+    }
+}
