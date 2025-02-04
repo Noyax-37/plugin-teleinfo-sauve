@@ -196,7 +196,7 @@ function teleinfo_update($direct=true) {
         $cronclean->save();
     }
     $cronclean->stop();
-    
+
     message::removeAll('teleinfo');
     if ($direct){
         message::add('teleinfo', 'Mise à jour du plugin Téléinfo terminée, vous êtes en version ' . $core_version . '.' . $versionIdentique);

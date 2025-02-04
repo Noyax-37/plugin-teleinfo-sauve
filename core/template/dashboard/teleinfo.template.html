@@ -1,0 +1,796 @@
+<div class="eqLogic eqLogic-widget allowResize allowReorderCmd #custom_layout# #eqLogic_class# #class#"
+  data-eqType="#eqType#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#"
+  data-translate-category="#translate_category#" data-category="#category#" data-tags="#tags#"
+  style="width: #width#;height: #height#;#style#">
+
+  <link rel="stylesheet" href="plugins/teleinfo/3rdparty/swiper/swiper-bundle.min.css" />
+  <!-- <script type="text/javascript" src="plugins/solcast/3rdparty/swiper/swiper-bundle.min.js"></script> -->
+  <!-- <script src="core/php/getJS.php?file=plugins/solcast/3rdparty/swiper/swiper-bundle.min.js"></script> -->
+
+  <center class="widget-name">
+    <span class="warning" title="#alert_name#">
+      <i class='#alert_icon#'></i>
+    </span>
+    <span class="reportModeVisible">#name_display# <span class="object_name">#object_name#</span></span>
+    <a href="#eqLink#" class="reportModeHidden">#name_display# <span class="object_name">#object_name#</span></a>
+  </center>
+
+  <div id="chart-xrange#id#">
+    <div id="chart-xrange-today#id#" class="chart" style="height:170px;"></div>
+    <div id="chart-xrange-tomorrow#id#" class="chart" style="height:170px;"></div>
+  </div>
+
+
+  <!--
+   //////////////////////////////////////
+   // Tableau des données de la journée //
+   //////////////////////////////////////
+   -->
+  <div id="dataTab-#id#" class="cmd cmd-widget"
+    style="text-align: left;margin-left: 5px;margin-right: 24px;margin-top:0px;">
+    <center>
+      <i class="fa">
+        <h1 style="font-size: 14px; font-weight:bold"> Consommation de la journée par index </h1>
+      </i>
+    </center>
+    #dataTab#
+  </div>
+
+
+  <div id="highcharts_and_infos-#id#">
+    <figure id="figure-#id#" class="highcharts-figure" style="margin: 0px;">
+      <div class="container" style="width: 100%;">
+
+        <!-- Slider main container -->
+        <div class="swiper mySwiper#id#">
+          <!-- Additional required wrapper -->
+          <div class="swiper-wrapper">
+            <!-- Slides -->
+            #div_carousel_item_days#
+            <div class="swiper-slide">
+              <div class="chart" id="chartMonth-#id#"></div>
+            </div>
+            <div class="swiper-slide">
+              <div class="chart" id="chartYear-#id#"></div>
+            </div>
+          </div>
+
+          <!-- Navigation buttons -->
+          <div class="swiper-button-prev swiper-button-prev#id#"></div>
+          <div class=" swiper-button-next swiper-button-next#id#"></div>
+
+        </div>
+
+      </div>
+    </figure>
+
+  </div>
+
+  <script>
+    /*
+    Function includeJS by noodom 09-05-2024
+    https://community.jeedom.com/t/import-dun-fichier-js-externe-dans-un-widget-sans-timeout-et-sans-jquery/125542
+    */
+    function includeJS(filenames, callback) {
+      if (typeof filenames === 'string') {
+        filenames = [filenames];
+      }
+
+      let loadedCount = 0;
+
+      function loadScript(filename) {
+        let sc = document.createElement('script');
+        sc.src = filename;
+        sc.type = 'text/javascript';
+        sc.async = true;
+
+        sc.onerror = function () {
+          loadedCount++;
+          if (loadedCount === filenames.length) {
+            callback();
+          }
+          sc.onerror = null;
+        };
+
+        sc.onload = sc.onreadystatechange = function () {
+          if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') {
+            loadedCount++;
+            if (loadedCount === filenames.length) {
+              callback();
+            }
+            sc.onload = sc.onreadystatechange = null;
+          }
+        };
+
+        document.body.appendChild(sc);
+      }
+
+      filenames.forEach(filename => loadScript(filename));
+    }
+
+
+
+
+    /* Désactivation du bargraphe Aujourd'hui s'il n'existe pas de données */
+    if (#index00# == 0 || #index01# == 0 || #index02# == 0 || #index03# == 0 || #index04# == 0 || #index05# == 0 || #index06# == 0 || #index07# == 0 || #index08# == 0 || #index09# == 0 || #index10# == 0 ) {
+      document.getElementById("chart-xrange-today#id#").style.display = "none";
+      document.getElementById("chart-xrange-today_hidden#id#").style.display = "block";
+    }
+
+    /* Désactivation du bargraphe jour s'il n'existe pas de données */
+    if (#index00J# == 0 || #index01J# == 0 || #index02J# == 0 || #index03J# == 0 || #index04J# == 0 || #index05J# == 0 || #index06J# == 0 || #index07J# == 0 || #index08J# == 0 || #index09J# == 0 || #index10J# == 0 ) {
+      document.getElementById("chart-xrange-yesterday#id#").style.display = "none";
+      document.getElementById("chart-xrange-yesterday_hidden#id#").style.display = "block";
+    }
+
+    /* Désactivation du bargraphe Mois s'il n'existe pas de données */
+    if (#index00M# == 0 || #index01M# == 0 || #index02M# == 0 || #index03M# == 0 || #index04M# == 0 || #index05M# == 0 || #index06M# == 0 || #index07M# == 0 || #index08M# == 0 || #index09M# == 0 || #index10M# == 0 ) {
+      document.getElementById("chart-xrange-today#id#").style.display = "none";
+      document.getElementById("chart-xrange-today_hidden#id#").style.display = "block";
+    }
+
+    /* Désactivation du bargraphe Année s'il n'existe pas de données */
+    if (#index00A# == 0 || #index01A# == 0 || #index02A# == 0 || #index03A# == 0 || #index04A# == 0 || #index05A# == 0 || #index06A# == 0 || #index07A# == 0 || #index08A# == 0 || #index09A# == 0 || #index10A# == 0 ) {
+      document.getElementById("chart-xrange-today#id#").style.display = "none";
+      document.getElementById("chart-xrange-today_hidden#id#").style.display = "block";
+    }
+
+    includeJS(['3rdparty/highstock/highcharts-more.js', '3rdparty/highstock/modules/xrange.js', 'plugins/solcast/3rdparty/swiper/swiper-bundle.min.js'], function () {
+
+      /////////////////////////////////////////////////////////////
+      //                    Swiper                               //
+      /////////////////////////////////////////////////////////////
+      var swiper = new Swiper(".mySwiper#id#", {
+        loop: true,
+        navigation: {
+          nextEl: ".swiper-button-next#id#",
+          prevEl: ".swiper-button-prev#id#",
+        },
+      });
+
+
+    //////////////////////////////////////////
+    // Graphique line pour le jour en cours //
+    //////////////////////////////////////////
+
+    Highcharts.chart('chartDaysJ0-#id#', {
+      chart: {
+        type: '#chartType#',
+        marginLeft: 80
+      },
+
+      title: {
+        style: { "color": "var(--txt-color)" },
+        text: 'Aujourd\'hui',
+        floating: true,
+        align: 'left',
+        x: 80,
+        y: 20
+      },
+
+      credits: {
+        enabled: false
+      },
+
+      tooltip: {
+        shared: true
+      },
+
+      navigation: {
+        buttonOptions: {
+          x: -30
+        }
+      },
+
+      xAxis: {
+        title: {
+          style: { "color": "var(--txt-color)", "fontSize": "12px" },
+          text: 'Heure',
+          margin: 1
+        },
+        categories: [#dataHours#]
+      },
+
+      yAxis: {
+        title: {
+          style: { "color": "var(--txt-color)", "fontSize": "12px" },
+          text: 'W',
+          margin: 2
+        },
+        labels: {
+          style: {
+            color: "var(--txt-color)"
+          }
+        },
+        endOnTick: false,
+        maxPadding: 0.3
+      },
+
+      plotOptions: {
+        series: {
+          pointPlacement: 'on',
+          marker: {
+            enabled: '#showPlot#',
+            radius: 3
+          }
+        }
+      },
+
+      series: [
+        {
+          name: 'Global',
+          data: [#dataIndex00#],
+          dataLabels: {
+            enabled: true,
+            shape: 'callout',
+            align: 'center',
+            borderRadius: 5,
+            backgroundColor: 'rgba(252, 255, 197, 0.6)',
+            borderWidth: 1,
+            borderColor: 'rgb(100, 160, 230)',
+            shadow: true,
+            padding: 5,
+            y: -10,
+            style: { fontFamily: 'Helvetica', color: "contrast", textOutline: false },
+            formatter: function () {
+              if (this.y == this.series.dataMax && this.y != 0) {
+                return "Max : " + this.y + " W";
+              }
+            }
+          },
+          zoneAxis: 'x',
+          zones: [{
+            value: #nbZones#
+        	}, {
+            dashStyle: 'dash'
+          }]
+        },
+        {
+          name: 'Index 01',
+          data: [#dataIndex01#],
+          dashStyle: 'dot'
+        },
+        {
+          name: 'Index 02',
+          data: [#dataIndex01#],
+          dashStyle: 'dot'
+        },
+        {
+          name: 'Index 03',
+          data: [#dataIndex01#],
+          dashStyle: 'dot'
+        },
+        {
+          name: 'Index 04',
+          data: [#dataIndex01#],
+          dashStyle: 'dot'
+        },
+        {
+          name: 'Index 05',
+          data: [#dataIndex01#],
+          dashStyle: 'dot'
+        },
+        {
+          name: 'Index 06',
+          data: [#dataIndex01#],
+          dashStyle: 'dot'
+        },
+        {
+          name: 'Index 07',
+          data: [#dataIndex01#],
+          dashStyle: 'dot'
+        },
+        {
+          name: 'Index 08',
+          data: [#dataIndex01#],
+          dashStyle: 'dot'
+        },
+        {
+          name: 'Index 09',
+          data: [#dataIndex01#],
+          dashStyle: 'dot'
+        },
+        {
+          name: 'Index 10',
+          data: [#dataIndex01#],
+          dashStyle: 'dot'
+        }
+      ]
+
+    });
+
+
+    //////////////////////////////////////
+    // 	Graphique column pour le mois 	//
+    //////////////////////////////////////
+
+    Highcharts.chart('chartMonth-#id#', {
+      chart: {
+        type: '#chartType#'
+      },
+
+      title: {
+        style: { "color": "var(--txt-color)" },
+        text: 'Mois',
+        floating: true,
+        align: 'left',
+        x: 80,
+        y: 20
+      },
+
+      credits: {
+        enabled: false
+      },
+
+      tooltip: {
+        shared: true
+      },
+
+      navigation: {
+        buttonOptions: {
+          x: -30
+        }
+      },
+
+      xAxis: {
+        title: {
+          style: { "color": "var(--txt-color)", "fontSize": "12px" },
+          text: 'Jour',
+          margin: 1
+        },
+        categories: [#dataDays#]
+      },
+
+      yAxis: {
+        title: {
+          style: { "color": "var(--txt-color)", "fontSize": "12px" },
+          text: 'Wh',
+          margin: 2
+        },
+        labels: {
+          style: {
+            color: "var(--txt-color)"
+          }
+        },
+        endOnTick: false,
+        maxPadding: 0.3
+      },
+
+      plotOptions: {
+        series: {
+          pointPlacement: 'on',
+          marker: {
+            enabled: '#showPlot#',
+            radius: 3
+          }
+        }
+      },
+
+      series: [
+        {
+          name: 'Prévision',
+          data: [#dataMonthPrevision#]
+        },
+        {
+          name: 'Prévision à 6h',
+          data: [#dataMonthPrevision6h#]
+        },
+        {
+          name: 'Production',
+          data: [#dataMonthProduction#]
+        }
+      ]
+    });
+
+
+    //////////////////////////////////////
+    // 	Graphique column pour l'année 	//
+    //////////////////////////////////////
+
+    Highcharts.chart('chartYear-#id#', {
+      chart: {
+        type: 'column'
+      },
+
+      title: {
+        style: { "color": "var(--txt-color)" },
+        text: 'Année',
+        floating: true,
+        align: 'left',
+        x: 80,
+        y: 20
+      },
+
+      credits: {
+        enabled: false
+      },
+
+      tooltip: {
+        shared: true
+      },
+
+      navigation: {
+        buttonOptions: {
+          x: -30
+        }
+      },
+
+      xAxis: {
+        title: {
+          style: { "color": "var(--txt-color)", "fontSize": "12px" },
+          text: 'Mois',
+          margin: 1
+        },
+        categories: [#dataMonths#]
+      },
+
+      yAxis: {
+        title: {
+          style: { "color": "var(--txt-color)", "fontSize": "12px" },
+          text: 'Wh',
+          margin: 2
+        },
+        labels: {
+          style: {
+            color: "var(--txt-color)"
+          }
+        },
+        endOnTick: false,
+        maxPadding: 0.3
+      },
+
+      plotOptions: {
+        series: {
+          dataLabels: {
+            enabled: true,
+            align: 'center',
+            inside: true,
+            rotation: 270,
+            y: -5,
+            style: {
+              fontFamily: 'Helvetica',
+              color: 'contrast',
+              textOutline: false
+            }
+          }
+        }
+      },
+
+      series: [
+        {
+          name: 'Prévision',
+          data: [#dataYearPrevision#],
+          zoneAxis: 'x',
+          zones: [{
+            value: #nbZones_Year#
+        	}, {
+            dashStyle: 'LongDashDotDot'
+          }]
+
+        },
+        {
+          name: 'Prévision à 6h',
+          data: [#dataYearPrevision6h#],
+          visible: false,
+          zoneAxis: 'x',
+          zones: [{
+            value: #nbZones_Year#,
+          }, {
+            dashStyle: 'LongDashDotDot'
+          }]
+        },
+        {
+          name: 'Production',
+          data: [#dataYearProduction#],
+          zoneAxis: 'x',
+          zones: [{
+            value: #nbZones_Year#
+        	}, {
+            dashStyle: 'LongDashDotDot'
+          }]
+        }
+      ]
+    });
+
+    //////////////////////////////////////
+    // Graphique xrange pour aujourd'hui //
+    //////////////////////////////////////
+
+    Highcharts.chart('chart-xrange-today#id#', {
+      chart: {
+        type: 'xrange',
+        marginLeft: 40,
+        marginRight: 40,
+        spacingBottom: 0
+      },
+      title: {
+        text: Math.round(#forecastJ0_90# - #forecastJ0_10#, 0) + ' Wh', // Utilisation du titre pour donner l'écart entre J0_90 et J0_10
+        y: 15,
+        style: {
+          fontFamily: 'Monospace',
+          fontSize: '13px',
+          color: "var(--txt-color)"
+        }
+      },
+      credits: {
+        enabled: false
+      },
+      xAxis: {
+        title: {
+          text: '',
+        },
+        minPadding: 0.07,
+        maxPadding: 0.11,
+        plotLines: [
+          {
+            width: 0,
+            value: (#forecastJ0_10#+#forecastJ0_90#) / 2,
+      label: {
+      x: -110,
+        y: 90,
+          useHTML: true, //enables html
+            text: 'Production : #d0_prod# Wh (' + Math.round(#d0_prod# / #forecastJ0# * 100, 0) + '%)',
+              rotation: 0,
+                style: {
+        fontFamily: 'Helvetica',
+          fontSize: '16px',
+            color: "green"
+      }
+    }
+    },
+    {
+      width: 0,
+        value: (#forecastJ0_10# + #forecastJ0_90#) / 2,
+      label: {
+        x: -110,
+          y: 18,
+            useHTML: true, //enables html
+              text: 'Prévision à 6h : ' + #forecastJ0_6h# + ' Wh' + '<div style="margin-left: 10px; vertical-align: middle; display: inline-block;"><div style="width: 45px; height: 22px; border-radius: 22px; background: #ReliabilityIndex_J0_color#; color: white; text-align: center">' + '#ReliabilityIndex_J0#' + ' / 4' + '</div></div><br>Prévision : ' + #forecastJ0# + ' Wh',
+                rotation: 0,
+                  style: {
+          fontFamily: 'Helvetica',
+            fontSize: '16px',
+              color: "rgb(80, 120, 170)"
+        }
+      }
+    },
+    {
+      color: 'red',
+        width: 2,
+          value: #forecastJ0_10#,
+            dashStyle: 'ShortDash',
+              label: {
+        x: -20,
+          y: -15,
+            text: Math.round(#forecastJ0_10#, 0) + ' Wh <----',
+              rotation: 0,
+                style: {
+          fontFamily: 'Monospace',
+            color: "var(--txt-color)"
+        }
+      }
+    },
+    {
+      color: 'red',
+        width: 2,
+          value: #forecastJ0_90#,
+            dashStyle: 'ShortDash',
+              label: {
+        x: -75,
+          y: -15,
+            text: '----> ' + Math.round(#forecastJ0_90#, 0) + ' Wh',
+              rotation: 0,
+                style: {
+          fontFamily: 'Monospace',
+            color: "var(--txt-color)"
+        }
+      }
+    }
+          ]
+        },
+    yAxis: {
+      title: {
+        text: 'Aujourd\'hui '
+      },
+      categories: ['']
+    },
+    series: [{
+      name: '',
+      borderColor: 'gray',
+      pointWidth: 20,
+      partialFill: {
+        fill: 'rgba(4,44,94,0.6)'
+      },
+      data: [
+        {
+          x: #forecastJ0_10#,
+          x2: #forecastJ0_90#,
+          y: 0,
+          partialFill: #reliabilityJ0#
+        }
+      ],
+      dataLabels: {
+        enabled: true,
+        x: 20,
+        style: {
+          fontFamily: 'Monospace',
+          fontSize: '13px',
+          color: "white"
+        }
+      },
+      enableMouseTracking: false,
+      showInLegend: false
+    }]    
+      });
+
+    //////////////////////////////////////
+    //	 Graphique xrange pour demain	//
+    //////////////////////////////////////
+    Highcharts.chart('chart-xrange-tomorrow#id#', {
+      chart: {
+        type: 'xrange',
+        marginLeft: 40,
+        marginRight: 40,
+        spacingBottom: 0
+      },
+      title: {
+        text: Math.round(#forecastJ1_90# - #forecastJ1_10#, 0) + ' Wh', // Utilisation du titre pour donner l'écart entre J1_90 et J1_10
+        y: 15,
+        style: {
+          fontFamily: 'Monospace',
+          fontSize: '13px',
+          color: "var(--txt-color)"
+        }
+      },
+      credits: {
+        enabled: false
+      },
+      xAxis: {
+        title: {
+          text: '',
+        },
+        minPadding: 0.07,
+        maxPadding: 0.11,
+        plotLines: [
+          {
+            color: 'rgb(80, 120, 170)',
+            width: 0,
+            value: (#forecastJ1_10#+#forecastJ1_90#) / 2,
+      label: {
+      x: -110,
+        y: 28,
+          useHTML: true, //enables html
+            text: "Prévision : #forecastJ1# Wh",
+              rotation: 0,
+                style: {
+        fontFamily: 'Helvetica',
+          fontSize: '16px',
+            color: "rgb(80, 120, 170)"
+      }
+    }
+    },
+    {
+      color: 'red',
+        width: 2,
+          value: #forecastJ1_10#,
+            dashStyle: 'ShortDash',
+              label: {
+        x: -20,
+          y: -15,
+            text: Math.round(#forecastJ1_10#, 0) + ' Wh <----',
+              rotation: 0,
+                style: {
+          fontFamily: 'Monospace',
+            color: "var(--txt-color)"
+        }
+      }
+    },
+    {
+      color: 'red',
+        width: 2,
+          value: #forecastJ1_90#,
+            dashStyle: 'ShortDash',
+              label: {
+        x: -75,
+          y: -15,
+            text: '----> ' + Math.round(#forecastJ1_90#, 0) + ' Wh',
+              rotation: 0,
+                style: {
+          fontFamily: 'Monospace',
+            color: "var(--txt-color)"
+        }
+      }
+    }
+          ]
+        },
+    yAxis: {
+      title: {
+        text: 'Demain'
+      },
+      categories: [''],
+    },
+    series: [{
+      name: '',
+      borderColor: 'gray',
+      pointWidth: 20,
+      partialFill: {
+        fill: 'rgba(4,44,94,0.6)'
+      },
+      data: [{
+        x: #forecastJ1_10#,
+        x2: #forecastJ1_90#,
+        y: 0,
+        partialFill: #reliabilityJ1#
+          }],
+      dataLabels: {
+        enabled: true,
+        x: 20,
+        style: {
+          fontFamily: 'Monospace',
+          fontSize: '13px',
+          color: "white"
+        }
+      },
+      enableMouseTracking: false,
+      showInLegend: false
+    }]    
+      });
+
+    }); // End includeJS
+  </script>
+
+
+  <style>
+    :root {
+      --swiper-navigation-size: 30px;
+      --swiper-navigation-top-offset: 82%;
+      --swiper-navigation-sides-offset: 5px;
+    }
+
+    .rectangle {
+      width: 270px;
+      margin: auto;
+      margin-top: 10px;
+      border: 1px solid var(--txt-color);
+    }
+
+    #chart-xrange#id# #chart-xrange-today#id# {
+      float: #setfloat_xrange_today#;
+      width: #setwidth_xrange_today#;
+    }
+
+    #chart-xrange#id# #chart-xrange-tomorrow#id# {
+      width: #setwidth_xrange_tomorrow#;
+    }
+
+    #highcharts_and_infos-#id# #figure-#id# {
+      float: #setfloat_figure#;
+      width: #setwidth_figure#;
+    }
+
+    #highcharts_and_infos-#id# #dataActuSolCast-#id# {
+      width: #setwitdh_dataActuSolCast;
+    }
+
+    #chartDaysJ0-#id# {
+      height: #setheight_charts#;
+    }
+
+    #chartDaysJ1-#id# {
+      height: #setheight_charts#;
+    }
+
+    #chartDaysJ2-#id# {
+      height: #setheight_charts#;
+    }
+
+    #chartMonth-#id# {
+      height: #setheight_charts#;
+    }
+
+    #chartYear-#id# {
+      height: #setheight_charts#;
+    }
+  </style>
+
+</div>

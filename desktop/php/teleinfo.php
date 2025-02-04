@@ -52,65 +52,65 @@ switch ($controlerState) {
 ?>
 
 <div class="row row-overflow">
-	<div class="col-xs-12 eqLogicThumbnailDisplay">
-		<legend><i class="fas fa-cog"></i> {{Gestion}}</legend>
-		<div class="eqLogicThumbnailContainer">
-			<div class="cursor logoSecondary" id="bt_info_daemon">
-				<i class="fas fa-heartbeat"></i>
+    <div class="col-xs-12 eqLogicThumbnailDisplay">
+        <legend><i class="fas fa-cog"></i> {{Gestion}}</legend>
+        <div class="eqLogicThumbnailContainer">
+            <div class="cursor logoSecondary" id="bt_info_daemon">
+                <i class="fas fa-heartbeat"></i>
                 <br/>
                 <span>{{Info Modem}}</span>
-			</div>
+            </div>
 
-			<div class="cursor logoSecondary eqLogicAction" data-action="gotoPluginConf">
-			    <i class="fas fa-wrench"></i>
+            <div class="cursor logoSecondary eqLogicAction" data-action="gotoPluginConf">
+                <i class="fas fa-wrench"></i>
                 <br/>
                 <span>{{Configuration}}</span>
-			</div>
+            </div>
 
-			<div class="cursor logoSecondary" id="bt_options">
-				<i class="fas fa-list-alt"></i>
+            <div class="cursor logoSecondary" id="bt_options">
+                <i class="fas fa-list-alt"></i>
                 <br/>
                 <span>{{Options}}</span>
             </div>
-			<?php
-			// à conserver
-			// sera afficher uniquement si l'utilisateur est en version 4.4 ou supérieur
-			$jeedomVersion  = jeedom::version() ?? '0';
-			$displayInfoValue = version_compare($jeedomVersion, '4.4.0', '>=');
-			if ($displayInfoValue) {
-			?>
-				<div class="col-sm-2">
-					<div class="eqLogicThumbnailContainer">
-						<div class="cursor eqLogicAction logoSecondary warning" data-action="createCommunityPost">
-							<i class="fas fa-ambulance"></i>
-							<br>
-							<span class="warning">{{Créer un post Community}}</span>
-						</div>
-					</div>
-				</div>
-			<?php
-			}
-			?>
-		</div>
+            <?php
+            // à conserver
+            // sera afficher uniquement si l'utilisateur est en version 4.4 ou supérieur
+            $jeedomVersion  = jeedom::version() ?? '0';
+            $displayInfoValue = version_compare($jeedomVersion, '4.4.0', '>=');
+            if ($displayInfoValue) {
+            ?>
+                <div class="col-sm-2">
+                    <div class="eqLogicThumbnailContainer">
+                        <div class="cursor eqLogicAction logoSecondary warning" data-action="createCommunityPost">
+                            <i class="fas fa-ambulance"></i>
+                            <br>
+                            <span class="warning">{{Créer un post Community}}</span>
+                        </div>
+                    </div>
+                </div>
+            <?php
+            }
+            ?>
+        </div>
 
         <legend>{{Mes Modules de Téléinformation}}</legend>
             <div class="eqLogicThumbnailContainer">
 
-				<div class="eqLogicDisplayCard cursor eqLogicAction logoPrimaryTeleinfo" data-action="add">
-					<i class="fas fa-plus-circle logoPlusEqlogic"></i>
+                <div class="eqLogicDisplayCard cursor eqLogicAction logoPrimaryTeleinfo" data-action="add">
+                    <i class="fas fa-plus-circle logoPlusEqlogic"></i>
                     </br>
-					<span class="name">Ajouter</span>
-				</div>
+                    <span class="name">Ajouter</span>
+                </div>
                 <?php
-			    foreach ($eqLogics as $eqLogic) {
-				    $opacity = ($eqLogic->getIsEnable()) ? '' : 'disableCard';
-				    echo '<div class="eqLogicDisplayCard cursor '.$opacity.'" data-logical-id="' . $eqLogic->getLogicalId() . '" data-eqLogic_id="' . $eqLogic->getId() . '" >';
-    				echo '<img src="' . $plugin->getPathImgIcon() . '"/>';
+                foreach ($eqLogics as $eqLogic) {
+                    $opacity = ($eqLogic->getIsEnable()) ? '' : 'disableCard';
+                    echo '<div class="eqLogicDisplayCard cursor '.$opacity.'" data-logical-id="' . $eqLogic->getLogicalId() . '" data-eqLogic_id="' . $eqLogic->getId() . '" >';
+                    echo '<img src="' . $plugin->getPathImgIcon() . '"/>';
                     echo '</br>';
-    				echo '<span class="name">' . $eqLogic->getHumanName(true, true) . '</span>';
-    				echo '</div>';
-			    }
-			    ?>
+                    echo '<span class="name">' . $eqLogic->getHumanName(true, true) . '</span>';
+                    echo '</div>';
+                }
+                ?>
             </div>
     </div>
 
@@ -118,155 +118,163 @@ switch ($controlerState) {
 
     <div class="col-xs-12 eqLogic" style="display: none;">
         <div class="input-group pull-right" style="display:inline-flex">
-			<span class="input-group-btn">
-				<a class="btn btn-default eqLogicAction btn-sm roundedLeft" data-action="configure"><i class="fas fa-cogs"></i> {{Configuration avancée}}</a>
+            <span class="input-group-btn">
+                <a class="btn btn-default eqLogicAction btn-sm roundedLeft" data-action="configure"><i class="fas fa-cogs"></i> {{Configuration avancée}}</a>
                 <a class="btn btn-sm btn-success eqLogicAction" data-action="save"><i class="fas fa-check-circle"></i> {{Sauvegarder}}</a>
                 <a class="btn btn-danger btn-sm eqLogicAction roundedRight" data-action="remove"><i class="fas fa-minus-circle"></i> {{Supprimer}}</a>
-			</span>
-		</div>
-		<ul class="nav nav-tabs" role="tablist">
-      <li role="presentation"><a href="#" class="eqLogicAction cursor" aria-controls="home" role="tab" data-toggle="tab" data-action="returnToThumbnailDisplay"><i class="fas fa-arrow-circle-left"></i></a></li>
-			<li role="presentation" class="active"><a href="#eqlogictab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-tachometer-alt"></i> {{Equipement}}</a></li>
-			<li role="presentation"><a href="#commandtab" aria-controls="profile" role="tab" data-toggle="tab"><i class="fas fa-list-alt"></i> {{Commandes}}</a></li>
-		</ul>
+            </span>
+        </div>
+        <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation"><a href="#" class="eqLogicAction cursor" aria-controls="home" role="tab" data-toggle="tab" data-action="returnToThumbnailDisplay"><i class="fas fa-arrow-circle-left"></i></a></li>
+            <li role="presentation" class="active"><a href="#eqlogictab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-tachometer-alt"></i> {{Equipement}}</a></li>
+            <li role="presentation"><a href="#commandtab" aria-controls="profile" role="tab" data-toggle="tab"><i class="fas fa-list-alt"></i> {{Commandes}}</a></li>
+        </ul>
 
-		<div class="tab-content" style="height:calc(100% - 50px);overflow:auto;overflow-x: hidden;">
-			<div role="tabpanel" class="tab-pane active" id="eqlogictab">
-      </br>
-      <div class="row">
-          <div class="col-lg-6">
-              <form class="form-horizontal">
-                  <fieldset>
-                      <div class="form-group">
-                          <label class="col-lg-4 control-label">{{Nom de l'équipement}} :</label>
-                          <div class="col-lg-4">
-                              <input type="text" class="eqLogicAttr form-control" data-l1key="id" style="display : none;" />
-                              <input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{Nom de l'équipement}}"/>
-                          </div>
-                          <div class="col-lg-4">
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          <label class="col-lg-4 control-label" >{{Objet parent :}}</label>
-                          <div class="col-lg-4">
-                              <select class="eqLogicAttr form-control" data-l1key="object_id">
-                                  <option value="">{{Aucun}}</option>
-                                  <?php
-								  foreach (jeeObject::all() as $object) {
-                                      echo '<option value="' . $object->getId() . '">' . $object->getName() . '</option>';
-                                  }
-                                  ?>
-                              </select>
-                          </div>
-                          <div class="col-lg-4">
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          <label class="col-lg-4 control-label">{{Identifiant Compteur}} :</label>
-                          <div class="col-lg-4">
-                              <input type="text" class="eqLogicAttr form-control tooltips" title="{{Identifiant du compteur aussi connu sous le nom ADCO.}}" data-l1key="logicalId" placeholder="{{ADCO du compteur}}"/>
-                          </div>
-                          <div class="col-lg-4">
-                          </div>
-                      </div>
-                      <div class="form-group" style="display:none">
-                          <label class="col-lg-4 control-label">{{Catégorie}} :</label>
-                          <div class="col-lg-8">
-                              <!--<input type="checkbox" class="eqLogicAttr" data-l1key="category" data-l2key="energy" checked/>-->
-                              <?php
-                              /*foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
-                              echo '<label class="checkbox-inline">';
-                              echo '<input type="checkbox" class="eqLogicAttr" data-l1key="category" data-l2key="' . $key . '" />' . $value['name'];
-                              echo '</label>';
-                          }*/
-                              ?>
-                          </div>
-                      </div>
-                      <div class="form-group etatObjet">
-                          <label class="col-lg-4 control-label">{{Etat de l'objet}} :</label>
-                          <div class="col-lg-8">
-                              <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="isEnable" checked/>{{Activer}}</label>
-                              <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="isVisible" checked/>{{Visible}}</label>
-                          </div>
-                      </div>
-                      <div class="form-group ProdCons">
-                          <label class="col-lg-4 control-label pull-left">{{Compteur en mode conso ET prod}} <sup><i class="fas fa-question-circle tooltips" title="{{A cocher si le compteur sert aussi en production (Linky)}}"></i></sup></label>
-                          <div class="col-lg-7 tooltips">
-                              <input type="checkbox" id="activation_production" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="ActivationProduction" placeholder="{{Activer}}"/>
-                          </div>
-                      </div>
-                      <div class="form-group HCHP">
-                          <label class="col-lg-4 control-label pull-left">{{Abo HC / HP (ancienne méthode)}} <sup><i class="fas fa-question-circle tooltips" title="{{Si vous voulez toujours l'ancienne méthode et si votre abonnement est HC / HP}}"></i></sup></label>
-                          <div class="col-lg-7 tooltips">
-                              <input type="checkbox" id="HC_HP" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="HCHP" placeholder="{{Abonnement HC/HP}}"/>
-                          </div>
-                      </div>
-                      <div class="form-group NewIndex">
-                          <label class="col-lg-4 control-label pull-left">{{Utilisation des nouveaux index}} <sup><i class="fas fa-question-circle tooltips" title="{{Si vous voulez utiliser la nouvelle méthode avec les Index ci-dessous}}"></i></sup></label>
-                          <div class="col-lg-7 tooltips">
-                              <input type="checkbox" id="NewMethode" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="newIndex" placeholder="{{Utilisation des index}}"/>
-                          </div>
-                      </div>
-                      <div class="form-group Colors">
-                          <a class="btn btn-warning tooltips col-sm-2 pull-right"  id="btTeleinfoRazCouleurs"><i class="fas fa-medkit"></i>{{ RAZ couleurs}}</a>
-                      </div>
-                      <div class="form-group">
-                          <label class="col-sm-2 control-label">{{Index}}</label>
-                          <label class="col-sm-2 control-label">{{Libellé tarif}}</label>
-                          <label class="col-sm-1 control-label">{{ }}</label>
-                          <label class="col-sm-2 control-label">{{Champ téléinfo}}</label>
-                          <label class="col-sm-1 control-label">{{ }}</label>
-                          <label class="col-sm-1 control-label">{{Prix kWh}}</label>
-						  <label class="col-sm-1 control-label">{{ }}</label>
-                          <label class="col-sm-2 control-label">{{Couleurs ligne}}</label>
-                      </div>
+        <div class="tab-content" style="height:calc(100% - 50px);overflow:auto;overflow-x: hidden;">
+            <div role="tabpanel" class="tab-pane active" id="eqlogictab">
+        </br>
+        <div class="row">
+            <div class="col-lg-6">
+                <form class="form-horizontal">
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">{{Nom de l'équipement}} :</label>
+                            <div class="col-lg-4">
+                                <input type="text" class="eqLogicAttr form-control" data-l1key="id" style="display : none;" />
+                                <input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{Nom de l'équipement}}"/>
+                            </div>
+                            <div class="col-lg-4">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label" >{{Objet parent :}}</label>
+                            <div class="col-lg-4">
+                                <select class="eqLogicAttr form-control" data-l1key="object_id">
+                                    <option value="">{{Aucun}}</option>
+                                    <?php
+                                    foreach (jeeObject::all() as $object) {
+                                        echo '<option value="' . $object->getId() . '">' . $object->getName() . '</option>';
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-lg-4">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">{{Identifiant Compteur}} :</label>
+                            <div class="col-lg-4">
+                                <input type="text" class="eqLogicAttr form-control tooltips" title="{{Identifiant du compteur aussi connu sous le nom ADCO.}}" data-l1key="logicalId" placeholder="{{ADCO du compteur}}"/>
+                            </div>
+                            <div class="col-lg-4">
+                            </div>
+                        </div>
+                        <div class="form-group" style="display:none">
+                            <label class="col-lg-4 control-label">{{Catégorie}} :</label>
+                            <div class="col-lg-8">
+                                <!--<input type="checkbox" class="eqLogicAttr" data-l1key="category" data-l2key="energy" checked/>-->
+                                <?php
+                                /*foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
+                                echo '<label class="checkbox-inline">';
+                                echo '<input type="checkbox" class="eqLogicAttr" data-l1key="category" data-l2key="' . $key . '" />' . $value['name'];
+                                echo '</label>';
+                            }*/
+                                ?>
+                            </div>
+                        </div>
+                        <div class="form-group etatObjet">
+                            <label class="col-lg-4 control-label">{{Etat de l'objet}} :</label>
+                            <div class="col-lg-8">
+                                <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="isEnable" checked/>{{Activer}}</label>
+                                <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="isVisible" checked/>{{Visible}}</label>
+                            </div>
+                        </div>
 
-                      <div class="form-group">
-                          <label class="col-sm-2 control-label">{{Index Prod}} :</label>
-                          <label class="col-sm-2 control-label">{{Injection Totale}}</label>
-                          <label class="col-sm-1 control-label">{{ }}</label>
-                          <label class="col-sm-2 control-label">{{EAIT}}</label>
-						  <label class="col-sm-1 control-label">{{ }}</label>
-                          <div class="col-sm-2">
-                              <input type="number" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="CoutindexProd" placeholder="{{0}}"/>
-                          </div>
-						  <label class="col-sm-1 control-label">{{ }}</label>
-                          <div class="col-sm-1">
-                              <input type="color" class="eqLogicAttr configKey" id="favcolor14"  data-l1key="configuration" data-l2key="color14" name="favcolor14">
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          <label class="col-sm-2 control-label">{{Index 00}} :</label>
-                          <label class="col-sm-2 control-label">{{Conso Totale}}</label>
-                          <label class="col-sm-1 control-label">{{ }}</label>
-                          <label class="col-sm-2 control-label">{{BASE ou EAST}}</label>
-						  <label class="col-sm-1 control-label">{{ }}</label>
-                          <div class="col-sm-2">
-                              <input type="number" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="Coutindex00" placeholder="{{Si abo de base sinon 0}}"/>
-                          </div>
-						  <label class="col-sm-1 control-label">{{ }}</label>
-                          <div class="col-sm-1">
-                              <input type="color" class="eqLogicAttr configKey" id="favcolor0"  data-l1key="configuration" data-l2key="color0" name="favcolor0">
-                          </div>
+                        <div class="form-group">
+								<label class="col-lg-4 control-label pull-left">{{Utiliser le template du plugin}}</label>
+								<div class="col-sm-6">
+									<input type="checkbox" id="use_plugin_template" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="usePluginTemplate" checked>
+								</div>
+						</div>
 
-                      </div>
-                      <?php
+                        <div class="form-group ProdCons">
+                            <label class="col-lg-4 control-label pull-left">{{Compteur en mode conso ET prod}} <sup><i class="fas fa-question-circle tooltips" title="{{A cocher si le compteur sert aussi en production (Linky)}}"></i></sup></label>
+                            <div class="col-lg-7 tooltips">
+                                <input type="checkbox" id="activation_production" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="ActivationProduction" placeholder="{{Activer}}"/>
+                            </div>
+                        </div>
+                        <div class="form-group HCHP">
+                            <label class="col-lg-4 control-label pull-left">{{Abo HC / HP (ancienne méthode)}} <sup><i class="fas fa-question-circle tooltips" title="{{Si vous voulez toujours l'ancienne méthode et si votre abonnement est HC / HP}}"></i></sup></label>
+                            <div class="col-lg-7 tooltips">
+                                <input type="checkbox" id="HC_HP" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="HCHP" placeholder="{{Abonnement HC/HP}}"/>
+                            </div>
+                        </div>
+                        <div class="form-group NewIndex">
+                            <label class="col-lg-4 control-label pull-left">{{Utilisation des nouveaux index}} <sup><i class="fas fa-question-circle tooltips" title="{{Si vous voulez utiliser la nouvelle méthode avec les Index ci-dessous}}"></i></sup></label>
+                            <div class="col-lg-7 tooltips">
+                                <input type="checkbox" id="NewMethode" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="newIndex" placeholder="{{Utilisation des index}}"/>
+                            </div>
+                        </div>
+                        <div class="form-group Colors">
+                            <a class="btn btn-warning tooltips col-sm-2 pull-right"  id="btTeleinfoRazCouleurs"><i class="fas fa-medkit"></i>{{ RAZ couleurs}}</a>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">{{Index}}</label>
+                            <label class="col-sm-2 control-label">{{Libellé tarif}}</label>
+                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <label class="col-sm-2 control-label">{{Champ téléinfo}}</label>
+                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <label class="col-sm-1 control-label">{{Prix kWh}}</label>
+                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <label class="col-sm-2 control-label">{{Couleurs ligne}}</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">{{Index Prod}} :</label>
+                            <label class="col-sm-2 control-label">{{Injection Totale}}</label>
+                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <label class="col-sm-2 control-label">{{EAIT}}</label>
+                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <div class="col-sm-2">
+                                <input type="number" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="CoutindexProd" placeholder="{{0}}"/>
+                            </div>
+                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <div class="col-sm-1">
+                                <input type="color" class="eqLogicAttr configKey" id="favcolor14"  data-l1key="configuration" data-l2key="color14" name="favcolor14">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">{{Index 00}} :</label>
+                            <label class="col-sm-2 control-label">{{Conso Totale}}</label>
+                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <label class="col-sm-2 control-label">{{BASE ou EAST}}</label>
+                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <div class="col-sm-2">
+                                <input type="number" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="Coutindex00" placeholder="{{Si abo de base sinon 0}}"/>
+                            </div>
+                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <div class="col-sm-1">
+                                <input type="color" class="eqLogicAttr configKey" id="favcolor0"  data-l1key="configuration" data-l2key="color0" name="favcolor0">
+                            </div>
+
+                        </div>
+                        <?php
                             //création du tableau des paramètres des index
                             $index=array('index01','index02','index03','index04','index05','index06','index07','index08','index09','index10');
                             $indexId=array("EASF01","EASF02","EASF03","EASF04","EASF05","EASF06","EASF07","EASF08","EASF09","EASF10",
                                             "HCHC", "HCHP", "EJPHN", "EJPHPM", "BBRHCJB", "BBRHPJB", "BBRHCJW", "BBRHPJW", "BBRHCJR","BBRHPJR");
                             $color = 0;
                             $tableau = '';
-							foreach($index as $numindex){
+                            foreach($index as $numindex){
                                 $color += 1;
-								$tableau.='<div class="form-group">';
-									$tableau.='<label class="col-sm-2 control-label">{{Index '.substr($numindex,-2).'}} :</label>';
-									$tableau.='<div class="col-sm-2">';
-									    $tableau.='<input type="text" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="'.$numindex.'_nom" placeholder="{{...}}"/>';
-									$tableau.='</div>';
-									$tableau.='<label class="col-sm-1 control-label">{{ }}</label>';
-									$tableau.='<div class="col-sm-2">';
-										//$tableau.='<input type="text" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="'.$numindex.'" placeholder="{{...}}" />';
+                                $tableau.='<div class="form-group">';
+                                    $tableau.='<label class="col-sm-2 control-label">{{Index '.substr($numindex,-2).'}} :</label>';
+                                    $tableau.='<div class="col-sm-2">';
+                                        $tableau.='<input type="text" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="'.$numindex.'_nom" placeholder="{{...}}"/>';
+                                    $tableau.='</div>';
+                                    $tableau.='<label class="col-sm-1 control-label">{{ }}</label>';
+                                    $tableau.='<div class="col-sm-2">';
+                                        //$tableau.='<input type="text" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="'.$numindex.'" placeholder="{{...}}" />';
                                         $tableau.='<select class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="'.$numindex.'">';
                                         $tableau.='<option selected="selected"></option>';
                                         foreach($indexId as $value){
@@ -274,9 +282,9 @@ switch ($controlerState) {
                                             $tableau.= $value.' </option>';
                                         }
                                         $tableau.='</select>';
-									$tableau.='</div>';
-								    $tableau.='<label class="col-sm-1 control-label">{{ }}</label>';
-									$tableau.='<div class="col-sm-2">';
+                                    $tableau.='</div>';
+                                    $tableau.='<label class="col-sm-1 control-label">{{ }}</label>';
+                                    $tableau.='<div class="col-sm-2">';
                                         $tableau.='<input type="number" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="Cout'.$numindex.'" placeholder="{{0}}"/>';
                                     $tableau.='</div>';
                                     $tableau.='<label class="col-sm-1 control-label">{{ }}</label>';
@@ -286,87 +294,87 @@ switch ($controlerState) {
                                 $tableau.='</div>';
                                     }
                         ?>
-						<?php echo $tableau ?>
+                        <?php echo $tableau ?>
 
                         <div class="form-group">
-                          <label class="col-sm-2 control-label">{{ }}</label>
-                          <label class="col-sm-1 control-label">{{ }}</label>
-                          <label class="col-sm-4 control-label">{{Pour les autres courbes :}}</label>
-                          <label class="col-sm-1 control-label">{{ }}</label>
-                          <label class="col-sm-2 control-label">{{Stat HC}}</label>
-                          <label class="col-sm-1 control-label">{{ }}</label>
-                          <div class="col-sm-1">
-                              <input type="color" class="eqLogicAttr configKey" id="favcolor11"  data-l1key="configuration" data-l2key="color11" name="favcolor11">
-                          </div>
+                            <label class="col-sm-2 control-label">{{ }}</label>
+                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <label class="col-sm-4 control-label">{{Pour les autres courbes :}}</label>
+                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <label class="col-sm-2 control-label">{{Stat HC}}</label>
+                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <div class="col-sm-1">
+                                <input type="color" class="eqLogicAttr configKey" id="favcolor11"  data-l1key="configuration" data-l2key="color11" name="favcolor11">
+                            </div>
                         </div>
                         <div class="form-group">
-                          <label class="col-sm-8 control-label">{{ }}</label>
-                          <label class="col-sm-2 control-label">{{Stat HP}}</label>
-                          <label class="col-sm-1 control-label">{{ }}</label>
-                          <div class="col-sm-1">
-                              <input type="color" class="eqLogicAttr configKey" id="favcolor12"  data-l1key="configuration" data-l2key="color12" name="favcolor12">
-                          </div>
+                            <label class="col-sm-8 control-label">{{ }}</label>
+                            <label class="col-sm-2 control-label">{{Stat HP}}</label>
+                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <div class="col-sm-1">
+                                <input type="color" class="eqLogicAttr configKey" id="favcolor12"  data-l1key="configuration" data-l2key="color12" name="favcolor12">
+                            </div>
                         </div>
                         <div class="form-group">
-                          <label class="col-sm-8 control-label">{{ }}</label>
-                          <label class="col-sm-2 control-label">{{Stat Today}}</label>
-                          <label class="col-sm-1 control-label">{{ }}</label>
-                          <div class="col-sm-1">
-                              <input type="color" class="eqLogicAttr configKey" id="favcolor13"  data-l1key="configuration" data-l2key="color13" name="favcolor13">
-                          </div>
+                            <label class="col-sm-8 control-label">{{ }}</label>
+                            <label class="col-sm-2 control-label">{{Stat Today}}</label>
+                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <div class="col-sm-1">
+                                <input type="color" class="eqLogicAttr configKey" id="favcolor13"  data-l1key="configuration" data-l2key="color13" name="favcolor13">
+                            </div>
                         </div>
-                  </fieldset>
-              </form>
-          </div>
-          <div class="col-lg-6">
-              <form class="form-horizontal">
-                  <fieldset>
-                      <!--<legend>{{Paramètres}}</legend>-->
-                      <div class="form-group infoAbonnement">
-                          <label class="col-lg-4 control-label pull-left">{{Votre abonnement }}</label>
-                          <div class="col-lg-7">
-                              <span class="eqLogicAttr" data-l1key="configuration" data-l2key="abonnement" id="typeAbonnement">Aucun</span>
-                          </div>
-                      </div>
-                      <div class="form-group creationCommandes">
-                          <label class="col-lg-4 control-label pull-left">{{Création des commandes}} <sup><i class="fas fa-question-circle tooltips" title="{{Créer automatiquement les commandes envoyées par le compteur}}"></i></sup></label>
-                          <div class="col-lg-7 tooltips">
-                              <input type="checkbox" id="AutoCreateFromCompteur" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="AutoCreateFromCompteur"/>
-                          </div>
-                      </div>
-                      <div class="form-group maintenanceAuto">
-                          <label class="col-lg-4 control-label pull-left">{{Maintenance automatique}} <sup><i class="fas fa-question-circle tooltips" title="{{nettoyage de la base de données tous les lundi}}"></i></sup></label>
-                          <div class="col-lg-7 tooltips">
-                              <input type="checkbox" id="cleanDBTeleinfo" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="cleanDBTeleinfo"/>
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          <label class="col-lg-4 control-label pull-left"></label>
-                          <div class="col-lg-7">
-                              <a class="btn btn-info tooltips"  id="btTeleinfoHealth"><i class="fas fa-medkit"></i>{{ Santé}}</a>
-                              <a class="btn btn-warning tooltips"  id="btTeleinfoMaintenance"><i class="fas fa-hospital"></i>{{ Maintenance}}</a>
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          <div class="col-lg-12">
-                              <div class="alert alert-info globalRemark">{{Attention, il est nécessaire d'activer l'historisation des index pour utiliser les statistiques}}</div>
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          </br>
-						  </br>
-						  </br>
-                          </br>
-						  <label class="col-sm-12 control-label pull-left" style="text-decoration:underline">Les fichier sauvegardés ou à restaurer ci-dessous sont stockés dans /html/plugins/teleinfo/sauvegarde :</label>
-						  </br> </br>
-                          <label class="col-sm-5 control-label pull-left">Sauvegarder l'historique des commandes </label>
-                          <div class="col-sm-6">
-                              <a class="btn btn-info tooltips"  id="btSauve"><i class="fa-solid fa-floppy-disk"></i>{{ Sauvegarder}}</a>
-                          </div>
-                          </br> </br> 
-                          <label class="col-sm-3 control-label pull-left">Supprimer les fichiers du compteur : </label>
-                          <div class="col-sm-2">
-                              <?php
+                    </fieldset>
+                </form>
+            </div>
+            <div class="col-lg-6">
+                <form class="form-horizontal">
+                    <fieldset>
+                        <!--<legend>{{Paramètres}}</legend>-->
+                        <div class="form-group infoAbonnement">
+                            <label class="col-lg-4 control-label pull-left">{{Votre abonnement }}</label>
+                            <div class="col-lg-7">
+                                <span class="eqLogicAttr" data-l1key="configuration" data-l2key="abonnement" id="typeAbonnement">Aucun</span>
+                            </div>
+                        </div>
+                        <div class="form-group creationCommandes">
+                            <label class="col-lg-4 control-label pull-left">{{Création des commandes}} <sup><i class="fas fa-question-circle tooltips" title="{{Créer automatiquement les commandes envoyées par le compteur}}"></i></sup></label>
+                            <div class="col-lg-7 tooltips">
+                                <input type="checkbox" id="AutoCreateFromCompteur" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="AutoCreateFromCompteur"/>
+                            </div>
+                        </div>
+                        <div class="form-group maintenanceAuto">
+                            <label class="col-lg-4 control-label pull-left">{{Maintenance automatique}} <sup><i class="fas fa-question-circle tooltips" title="{{nettoyage de la base de données tous les lundi}}"></i></sup></label>
+                            <div class="col-lg-7 tooltips">
+                                <input type="checkbox" id="cleanDBTeleinfo" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="cleanDBTeleinfo"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label pull-left"></label>
+                            <div class="col-lg-7">
+                                <a class="btn btn-info tooltips"  id="btTeleinfoHealth"><i class="fas fa-medkit"></i>{{ Santé}}</a>
+                                <a class="btn btn-warning tooltips"  id="btTeleinfoMaintenance"><i class="fas fa-hospital"></i>{{ Maintenance}}</a>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <div class="alert alert-info globalRemark">{{Attention, il est nécessaire d'activer l'historisation des index pour utiliser les statistiques}}</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            </br>
+                            </br>
+                            </br>
+                            </br>
+                            <label class="col-sm-12 control-label pull-left" style="text-decoration:underline">Les fichier sauvegardés ou à restaurer ci-dessous sont stockés dans /html/plugins/teleinfo/sauvegarde :</label>
+                            </br> </br>
+                            <label class="col-sm-5 control-label pull-left">Sauvegarder l'historique des commandes </label>
+                            <div class="col-sm-6">
+                                <a class="btn btn-info tooltips"  id="btSauve"><i class="fa-solid fa-floppy-disk"></i>{{ Sauvegarder}}</a>
+                            </div>
+                            </br> </br> 
+                            <label class="col-sm-3 control-label pull-left">Supprimer les fichiers du compteur : </label>
+                            <div class="col-sm-2">
+                                <?php
                                     $dir = __DIR__ . '/../../sauvegarde/';
                                     $fichiers = array();
                                     if (is_dir($dir)){
@@ -387,16 +395,16 @@ switch ($controlerState) {
                                         $valueAnc = $valueNew;
                                     }
                                     $tabCompteur.='</select>';
-                              ?>
-                              <?php echo $tabCompteur ?>
-                          </div>
-                          <div class="col-sm-6">
+                                ?>
+                                <?php echo $tabCompteur ?>
+                            </div>
+                            <div class="col-sm-6">
                                 <a class="btn btn-info tooltips"  id="btSuppr"><i class="fas fa-medkit"></i>{{ Supprimer}}</a>
-                          </div>
-						  </br> </br> </br>
-                          <label class="col-sm-5 control-label pull-left">Restaurer un historique vers index : </label>
-                          <div class="col-sm-2">
-                              <?php
+                            </div>
+                            </br> </br> </br>
+                            <label class="col-sm-5 control-label pull-left">Restaurer un historique vers index : </label>
+                            <div class="col-sm-2">
+                                <?php
                                     $indexId=array("BASE","EAIT","EAST","EASF01","EASF02","EASF03","EASF04","EASF05","EASF06","EASF07","EASF08","EASF09","EASF10",
                                                     "HCHC", "HCHP", "EJPHN", "EJPHPM", "BBRHCJB", "BBRHPJB", "BBRHCJW", "BBRHPJW", "BBRHCJR","BBRHPJR");
                                     $tabrestaure='<select id="idRestaure">';
@@ -406,12 +414,12 @@ switch ($controlerState) {
                                         $tabrestaure.= $value.' </option>';
                                     }
                                     $tabrestaure.='</select>';
-                              ?>
-                              <?php echo $tabrestaure ?>
-                          </div>
-                          <label class="col-sm-5 control-label pull-left">Historique à restaurer : </label>
-                          <div class="col-sm-4">
-                              <?php
+                                ?>
+                                <?php echo $tabrestaure ?>
+                            </div>
+                            <label class="col-sm-5 control-label pull-left">Historique à restaurer : </label>
+                            <div class="col-sm-4">
+                                <?php
                                     $dir = __DIR__ . '/../../sauvegarde/';
                                     $fichiers = array();
                                     if (is_dir($dir)){
@@ -424,67 +432,67 @@ switch ($controlerState) {
                                         $tabFichiers.= $value.' </option>';
                                     }
                                     $tabFichiers.='</select>';
-                              ?>
-                              <?php echo $tabFichiers ?>
-                          </div>
-                          <label class="col-sm-5 control-label pull-left">Lancer restauration </label>
-                          <div class="col-sm-6">
+                                ?>
+                                <?php echo $tabFichiers ?>
+                            </div>
+                            <label class="col-sm-5 control-label pull-left">Lancer restauration </label>
+                            <div class="col-sm-6">
                                 <a class="btn btn-info tooltips"  id="btRestaure"><i class="fas fa-medkit"></i>{{ Restaurer}}</a>
-                          </div>
-                          </br> </br> </br> 
-						  </br>
-                          <label style="text-decoration:underline">Création ou régénération des statistiques liées aux "nouveaux index" : </label>
-						  </br> </br>
-                          <div> 
+                            </div>
+                            </br> </br> </br> 
+                            </br>
+                            <label style="text-decoration:underline">Création ou régénération des statistiques liées aux "nouveaux index" : </label>
+                            </br> </br>
+                            <div> 
                             <label>Pour la période du (date au format AAAA-MM-JJ) : </label>
                             <input id="in_startDate" class="form-control input-sm in_datepicker" style="display : inline-block; width: 87px;" value="<?php echo $date['start']?>"/>
                             <label> au : </label>
                             <input id="in_endDate" class="form-control input-sm in_datepicker" style="display : inline-block; width: 87px;" value="<?php echo $date['end']?>"/>
-                          </div>
-<!--						  <label class="col-sm-5 control-label pull-left">Copier anciennes données  conso totale vers Index00</label>
-                          <div class="col-sm-6">
-                              <a class="btn btn-info tooltips"  id="btIndex00"><i class="fas fa-medkit"></i>{{ Index00}}</a>
-                          </div>
--->						  </br>
-                          <label class="col-sm-5 control-label pull-left">Copier anciennes données vers Index (ou (re)créer les stats) </label>
-                          <div class="col-sm-6">
-                              <a class="btn btn-info tooltips"  id="btIndex"><i class="fas fa-medkit"></i>{{ Copier}}</a>
-                          </div>
-                      </div>
-                  </fieldset>
-              </form>
-          </div>
-      </div>
-  </div>
-  <div role="tabpanel" class="tab-pane" id="commandtab">
-  <div class="input-group pull-right inputAddCmd" style="display:inline-flex">
-			<span class="input-group-btn">
+                            </div>
+    <!--						  <label class="col-sm-5 control-label pull-left">Copier anciennes données  conso totale vers Index00</label>
+                            <div class="col-sm-6">
+                                <a class="btn btn-info tooltips"  id="btIndex00"><i class="fas fa-medkit"></i>{{ Index00}}</a>
+                            </div>
+    -->						  </br>
+                            <label class="col-sm-5 control-label pull-left">Copier anciennes données vers Index (ou (re)créer les stats) </label>
+                            <div class="col-sm-6">
+                                <a class="btn btn-info tooltips"  id="btIndex"><i class="fas fa-medkit"></i>{{ Copier}}</a>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="commandtab">
+    <div class="input-group pull-right inputAddCmd" style="display:inline-flex">
+            <span class="input-group-btn">
                 <a class="btn btn-success btn-sm cmdAction roundedLeft" id="addDataToTable"><i class="fas fa-plus-circle"></i> {{Ajouter une donnée}}</a> &nbsp;
                 <a class="btn btn-info btn-sm cmdAction roundedRight" id="addStatToTable"><i class="fas fa-plus-circle"></i> {{Ajouter une statistique}}</a>
             </span>
-  </div>
+    </div>
 
-  <table id="table_cmd" class="table table-bordered table-condensed">
-      <thead>
-          <tr>
-              <th style="width: 3%">#</th>
-              <th style="width: 15%">{{Nom}}</th>
-              <th style="width: 5%;">{{Sous-Type}}</th>
-              <th style="width: 25%;">{{Donnée}}</th>
-              <th style="width: 15%;">{{Paramètres}}</th>
-              <th style="width: 5%;">{{Valeur}}</th>
-              <th style="width: 4%"></th>
-          </tr>
-      </thead>
-      <tbody>
-      </tbody>
-  </table>
-  <form class="form-horizontal">
-      <fieldset>
-          <div class="form-actions">
-          </div>
-      </fieldset>
-  </form>
+    <table id="table_cmd" class="table table-bordered table-condensed">
+        <thead>
+            <tr>
+                <th style="width: 3%">#</th>
+                <th style="width: 15%">{{Nom}}</th>
+                <th style="width: 5%;">{{Sous-Type}}</th>
+                <th style="width: 25%;">{{Donnée}}</th>
+                <th style="width: 15%;">{{Paramètres}}</th>
+                <th style="width: 5%;">{{Valeur}}</th>
+                <th style="width: 4%"></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <form class="form-horizontal">
+        <fieldset>
+            <div class="form-actions">
+            </div>
+        </fieldset>
+    </form>
 </div>
 		</div>
 	</div>
