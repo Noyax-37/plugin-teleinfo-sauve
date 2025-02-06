@@ -409,7 +409,6 @@
         "[obsolete] Production Mois en cours": "[obsoleto] Producción Mes en curso"
     },
     "plugins\/teleinfo\/desktop\/modal\/diagnostic.php": {
-        "\"": "\"",
         "Accès au Modem": "Acceso por módem",
         "Démarrer": "Iniciar",
         "Etape 1 :": "Primer paso:",
