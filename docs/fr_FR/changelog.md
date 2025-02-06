@@ -12,6 +12,9 @@ Pour toutes demandes :
  - [Changelog version bêta](https://github.com/Noyax-37/plugin-teleinfo/blob/develop/docs/fr_FR/changelog.md)
 
 
+## 4.9.4
+- traduction du plugin, merci @mips
+
 ## 4.9.3
 - correction erreur dans le démon du modem cartelectronic modèle 2 compteurs
 - amélioration de la gestion des erreurs dans le démon du modem cartelectronic modèle 2 compteurs

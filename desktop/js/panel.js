@@ -428,23 +428,23 @@ function loadData(){
                 $('.teleinfoAttr[data-l1key=abonnement][data-l2key=type]').text(' ' + data.result[globalEqLogic].configuration.abonnement);
                 if (data.result[globalEqLogic].configuration.abonnement.includes("PROD")){
                     compteurProd = true;
-                    $('#spanTitreResume').html('<i style="font-size: initial;" class="icon fas fa-leaf"></i> Ma Production');
+                    $('#spanTitreResume').html('<i style="font-size: initial;" class="icon fas fa-leaf"></i> {{Ma Production}}');
                 }
                 else{
                     if(data.result[globalEqLogic].configuration.ActivationProduction == 0){
-                        $('#spanTitreResume').html('<i style="font-size: initial;" class="fas fa-bolt"></i> Ma Consommation');
+                        $('#spanTitreResume').html('<i style="font-size: initial;" class="fas fa-bolt"></i> {{Ma Consommation}}');
                     }
                     else{
-                        $('#spanTitreResume').html('<i style="font-size: initial;" class="fas fa-bolt"></i> Ma Consommation et Ma production');
+                        $('#spanTitreResume').html('<i style="font-size: initial;" class="fas fa-bolt"></i> {{Ma Consommation et Ma production}}');
                         prodEtConso = true;
                     }
                 }
             }else{
                 if(data.result[globalEqLogic].configuration.ActivationProduction == 0){
-                    $('#spanTitreResume').html('<i style="font-size: initial;" class="fas fa-bolt"></i> Ma Consommation');
+                    $('#spanTitreResume').html('<i style="font-size: initial;" class="fas fa-bolt"></i> {{Ma Consommation}}');
                 }
                 else{
-                    $('#spanTitreResume').html('<i style="font-size: initial;" class="fas fa-bolt"></i> Ma Consommation et Ma production');
+                    $('#spanTitreResume').html('<i style="font-size: initial;" class="fas fa-bolt"></i> {{Ma Consommation et Ma production}}');
                     prodEtConso = true;
                 }
             }
@@ -1006,7 +1006,7 @@ function getDailyHistory(div,  object, color, stackGraph, diviseur, serie, type)
                                         plotBackgroundColor: plotBackgroundColor,
                                     },
                                                 option: {
-                                        name : 'Température ext.',
+                                        name : '{{Température ext.}}',
                                         graphType : 'line',
                                         graphColor: '#87b125',
                                         derive : 0,
@@ -1121,7 +1121,7 @@ function getMonthlyHistory(div,  object, color, stackGraph, diviseur, serie, typ
                                         plotBackgroundColor: plotBackgroundColor,
                                     },
                                     option: {
-                                        name : 'Température ext.',
+                                        name : '{{Température ext.}}',
                                         graphType : 'line',
                                         graphColor: '#87b125',
                                         derive : 0,
@@ -1232,7 +1232,7 @@ function getAnnualHistory(div,  object, color, stackGraph, diviseur, serie, type
                                         plotBackgroundColor: plotBackgroundColor,
                                     },
                                     option: {
-                                        name : 'Température ext.',
+                                        name : '{{Température ext.}}',
                                         graphType : 'line',
                                         graphColor: '#87b125',
                                         derive : 0,

@@ -29,71 +29,71 @@ function teleinfo_update($direct=true) {
     $core_version = 'Inconnue';
     $packagesjson = dirname(__FILE__) . '/packages.json'; 
     if (file_exists($packagesjson)){
-        log::add('teleinfo','warning','Suppression du fichier packages.json'); 
+        log::add('teleinfo','warning', __('Suppression du fichier packages.json', __FILE__)); 
         unlink($packagesjson); 
     } 
     $ressources = dirname(__FILE__) . '../ressources/'; 
     if (file_exists($ressources)){ 
-        log::add('teleinfo','warning',"suppression du répertoire 'ressources'");
+        log::add('teleinfo','warning',__("suppression du répertoire 'ressources'", __FILE__));
         rmdir($ressources); 
     } 
     $postinstall = dirname(__FILE__) . '../resources/post-install.sh'; 
     if (file_exists($postinstall)){ 
-        log::add('teleinfo','warning','suppression du fichier post-install.sh');
+        log::add('teleinfo','warning',__('suppression du fichier post-install.sh', __FILE__));
         unlink($postinstall); 
     } 
     if (!file_exists(dirname(__FILE__) . '/info.json')) {
-        log::add('teleinfo','warning','Pas de fichier info.json');
+        log::add('teleinfo','warning',__('Pas de fichier info.json', __FILE__));
         goto step2;
     }
     $data = json_decode(file_get_contents(dirname(__FILE__) . '/info.json'), true);
     if (!is_array($data)) {
-        log::add('teleinfo','warning','Impossible de décoder le fichier info.json (non bloquant ici)');
+        log::add('teleinfo','warning',__('Impossible de décoder le fichier info.json (non bloquant ici)', __FILE__));
         goto step2;
     }
     try {
         $core_version = $data['pluginVersion'];
         config::save('version', $core_version, 'teleinfo');
     } catch (\Exception $e) {
-        log::add('teleinfo','warning','Pas de version de plugin (non bloquant ici)');
+        log::add('teleinfo','warning',__('Pas de version de plugin (non bloquant ici)', __FILE__));
         goto step2;
     }
     try {
         $changelog = $data['changelog'];
     } catch (\Exception $e) {
-        log::add('teleinfo','warning','Pas de changelog (non bloquant ici)');
+        log::add('teleinfo','warning',__('Pas de changelog (non bloquant ici)', __FILE__));
         goto step2;
     }
 
     try {
         $changelog_beta = $data['changelog_beta'];
     } catch (\Exception $e) {
-        log::add('teleinfo','warning','Pas de changelog béta (non bloquant ici)');
+        log::add('teleinfo','warning',__('Pas de changelog béta (non bloquant ici)', __FILE__));
         goto step2;
     }
 
 
     try {
         if (file_get_contents($changelog) == file_get_contents($changelog_beta)){
-            $versionIdentique = ' Les versions STABLE et BETA sont identiques, si vous êtes en BETA il vaudrait mieux passer en STABLE cela ne change absolument rien pour vous.';
+            $versionIdentique = __(' Les versions STABLE et BETA sont identiques, si vous êtes en BETA il vaudrait mieux passer en STABLE cela ne change absolument rien pour vous.', __FILE__);
         } 
     } catch (\Exception $e) {
-        log::add('teleinfo','warning','un des fichiers changelog n existe pas (non bloquant ici)');
+        log::add('teleinfo','warning',__('un des fichiers changelog n existe pas (non bloquant ici)', __FILE__));
         goto step2;
     }
 
 
     step2:
     if ($direct){
-        message::add('teleinfo', 'Mise à jour du plugin Téléinfo en cours...');
+        message::add('teleinfo', __('Mise à jour du plugin Téléinfo en cours...', __FILE__));
         log::add('teleinfo','debug','teleinfo_update');
         log::add('teleinfo','info','*****************************************************');
-        log::add('teleinfo','info','*********** Mise à jour du plugin teleinfo **********');
+        log::add('teleinfo','info',__('*********** Mise à jour du plugin teleinfo **********', __FILE__));
         } else {
-        message::add('teleinfo', 'Installation du plugin Téléinfo en cours...');
+        message::add('teleinfo', __('Installation du plugin Téléinfo en cours...', __FILE__));
         log::add('teleinfo','debug','teleinfo_install');
         log::add('teleinfo','info','*****************************************************');
-        log::add('teleinfo','info','********** Installation du plugin teleinfo **********');
+        log::add('teleinfo','info',__('********** Installation du plugin teleinfo **********', __FILE__));
         }
     log::add('teleinfo','info','*****************************************************');
     log::add('teleinfo','info','**         Core version    : '. $core_version. str_repeat(" ",22-strlen($core_version)) . '**');
@@ -104,7 +104,7 @@ function teleinfo_update($direct=true) {
     }
 
     // mise à jour stat si elles n'existent pas
-    log::add('teleinfo', 'info', "-------- Commandes des stats si elles n'existent pas ---------");
+    log::add('teleinfo', 'info', __("-------- Commandes des stats si elles n'existent pas ---------", __FILE__));
 
     $array = array("STAT_TODAY_INDEX00","STAT_TODAY_INDEX00_COUT","STAT_YESTERDAY_INDEX00","STAT_YESTERDAY_INDEX00_COUT",
                     "STAT_TODAY_INDEX01","STAT_TODAY_INDEX01_COUT","STAT_YESTERDAY_INDEX01","STAT_YESTERDAY_INDEX01_COUT",
@@ -122,7 +122,7 @@ function teleinfo_update($direct=true) {
         foreach ($array as $value){
             $cmd = $eqLogic->getCmd('info', $value);
             if (!is_object($cmd)) {
-                log::add('teleinfo', 'info', "Nouvelle STAT => compteur '". $eqLogic->getName() . "' " . $value);
+                log::add('teleinfo', 'info', __("Nouvelle STAT => compteur '%s' %s", __FILE__), $eqLogic->getLogicalId(), $value);
                 if (strpos($value,'COUT')<>0) {
                     $unite = ('€');
                 }else{
@@ -160,7 +160,7 @@ function teleinfo_update($direct=true) {
     //fin mise à jour stat
     
     // installation des crons
-    log::add('teleinfo','info','** (ré)installation des crons si nécessaire **');
+    log::add('teleinfo','info',__('** (ré)installation des crons si nécessaire **', __FILE__));
     $cron = cron::byClassAndFunction('teleinfo', 'calculateOtherStats');
     if (!is_object($cron)) {
         $cron = new cron();
@@ -199,12 +199,12 @@ function teleinfo_update($direct=true) {
 
     message::removeAll('teleinfo');
     if ($direct){
-        message::add('teleinfo', 'Mise à jour du plugin Téléinfo terminée, vous êtes en version ' . $core_version . '.' . $versionIdentique);
+        message::add('teleinfo', __('Mise à jour du plugin Téléinfo terminée, vous êtes en version', __FILE__) . ' ' . $core_version . '.' . $versionIdentique);
     } else {
-        message::add('teleinfo', 'Installation du plugin Téléinfo terminée, vous êtes en version ' . $core_version . '.' . $versionIdentique);
+        message::add('teleinfo', __('Installation du plugin Téléinfo terminée, vous êtes en version', __FILE__) . ' ' . $core_version . '.' . $versionIdentique);
 
     }
-    message::add('teleinfo', "n'oubliez pas de (ré) installer les dépendances");
+    message::add('teleinfo', __("n'oubliez pas de (ré) installer les dépendances", __FILE__));
     teleinfo::cron();
 }
 
@@ -225,5 +225,5 @@ function teleinfo_remove() {
         $cronclean->remove();
     }
     message::removeAll('teleinfo');
-    message::add('teleinfo', 'Désinstallation du plugin Téléinfo terminée, vous pouvez de nouveau relever les index à la main ;)');
+    message::add('teleinfo', __('Désinstallation du plugin Téléinfo terminée, vous pouvez de nouveau relever les index à la main ;)', __FILE__));
 }

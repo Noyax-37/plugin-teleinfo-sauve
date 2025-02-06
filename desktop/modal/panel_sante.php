@@ -39,6 +39,6 @@ if (!isConnect('admin')) {
 	</table>
 </div>
 <div class="center">
-Si un statut est nok veuillez enregistrer votre objet de nouveau puis attendre 24h.
+{{Si un statut est nok veuillez enregistrer votre objet de nouveau puis attendre 24h.}}
 </div>
 <?php include_file('desktop', 'panel_sante', 'js', 'teleinfo');?>

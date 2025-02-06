@@ -16,7 +16,7 @@ $eqLogics = eqLogic::byType('teleinfo');
 	<div class="row no-gutters" id="div_teleinfo">
 		<fieldset style="border: 1px solid #e5e5e5; border-radius: 5px 5px 0px 5px">
 			<div style="padding-top:10px;font-size: 1.5em;"> 
-				<span id="spanTitreResume">Ma consommation
+				<span id="spanTitreResume">{{Ma consommation}}
 				</span>
 				<select id="eqlogic_select" style="font-size: 15px;border-radius: 3px;border:1px solid #ccc;">
 								<?php
@@ -26,41 +26,41 @@ $eqLogics = eqLogic::byType('teleinfo');
 								?>
 				</select>
 
-				<a class="btn btn-default btn-sm pull-right tooltips" style="margin-right:10px;" id="bt_teleinfoTout" title="Nouveaux index: Afficher tout: kWh ET €">{{Tout}}</a>
-				<a class="btn btn-default btn-sm pull-right tooltips" style="margin-right:10px;" id="bt_teleinfoConso" title="Nouveaux index: Afficher les kWh">{{kWh}}</a>
-				<a class="btn btn-default btn-sm pull-right tooltips" style="margin-right:10px;" id="bt_teleinfoCout" title="Afficher les coûts"><i class="fas fa-euro-sign"></i></a>
-				<a class="btn btn-default btn-sm pull-right tooltips" id="bt_teleinfoPanelSante" title="Vérifier l'intégrité des données"><i class="fas fa-check-circle"></i></a>
+				<a class="btn btn-default btn-sm pull-right tooltips" style="margin-right:10px;" id="bt_teleinfoTout" title="{{Nouveaux index: Afficher tout: kWh ET €}}">{{Tout}}</a>
+				<a class="btn btn-default btn-sm pull-right tooltips" style="margin-right:10px;" id="bt_teleinfoConso" title="{{Nouveaux index: Afficher les kWh}}">{{kWh}}</a>
+				<a class="btn btn-default btn-sm pull-right tooltips" style="margin-right:10px;" id="bt_teleinfoCout" title="{{Afficher les coûts}}"><i class="fas fa-euro-sign"></i></a>
+				<a class="btn btn-default btn-sm pull-right tooltips" id="bt_teleinfoPanelSante" title="{{Vérifier l'intégrité des données}}"><i class="fas fa-check-circle"></i></a>
 				<a style="margin-right:5px;" class="pull-right btn btn-success btn-sm tooltips" id='bt_validChangeDate' title="{{Attention une trop grande plage de dates peut mettre très longtemps à être calculée ou même ne pas s'afficher}}">{{Ok}}</a>
 				<input id="in_endDate" class="pull-right form-control input-sm in_datepicker" style="display : inline-block; width: 87px;" value="<?php echo $date['end']?>"/>
 				<input id="in_startDate" class="pull-right form-control input-sm in_datepicker" style="display : inline-block; width: 87px;" value="<?php echo $date['start']?>"/>
 								  
 			</div>
 			<label class="control-label" style="font-size: 1em;">
-				{{Abonnement : }} 
+				{{Abonnement :}}  
 			</label>
 			<span class="teleinfoAttr" data-l1key="abonnement" data-l2key="type"></span>
 			<table class="table teleinfotable text-center">
 				<thead>
 					<tr class="teleinfotr" >
-						<th class="teleinfoth" rowspan="2" colspan="2" style="vertical-align: middle">Compteur</th>
-						<th class="teleinfoth" colspan="2">Journée</th>
-						<th class="teleinfoth" rowspan="2" style="vertical-align: middle">Mois<br>en cours</th>
-						<th class="teleinfoth" colspan="2">Mois de A-1</th>
-						<th class="teleinfoth" rowspan="2" style="vertical-align: middle">Année<br>en cours</th>
-						<th class="teleinfoth" colspan="2">Année A-1</th>
-						<th class="teleinfoth" rowspan="2" style="vertical-align: middle">Total<br>général</th>
+						<th class="teleinfoth" rowspan="2" colspan="2" style="vertical-align: middle">{{Compteur}}</th>
+						<th class="teleinfoth" colspan="2">{{Journée}}</th>
+						<th class="teleinfoth" rowspan="2" style="vertical-align: middle">{{Mois}}<br>{{en cours}}</th>
+						<th class="teleinfoth" colspan="2">{{Mois de A-1}}</th>
+						<th class="teleinfoth" rowspan="2" style="vertical-align: middle">{{Année}}<br>{{en cours}}</th>
+						<th class="teleinfoth" colspan="2">{{Année A-1}}</th>
+						<th class="teleinfoth" rowspan="2" style="vertical-align: middle">{{Total}}<br>{{général}}</th>
 					</tr>
 					<tr class="teleinfotr" >
 						<th class="teleinfoth">J</th>
 						<th class="teleinfoth">J-1</th>
-						<th class="teleinfoth">Partiel</th>
-						<th class="teleinfoth">Total</th>
-						<th class="teleinfoth">Partiel</th>
-						<th class="teleinfoth">Total</th>
+						<th class="teleinfoth">{{Partiel}}</th>
+						<th class="teleinfoth">{{Total}}</th>
+						<th class="teleinfoth">{{Partiel}}</th>
+						<th class="teleinfoth">{{Total}}</th>
 					</tr>
 					<tr class="teleinfotr" >
-						<th rowspan="14" style="vertical-align: middle" class="teleinfoth conso">Conso</th>
-						<th class="TOTAL teleinfoth">Total</th>
+						<th rowspan="14" style="vertical-align: middle" class="teleinfoth conso">{{Conso}}</th>
+						<th class="TOTAL teleinfoth">{{Total}}</th>
 						<td class="teleinfotd TOTAL">
 							<span class="teleinfoAttr" data-l1key="conso" data-l2key="day" style="font-size: 1em;"></span>
 							{{ kWh}}
@@ -250,7 +250,7 @@ $eqLogics = eqLogic::byType('teleinfo');
 <!--- Elaboration du tableau PROD --->
 						<?php
 							$tableau3.='<tr class="PRODUCTION">';
-								$tableau3.='<th rowspan="2" style="vertical-align: middle" class="teleinfoth PRODUCTION">Réinjection</th>';
+								$tableau3.='<th rowspan="2" style="vertical-align: middle" class="teleinfoth PRODUCTION">{{Réinjection}}</th>';
 								$tableau3.='<th class="teleinfoth PRODCONSO" style="font-size: 1em;">Energie</th>';
 								foreach($periode as $jours){
 									$tableau3.='<td class="teleinfotd PRODCONSO">';
@@ -260,7 +260,7 @@ $eqLogics = eqLogic::byType('teleinfo');
 								}
 								$tableau3.='</tr>';
 								$tableau3.='<tr class="teleinfotr PRODCOUT">';
-									$tableau3.='<th class="teleinfoth PRODCOUT" style="font-size: 1em;">Revenus</span>';
+									$tableau3.='<th class="teleinfoth PRODCOUT" style="font-size: 1em;">{{Revenus}}</span>';
 									foreach($periode as $jours){
 										$tableau3.='<td class="teleinfotd PRODCOUT">';
 											$tableau3.='<span class="teleinfoAttr" data-l1key="coutProd" data-l2key="'.$jours.'" style="font-size: 1em;"></span>';

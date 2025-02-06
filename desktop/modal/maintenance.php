@@ -31,7 +31,7 @@ $archiveDatetime = date('Y-m-d H:i:s', strtotime('- 1 months'));
 <div id='div_MaintenanceAlert' style="display: none;"></div>
 <div class='row'>
     <div class='col-md-12'>
-        <center><h4>Statistiques</h4></center>
+        <center><h4>{{Statistiques}}</h4></center>
     </div>
     <div class='col-md-8 col-md-offset-2 center'>
         <?php
@@ -51,9 +51,9 @@ $archiveDatetime = date('Y-m-d H:i:s', strtotime('- 1 months'));
             <center><h4>Optimisations</h4></center>
         </div>
         <div class='col-md-12'>
-            <div class="alert alert-danger globalRemark col-md-12">Attention, ce tableau permet de ne garder que la valeur minimale rencontrée par interval horaire dans l'historique
+            <div class="alert alert-danger globalRemark col-md-12">{{Attention, ce tableau permet de ne garder que la valeur minimale rencontrée par interval horaire dans l'historique}}
         	</br>
-        	ainsi que la valeur max du jour. Si un nettoyage est nécessaire alors un bouton s'affichera sur la commande.
+        	{{ainsi que la valeur max du jour. Si un nettoyage est nécessaire alors un bouton s'affichera sur la commande.}}
         	</div>
     	</div>
 

@@ -185,7 +185,7 @@ if (isset($result['device'])) {
             else {
                 $teleinfo = ($data['device'] != '') ? teleinfo::createFromDef($data['device']) : teleinfo::createFromDef($data['device']);
                 if (!is_object($teleinfo)) {
-                    log::add('teleinfo', 'info', 'Aucun équipement trouvé pour le compteur n°' . $data['device']);
+                    log::add('teleinfo', 'info', __('Aucun équipement trouvé pour le compteur n°', __FILE__) . ' ' . $data['device']);
                     die();
                 }
             }

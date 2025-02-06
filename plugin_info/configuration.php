@@ -41,12 +41,12 @@ if (!file_exists(dirname(__FILE__) . '/info.json')) {
 }
 $data = json_decode(file_get_contents(dirname(__FILE__) . '/info.json'), true);
 if (!is_array($data)) {
-    log::add('teleinfo','warning','Impossible de décoder le fichier info.json');
+    log::add('teleinfo','warning',__('Impossible de décoder le fichier info.json', __FILE__));
 }
 try {
     $core_version = $data['pluginVersion'];
 } catch (\Exception $e) {
-    log::add('teleinfo','warning','Impossible de récupérer la version.');
+    log::add('teleinfo','warning',__('Impossible de récupérer la version.', __FILE__));
 }
 ?>
 
@@ -87,7 +87,7 @@ try {
                             echo '<option value="serie">Modem Série</option>';
                             ?>
                         </select>
-                        <input id="port_serie" class="configKey form-control" data-l1key="modem_serie_addr" style="margin-top:5px;display:none" placeholder="Renseigner le port série (ex : /dev/ttyS0)"/>
+                        <input id="port_serie" class="configKey form-control" data-l1key="modem_serie_addr" style="margin-top:5px;display:none" placeholder="{{Renseigner le port série (ex : /dev/ttyS0)}}"/>
                         <script>
                         $( "#select_port" ).change(function() {
                             $( "#select_port option:selected" ).each(function() {
@@ -123,7 +123,7 @@ try {
                             echo '<option value="serie">Modem Série</option>';
                             ?>
                         </select>
-                        <input id="port_serie_modem2" class="configKey form-control" data-l1key="modem_serie_compteur2_addr" style="margin-top:5px;display:none" placeholder="Renseigner le port série (ex : /dev/ttyS0)"/>
+                        <input id="port_serie_modem2" class="configKey form-control" data-l1key="modem_serie_compteur2_addr" style="margin-top:5px;display:none" placeholder="{{Renseigner le port série (ex : /dev/ttyS0)}}"/>
                         <script>
                         $( "#select_port_modem2" ).change(function() {
                             $( "#select_port_modem2 option:selected" ).each(function() {
@@ -158,10 +158,10 @@ try {
                 <div class="collapse" id="OptionsCollapse">
                     <div class="form-group">
                         <label class="col-lg-4 control-label">{{Compteur 1 communiquant en mode STANDARD}}<sup><i class="fas fa-question-circle tooltips" title="{{Veuillez regarder la documentation pour identifier votre compteur}}" style="font-size : 1em;color:grey;"></i></sup></label>
-                        <div id="div_linky" class="col-lg-4 tooltips" title="{{ Veuillez regarder la documentation pour identifier votre compteur }}">
+                        <div id="div_linky" class="col-lg-4 tooltips" title="{{ Veuillez regarder la documentation pour identifier votre compteur}} ">
                             <input type="checkbox" id="linky" class="configKey" data-l1key="linky" placeholder="{{}}"/>
                             <label for="linky">  </label>
-                            <label id="label_linky" style="color:red;margin-left:100px;margin-top:-15px;display:none">Attention, assurez vous que votre compteur soit en mode standard. Aucune idée ? Se reporter à la documentation.</label>
+                            <label id="label_linky" style="color:red;margin-left:100px;margin-top:-15px;display:none">{{Attention, assurez vous que votre compteur soit en mode standard. Aucune idée ? Se reporter à la documentation.}}</label>
                             <script>
                             $( "#linky" ).change(function() {
                                     if($( this ).value() == "1"){
@@ -197,7 +197,7 @@ try {
                         <div id="div_linky_prod" class="col-lg-4 tooltips" title="{{ Veuillez regarder la documentation pour identifier votre compteur }}">
                             <input type="checkbox" id="linky_prod" class="configKey" data-l1key="linky_prod" placeholder="{{}}"/>
                             <label for="linky_prod">  </label>
-                            <label id="label_linky_prod" style="color:red;margin-left:100px;margin-top:-15px;display:none">Attention, assurez vous que votre compteur soit en mode standard. Aucune idée ? Se reporter à la documentation.</label>
+                            <label id="label_linky_prod" style="color:red;margin-left:100px;margin-top:-15px;display:none">{{Attention, assurez vous que votre compteur soit en mode standard. Aucune idée ? Se reporter à la documentation.}}</label>
                             <script>
                             $( "#linky_prod" ).change(function() {
                                     if($( this ).value() == "1"){
@@ -256,26 +256,26 @@ try {
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">{{Nom d'utilisateur (si aucun laisser vide) : }}</label>
+                    <label class="col-sm-4 control-label">{{Nom d'utilisateur (si aucun laisser vide) :}} </label>
                     <div class="col-sm-2">
                         <input class="configKey form-control" data-l1key="mqtt_username" placeholder="{{}}"/>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">{{Mot de passe (si aucun laisser vide) : }}</label>
+                    <label class="col-sm-4 control-label">{{Mot de passe (si aucun laisser vide) :}} </label>
                     <div class="col-sm-2">
                         <input type="password" class="configKey form-control" data-l1key="mqtt_password" placeholder="{{}}"/>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">{{Topic utilisé (si inconnu laisser vide) : }}</label>
+                    <label class="col-sm-4 control-label">{{Topic utilisé (si inconnu laisser vide) :}} </label>
                     <div class="col-sm-2">
-                        <input class="configKey form-control" data-l1key="mqtt_topic" placeholder="{{ }}"/>
+                        <input class="configKey form-control" data-l1key="mqtt_topic" placeholder=" "/>
                     </div>
                 </div>
                 <br />
                 <div class="a_voir form-group">
-                    <label class="col-sm-4 control-label">{{ }}</label>
+                    <label class="col-sm-4 control-label"> </label>
                     <div class="col-sm-2">
                         <a class="btn btn-warning recherche_mqtt" data-choix="recherche_mqtt"><i class="fas fa-cogs"></i> {{Lancer recherche compteurs pendant 5 minutes}}</a>
                     </div>
@@ -286,7 +286,7 @@ try {
             <legend><i class="icon fas fa-warning"></i> {{Options du Plugin}}</legend>
             
             <div class="form-group">
-                    <label class="col-lg-4 control-label">Bloquer la création automatique des compteurs <sup><i class="fas fa-question-circle tooltips" title="{{Interdire la création automatique des nouveaux compteurs}}" style="font-size : 1em;color:grey;"></i></sup></label>
+                    <label class="col-lg-4 control-label">{{Bloquer la création automatique des compteurs}} <sup><i class="fas fa-question-circle tooltips" title="{{Interdire la création automatique des nouveaux compteurs}}" style="font-size : 1em;color:grey;"></i></sup></label>
                     <div id="div_auth_new_object" class="col-lg-4 tooltips"  title="{{Interdire la création automatique des nouveaux compteurs}}">
                         <!--<label class="checkbox-inline"><input id="force" type="checkbox" class="configKey" data-l1key="force" />{{Oui}}</label>-->
                         <input type="checkbox" id="auth_new_object" class="configKey" data-l1key="createNewADCO" placeholder="{{Actif}}"/>
@@ -294,17 +294,17 @@ try {
                     </div>
                 </div>
             <div id="div_activation_Modem" class="form-group">
-                <label class="col-lg-4 control-label">Utilisation d'un modem téléinformation : </label>
+                <label class="col-lg-4 control-label">{{Utilisation d'un modem téléinformation :}} </label>
                 <div class="col-lg-4">
                     <input type="checkbox" id="activation_Modem" class="configKey" data-l1key="activation_Modem" placeholder="{{Activer}}" checked/>
-                    <label class="check_modem" for="activation_Modem">compléter la partie configuration du modem</label>
+                    <label class="check_modem" for="activation_Modem">{{compléter la partie configuration du modem}}</label>
                     </div>
             </div>
             <div class="form-group div_local">
-                <label class="col-lg-4 control-label">Activer le MQTT <sup><i class="fas fa-question-circle tooltips" title="{{Utilisation d'une TIC en MQTT}}" style="font-size : 1em;color:grey;"></i></sup></label>
+                <label class="col-lg-4 control-label">{{Activer le MQTT}} <sup><i class="fas fa-question-circle tooltips" title="{{Utilisation d'une TIC en MQTT}}" style="font-size : 1em;color:grey;"></i></sup></label>
                 <div id="div_activation_Mqtt" class="col-lg-4 tooltips">
                     <input type="checkbox" id="activation_Mqtt" class="configKey" data-l1key="activation_Mqtt" placeholder="{{Activer}}"/>
-                    <label class="check_mqtt" for="activation_Mqtt">compléter la partie configuration du MQTT</label>
+                    <label class="check_mqtt" for="activation_Mqtt">{{compléter la partie configuration du MQTT}}</label>
                 </div>
             </div>
             <div class="form-group">
@@ -322,7 +322,7 @@ try {
             <div class="form-group">
                 <label class="col-sm-4 control-label">{{Cycle (s)}}</label>
                 <div class="col-sm-2">
-                    <input class="configKey form-control" data-l1key="cycle" placeholder="{{0.3}}"/>
+                    <input class="configKey form-control" data-l1key="cycle" placeholder="0.3"/>
                 </div>
             </div>
 
@@ -354,8 +354,8 @@ try {
             <span style="top:6px;" class="col-lg-4"><?php echo $core_version; ?></span>
         </div>
         <div class="form-group">
-            <label class="col-lg-4 control-label">Diagnostique <sup><i class="fas fa-question-circle tooltips" title="{{Rechercher la cause d'un disfonctionnement}}" style="font-size : 1em;color:grey;"></i></sup></label>
-            <span style="top:6px;" class="col-lg-4"><a class="btn btn-sm btn-info" id="btn_diagnostic" style="position:relative;top:-5px;"><i class="divers-svg"></i> Démarrer</a></span>
+            <label class="col-lg-4 control-label">{{Diagnostique}} <sup><i class="fas fa-question-circle tooltips" title="{{Rechercher la cause d'un disfonctionnement}}" style="font-size : 1em;color:grey;"></i></sup></label>
+            <span style="top:6px;" class="col-lg-4"><a class="btn btn-sm btn-info" id="btn_diagnostic" style="position:relative;top:-5px;"><i class="divers-svg"></i> {{Démarrer}}</a></span>
         </div>
         <div class="form-group">
             <label class="col-sm-4 control-label"></label>
@@ -430,7 +430,7 @@ try {
                     }
                     if (data.result.state == 'ok') {
                         console.log(data);
-                        $.fn.showAlert({message: data.result.message + " N'oubliez pas de sauvegarder.", level: 'success'});
+                        $.fn.showAlert({message: data.result.message + " {{N'oubliez pas de sauvegarder.}}", level: 'success'});
                         $("#modem_vitesse").val(data.result.vitesse);
                         $("#linky").prop('checked', data.result.linky);
                     }
@@ -470,7 +470,7 @@ try {
                         return;
                     }
                     if (data.result.state == 'ok') {
-                        $.fn.showAlert({message: data.result.message + " N'oubliez pas de sauvegarder.", level: 'success'});
+                        $.fn.showAlert({message: data.result.message + " {{N'oubliez pas de sauvegarder.}}", level: 'success'});
                         $("#modem_compteur2_vitesse").val(data.result.vitesse);
                         $("#linky_prod").prop('checked', data.result.linky);
                     }

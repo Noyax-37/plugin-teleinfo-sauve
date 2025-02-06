@@ -132,7 +132,7 @@ try {
 
             $path = realpath(dirname(__FILE__) . '/../../resources/teleinfo.log');
             if (!file_exists($path)) {
-                $return['result'] = array('Deamon non lancé');
+                $return['result'] = array(__('Deamon non lancé', __FILE__));
                 ajax::success($return);
             } else {
                 $log = new SplFileObject($path);
@@ -197,7 +197,7 @@ try {
                 event::add('jeedom::alert', array(
                         'level' => 'warning',
                         'page' => 'teleinfo',
-                        'message' => __('Optimisation de l\'historique de '.$donneeOptimized.', cela peut prendre du temps.', __FILE__),
+                        'message' => sprintf(__('Optimisation de l\'historique de %s, cela peut prendre du temps.', __FILE__), $donneeOptimized),
                 ));
                 
                 //compter le nb de ligne
@@ -617,7 +617,7 @@ try {
             event::add('jeedom::alert', array(
                 'level' => 'warning',
                 'page' => 'teleinfo',
-                'message' => __("envoi " . init('idRestaure') . ' vers id compteur ' . init('compteur') . ' du fichier ' . init('fichierRestaure'), __FILE__),
+                'message' => "envoi " . init('idRestaure') . ' vers id compteur ' . init('compteur') . ' du fichier ' . init('fichierRestaure'),
             ));
             $eqLogic = eqLogic::byId(init('compteur'));
             if (!is_object($eqLogic)){
@@ -633,21 +633,21 @@ try {
                 event::add('jeedom::alert', array(
                     'level' => 'warning',
                     'page' => 'teleinfo',
-                    'message' => __("nouvelle commande créée => " . $cmd->getName(), __FILE__),
+                    'message' => __("nouvelle commande créée =>", __FILE__) . ' ' . $cmd->getName(),
                 ));
             }
 
             event::add('jeedom::alert', array(
                 'level' => 'warning',
                 'page' => 'teleinfo',
-                'message' => __("Récupération des données du fichier ". __DIR__ . '/../../sauvegarde/' . init('fichierRestaure'), __FILE__),
+                'message' => __("Récupération des données du fichier", __FILE__) . ' ' . __DIR__ . '/../../sauvegarde/' . init('fichierRestaure'),
             ));
 
             if (($fichier = fopen(__DIR__ . '/../../sauvegarde/' . init('fichierRestaure'), 'r')) != FALSE){
                 event::add('jeedom::alert', array(
                     'level' => 'warning',
                     'page' => 'teleinfo',
-                    'message' => __("Restauration de l'historique de l'index ".$cmd->getName(), __FILE__),
+                    'message' => __("Restauration de l'historique de l'index", __FILE__) . ' ' . $cmd->getName(),
                 ));
                 $i=0;
                 while (($donnees = fgetcsv($fichier, 1000, ",")) !== FALSE) {
@@ -675,7 +675,7 @@ try {
         break;
 
     }
-    throw new \Exception('Aucune methode correspondante');
+    throw new \Exception(__('Aucune methode correspondante', __FILE__));
 } catch (\Exception $e) {
     ajax::error(displayException($e), $e->getCode());
 }

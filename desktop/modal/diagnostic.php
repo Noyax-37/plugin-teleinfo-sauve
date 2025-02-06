@@ -152,7 +152,7 @@ if (!isConnect('admin')) {
                         <div class="row" style="margin-top:10px">
                         	<center><span class="result6" style=""></span></center>
                         </div>
-                        <label class="control-label">Rappel des vérifications :</label>
+                        <label class="control-label">{{Rappel des vérifications :}}</label>
                         <center><table class="">
                             <thead>
                                 <tr>
@@ -162,23 +162,23 @@ if (!isConnect('admin')) {
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td style="font-weight: 700;">Etape 1 :</td>
+                                    <td style="font-weight: 700;">{{Etape 1 :}}</td>
                                     <td><span class="result1" style=""></span></td>
                                 </tr>
                                 <tr>
-                                    <td style="font-weight: 700;">Etape 2 :</td>
+                                    <td style="font-weight: 700;">{{Etape 2 :}}</td>
                                     <td><span class="result2" style=""></span></td>
                                 </tr>
                                 <tr>
-                                    <td style="font-weight: 700;">Etape 3 :</td>
+                                    <td style="font-weight: 700;">{{Etape 3 :}}</td>
                                     <td><span class="result3" style=""></span></td>
                                 </tr>
                                 <tr>
-                                    <td style="font-weight: 700;">Etape 4 :</td>
+                                    <td style="font-weight: 700;">{{Etape 4 :}}</td>
                                     <td><span class="result4" style=""></span></td>
                                 </tr>
                                 <tr>
-                                    <td style="font-weight: 700;">Etape 5 :</td>
+                                    <td style="font-weight: 700;">{{Etape 5 :}}</td>
                                     <td><span class="result5" style=""></span></td>
                                 </tr>
                             </tbody>

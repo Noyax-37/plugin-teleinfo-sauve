@@ -221,24 +221,24 @@ switch ($controlerState) {
                         <div class="form-group">
                             <label class="col-sm-2 control-label">{{Index}}</label>
                             <label class="col-sm-2 control-label">{{Libellé tarif}}</label>
-                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <label class="col-sm-1 control-label"> </label>
                             <label class="col-sm-2 control-label">{{Champ téléinfo}}</label>
-                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <label class="col-sm-1 control-label"> </label>
                             <label class="col-sm-1 control-label">{{Prix kWh}}</label>
-                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <label class="col-sm-1 control-label"> </label>
                             <label class="col-sm-2 control-label">{{Couleurs ligne}}</label>
                         </div>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">{{Index Prod}} :</label>
                             <label class="col-sm-2 control-label">{{Injection Totale}}</label>
-                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <label class="col-sm-1 control-label"> </label>
                             <label class="col-sm-2 control-label">{{EAIT}}</label>
-                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <label class="col-sm-1 control-label"> </label>
                             <div class="col-sm-2">
                                 <input type="number" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="CoutindexProd" placeholder="{{0}}"/>
                             </div>
-                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <label class="col-sm-1 control-label"> </label>
                             <div class="col-sm-1">
                                 <input type="color" class="eqLogicAttr configKey" id="favcolor14"  data-l1key="configuration" data-l2key="color14" name="favcolor14">
                             </div>
@@ -246,13 +246,13 @@ switch ($controlerState) {
                         <div class="form-group">
                             <label class="col-sm-2 control-label">{{Index 00}} :</label>
                             <label class="col-sm-2 control-label">{{Conso Totale}}</label>
-                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <label class="col-sm-1 control-label"> </label>
                             <label class="col-sm-2 control-label">{{BASE ou EAST}}</label>
-                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <label class="col-sm-1 control-label"> </label>
                             <div class="col-sm-2">
                                 <input type="number" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="Coutindex00" placeholder="{{Si abo de base sinon 0}}"/>
                             </div>
-                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <label class="col-sm-1 control-label"> </label>
                             <div class="col-sm-1">
                                 <input type="color" class="eqLogicAttr configKey" id="favcolor0"  data-l1key="configuration" data-l2key="color0" name="favcolor0">
                             </div>
@@ -270,11 +270,11 @@ switch ($controlerState) {
                                 $tableau.='<div class="form-group">';
                                     $tableau.='<label class="col-sm-2 control-label">{{Index '.substr($numindex,-2).'}} :</label>';
                                     $tableau.='<div class="col-sm-2">';
-                                        $tableau.='<input type="text" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="'.$numindex.'_nom" placeholder="{{...}}"/>';
+                                        $tableau.='<input type="text" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="'.$numindex.'_nom" placeholder="..."/>';
                                     $tableau.='</div>';
-                                    $tableau.='<label class="col-sm-1 control-label">{{ }}</label>';
+                                    $tableau.='<label class="col-sm-1 control-label"> </label>';
                                     $tableau.='<div class="col-sm-2">';
-                                        //$tableau.='<input type="text" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="'.$numindex.'" placeholder="{{...}}" />';
+                                        //$tableau.='<input type="text" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="'.$numindex.'" placeholder="..." />';
                                         $tableau.='<select class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="'.$numindex.'">';
                                         $tableau.='<option selected="selected"></option>';
                                         foreach($indexId as $value){
@@ -283,11 +283,11 @@ switch ($controlerState) {
                                         }
                                         $tableau.='</select>';
                                     $tableau.='</div>';
-                                    $tableau.='<label class="col-sm-1 control-label">{{ }}</label>';
+                                    $tableau.='<label class="col-sm-1 control-label"> </label>';
                                     $tableau.='<div class="col-sm-2">';
-                                        $tableau.='<input type="number" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="Cout'.$numindex.'" placeholder="{{0}}"/>';
+                                        $tableau.='<input type="number" class="eqLogicAttr configKey" data-l1key="configuration" data-l2key="Cout'.$numindex.'" placeholder="0"/>';
                                     $tableau.='</div>';
-                                    $tableau.='<label class="col-sm-1 control-label">{{ }}</label>';
+                                    $tableau.='<label class="col-sm-1 control-label"> </label>';
                                     $tableau.='<div class="col-sm-1">';
                                         $tableau.='<input type="color" class="eqLogicAttr configKey" id="favcolor'.$color.'"  data-l1key="configuration" data-l2key="color'.$color.'" name="favcolor'.$color.'">';
                                     $tableau.='</div>';
@@ -297,28 +297,28 @@ switch ($controlerState) {
                         <?php echo $tableau ?>
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">{{ }}</label>
-                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <label class="col-sm-2 control-label"> </label>
+                            <label class="col-sm-1 control-label"> </label>
                             <label class="col-sm-4 control-label">{{Pour les autres courbes :}}</label>
-                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <label class="col-sm-1 control-label"> </label>
                             <label class="col-sm-2 control-label">{{Stat HC}}</label>
-                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <label class="col-sm-1 control-label"> </label>
                             <div class="col-sm-1">
                                 <input type="color" class="eqLogicAttr configKey" id="favcolor11"  data-l1key="configuration" data-l2key="color11" name="favcolor11">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-8 control-label">{{ }}</label>
+                            <label class="col-sm-8 control-label"> </label>
                             <label class="col-sm-2 control-label">{{Stat HP}}</label>
-                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <label class="col-sm-1 control-label"> </label>
                             <div class="col-sm-1">
                                 <input type="color" class="eqLogicAttr configKey" id="favcolor12"  data-l1key="configuration" data-l2key="color12" name="favcolor12">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-8 control-label">{{ }}</label>
+                            <label class="col-sm-8 control-label"> </label>
                             <label class="col-sm-2 control-label">{{Stat Today}}</label>
-                            <label class="col-sm-1 control-label">{{ }}</label>
+                            <label class="col-sm-1 control-label"> </label>
                             <div class="col-sm-1">
                                 <input type="color" class="eqLogicAttr configKey" id="favcolor13"  data-l1key="configuration" data-l2key="color13" name="favcolor13">
                             </div>
@@ -333,7 +333,7 @@ switch ($controlerState) {
                         <div class="form-group infoAbonnement">
                             <label class="col-lg-4 control-label pull-left">{{Votre abonnement }}</label>
                             <div class="col-lg-7">
-                                <span class="eqLogicAttr" data-l1key="configuration" data-l2key="abonnement" id="typeAbonnement">Aucun</span>
+                                <span class="eqLogicAttr" data-l1key="configuration" data-l2key="abonnement" id="typeAbonnement">{{Aucun}}</span>
                             </div>
                         </div>
                         <div class="form-group creationCommandes">
@@ -365,14 +365,14 @@ switch ($controlerState) {
                             </br>
                             </br>
                             </br>
-                            <label class="col-sm-12 control-label pull-left" style="text-decoration:underline">Les fichier sauvegardés ou à restaurer ci-dessous sont stockés dans /html/plugins/teleinfo/sauvegarde :</label>
+                            <label class="col-sm-12 control-label pull-left" style="text-decoration:underline">{{Les fichier sauvegardés ou à restaurer ci-dessous sont stockés dans}} /html/plugins/teleinfo/sauvegarde :</label>
                             </br> </br>
-                            <label class="col-sm-5 control-label pull-left">Sauvegarder l'historique des commandes </label>
+                            <label class="col-sm-5 control-label pull-left">{{Sauvegarder l'historique des commandes}} </label>
                             <div class="col-sm-6">
                                 <a class="btn btn-info tooltips"  id="btSauve"><i class="fa-solid fa-floppy-disk"></i>{{ Sauvegarder}}</a>
                             </div>
                             </br> </br> 
-                            <label class="col-sm-3 control-label pull-left">Supprimer les fichiers du compteur : </label>
+                            <label class="col-sm-3 control-label pull-left">{{Supprimer les fichiers du compteur :}} </label>
                             <div class="col-sm-2">
                                 <?php
                                     $dir = __DIR__ . '/../../sauvegarde/';
@@ -402,7 +402,7 @@ switch ($controlerState) {
                                 <a class="btn btn-info tooltips"  id="btSuppr"><i class="fas fa-medkit"></i>{{ Supprimer}}</a>
                             </div>
                             </br> </br> </br>
-                            <label class="col-sm-5 control-label pull-left">Restaurer un historique vers index : </label>
+                            <label class="col-sm-5 control-label pull-left">{{Restaurer un historique vers index :}} </label>
                             <div class="col-sm-2">
                                 <?php
                                     $indexId=array("BASE","EAIT","EAST","EASF01","EASF02","EASF03","EASF04","EASF05","EASF06","EASF07","EASF08","EASF09","EASF10",
@@ -417,7 +417,7 @@ switch ($controlerState) {
                                 ?>
                                 <?php echo $tabrestaure ?>
                             </div>
-                            <label class="col-sm-5 control-label pull-left">Historique à restaurer : </label>
+                            <label class="col-sm-5 control-label pull-left">{{Historique à restaurer :}} </label>
                             <div class="col-sm-4">
                                 <?php
                                     $dir = __DIR__ . '/../../sauvegarde/';
@@ -435,16 +435,16 @@ switch ($controlerState) {
                                 ?>
                                 <?php echo $tabFichiers ?>
                             </div>
-                            <label class="col-sm-5 control-label pull-left">Lancer restauration </label>
+                            <label class="col-sm-5 control-label pull-left">{{Lancer restauration}} </label>
                             <div class="col-sm-6">
                                 <a class="btn btn-info tooltips"  id="btRestaure"><i class="fas fa-medkit"></i>{{ Restaurer}}</a>
                             </div>
                             </br> </br> </br> 
                             </br>
-                            <label style="text-decoration:underline">Création ou régénération des statistiques liées aux "nouveaux index" : </label>
+                            <label style="text-decoration:underline">{{Création ou régénération des statistiques liées aux "nouveaux index" :}} </label>
                             </br> </br>
                             <div> 
-                            <label>Pour la période du (date au format AAAA-MM-JJ) : </label>
+                            <label>{{Pour la période du (date au format AAAA-MM-JJ) :}} </label>
                             <input id="in_startDate" class="form-control input-sm in_datepicker" style="display : inline-block; width: 87px;" value="<?php echo $date['start']?>"/>
                             <label> au : </label>
                             <input id="in_endDate" class="form-control input-sm in_datepicker" style="display : inline-block; width: 87px;" value="<?php echo $date['end']?>"/>
@@ -454,7 +454,7 @@ switch ($controlerState) {
                                 <a class="btn btn-info tooltips"  id="btIndex00"><i class="fas fa-medkit"></i>{{ Index00}}</a>
                             </div>
     -->						  </br>
-                            <label class="col-sm-5 control-label pull-left">Copier anciennes données vers Index (ou (re)créer les stats) </label>
+                            <label class="col-sm-5 control-label pull-left">{{Copier anciennes données vers Index (ou (re)créer les stats)}} </label>
                             <div class="col-sm-6">
                                 <a class="btn btn-info tooltips"  id="btIndex"><i class="fas fa-medkit"></i>{{ Copier}}</a>
                             </div>
