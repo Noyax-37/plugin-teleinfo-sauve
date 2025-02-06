@@ -131,7 +131,7 @@ if (!isConnect('admin')) {
                         	<center><span class="result5" style=""></span></center>
                         </div>
                         <div class="row" style="margin-top:10px">
-                        	<center><span class="advise5" style="display:none">{{"}}</span></center>
+                        	<center><span class="advise5" style="display:none">"</span></center>
                         </div>
                         <br>
                     </div>
@@ -156,8 +156,8 @@ if (!isConnect('admin')) {
                         <center><table class="">
                             <thead>
                                 <tr>
-                                    <th style="width:80px;">{{}}</th>
-                                    <th>{{}}</th>
+                                    <th style="width:80px;"> </th>
+                                    <th> </th>
                                 </tr>
                             </thead>
                             <tbody>

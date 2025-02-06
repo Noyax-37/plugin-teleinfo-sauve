@@ -159,7 +159,7 @@ try {
                     <div class="form-group">
                         <label class="col-lg-4 control-label">{{Compteur 1 communiquant en mode STANDARD}}<sup><i class="fas fa-question-circle tooltips" title="{{Veuillez regarder la documentation pour identifier votre compteur}}" style="font-size : 1em;color:grey;"></i></sup></label>
                         <div id="div_linky" class="col-lg-4 tooltips" title="{{ Veuillez regarder la documentation pour identifier votre compteur}} ">
-                            <input type="checkbox" id="linky" class="configKey" data-l1key="linky" placeholder="{{}}"/>
+                            <input type="checkbox" id="linky" class="configKey" data-l1key="linky" placeholder=""/>
                             <label for="linky">  </label>
                             <label id="label_linky" style="color:red;margin-left:100px;margin-top:-15px;display:none">{{Attention, assurez vous que votre compteur soit en mode standard. Aucune idée ? Se reporter à la documentation.}}</label>
                             <script>
@@ -195,7 +195,7 @@ try {
                     <div class="form-group">
                         <label class="col-lg-4 control-label">{{Compteur 2 communiquant en mode STANDARD}}<sup><i class="fas fa-question-circle tooltips" title="{{Veuillez regarder la documentation pour identifier votre compteur}}" style="font-size : 1em;color:grey;"></i></sup></label>
                         <div id="div_linky_prod" class="col-lg-4 tooltips" title="{{ Veuillez regarder la documentation pour identifier votre compteur }}">
-                            <input type="checkbox" id="linky_prod" class="configKey" data-l1key="linky_prod" placeholder="{{}}"/>
+                            <input type="checkbox" id="linky_prod" class="configKey" data-l1key="linky_prod" placeholder=""/>
                             <label for="linky_prod">  </label>
                             <label id="label_linky_prod" style="color:red;margin-left:100px;margin-top:-15px;display:none">{{Attention, assurez vous que votre compteur soit en mode standard. Aucune idée ? Se reporter à la documentation.}}</label>
                             <script>
@@ -258,13 +258,13 @@ try {
                 <div class="form-group">
                     <label class="col-sm-4 control-label">{{Nom d'utilisateur (si aucun laisser vide) :}} </label>
                     <div class="col-sm-2">
-                        <input class="configKey form-control" data-l1key="mqtt_username" placeholder="{{}}"/>
+                        <input class="configKey form-control" data-l1key="mqtt_username" placeholder=""/>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-4 control-label">{{Mot de passe (si aucun laisser vide) :}} </label>
                     <div class="col-sm-2">
-                        <input type="password" class="configKey form-control" data-l1key="mqtt_password" placeholder="{{}}"/>
+                        <input type="password" class="configKey form-control" data-l1key="mqtt_password" placeholder=""/>
                     </div>
                 </div>
                 <div class="form-group">
